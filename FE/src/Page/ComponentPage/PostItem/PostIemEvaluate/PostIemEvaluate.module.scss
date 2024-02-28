@@ -1,0 +1,188 @@
+.totalLike-post {
+    display: flex;
+    align-items: center;
+    margin-left: 4px;
+    padding: 8px 18px;
+    img {
+        height: 18px;
+        width: 18px;
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+    span {
+        margin-left: 4px;
+        font-size: 1.5rem;
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+}
+.option-post {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    padding: 4px 0;
+}
+.option-status {
+    display: flex;
+    align-items: center;
+    width: 33%;
+    justify-content: center;
+    padding: 6px 12px;
+    border-radius: 5px;
+    &:hover {
+        cursor: pointer;
+        background-color: var(--background-chidren);
+
+    }
+    span {
+        color: var(--color-text);
+    }
+    .option-lable {
+        margin: 3px 0 0 4px;
+        font-size: 1.4rem;
+        font-weight: bold;
+        
+    }
+}
+
+
+@mixin iconStyles($backgroundPosition,$backgroundSize, $url) {
+    background-image: url($url);
+    background-position: $backgroundPosition;
+    background-size: $backgroundSize;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    display: inline-block;
+  }
+.icon-like {
+    
+    @include iconStyles(0px -796px,26px 1556px, './../../../../Img/dislike.png');
+
+    filter: invert(39%) sepia(21%) saturate(200%) saturate(109.5%) hue-rotate(174deg) brightness(94%) contrast(86%);;
+
+}
+.icon-dislike {
+   
+    @include iconStyles(0px -714px, 26px 1042px,'./../../../../Img/like.png');
+    filter:invert(27%) sepia(95%) saturate(3116%) hue-rotate(212deg) brightness(99%) contrast(105%);
+}
+.icon-comment {
+    
+    @include iconStyles(0px -598px,26px 1556px, './../../../../Img/dislike.png');
+
+    filter: invert(39%) sepia(21%) saturate(200%) saturate(109.5%) hue-rotate(174deg) brightness(94%) contrast(86%);;
+
+}
+.icon-share {
+    @include iconStyles(0px -950px,26px 1556px, './../../../../Img/dislike.png');
+
+    filter: invert(39%) sepia(21%) saturate(200%) saturate(109.5%) hue-rotate(174deg) brightness(94%) contrast(86%);;
+
+}
+
+//comment like
+.userComment-normal {
+    display: flex;
+    width: 100%;
+}
+.userComment-img {
+    img {
+        height: 32px;
+        width: 32px;
+        border-radius: 100%;
+        cursor: pointer;
+    }
+}
+
+.userComment-person {
+    display: flex;
+
+    max-width: 90%;
+    position: relative;
+    flex-direction: column;
+    padding: 8px 10px ;
+    border-radius: 20px;
+    margin-left: 6px;
+    word-wrap: break-word;
+    background-color: var(--background-chidren);
+}
+.userComment-name {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+.userComment-content {
+    font-size: 1.5rem;
+}
+.likeComment {
+    position: absolute;
+    bottom: 0px;
+    right: -30px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 2px 4px;
+    border-radius: 999px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    span {
+        font-size: 1.3rem;
+        margin-left: 2px;
+    }
+    img {
+        height: 18px;
+        width: 18px;
+        border-radius: 100%;
+    }
+}
+.userComment-timeAndOption {
+    display: flex;
+    align-items: center;
+    margin: 6px 0 6px 48px;
+    font-size: 1.3rem;
+    color: var(--color-text);
+    font-weight: bold;
+    gap: 10px;
+    
+
+}   
+.userComment-time {
+    font-weight: 100;
+}
+
+.userComment-feedback,.userComment-time,.userComment-like{
+    &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}
+.feedbackContent{
+    margin: 0 40px 0;
+    display: flex;
+    align-items: center;
+    
+    gap: 6px;
+}
+.feedbackContent-icon {
+    background-image: url('./../../../../Img/dislike.png');
+    background-position: 0px -1460px;
+    background-size: 26px 1556px;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+.feedbackContent-total {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--color-text);
+    &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}

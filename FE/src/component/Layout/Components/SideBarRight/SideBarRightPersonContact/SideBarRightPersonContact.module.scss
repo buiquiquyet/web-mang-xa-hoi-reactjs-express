@@ -1,0 +1,53 @@
+.lable-add {
+    color: #65676b;
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+//birthday
+.siderbar-rightBirthDay {
+   
+    margin: 14px 0;
+    border-bottom: 1px solid var(--color-boder);
+    .rightBirthDayChil {
+        display: flex;
+        
+        align-items: center;
+        justify-content: space-evenly;
+        border-radius: 10px;
+        margin: 6px 0 8px;
+        padding: 6px 8px ;
+        &:hover {
+            background-color: var(--color-hoverButton);
+        }
+        
+        span {
+            font-size: 1.5rem;
+            color: var( --color-text);
+            b {
+                font-size: 1.4rem;
+            }
+        }
+    }
+}
+//person
+.rightPersonConnect {
+    display: flex;
+    align-items: center;
+    padding:  8px;
+    border-radius: 10px;
+    &:hover {
+        cursor: pointer;
+        background-color: var(--color-hoverButton);
+    }
+    img {
+        height: 36px;
+        width: 36px;
+        border-radius: 100%;
+    }
+    span{
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--color-text);
+        margin-left: 10px;
+    }
+}

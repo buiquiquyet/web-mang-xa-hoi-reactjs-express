@@ -1,0 +1,16 @@
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 226px;
+    align-items: flex-start;
+    background-color: var(--background-chidren);
+}
+.leftPostUser {
+    width: 100%;
+    margin-top: 16px ;
+}
+.rightPostUser {
+    width: 58%;
+    max-width: 58%;
+    margin: 16px 0 0 16px ;
+}

@@ -1,0 +1,90 @@
+[{
+  "_id": {
+    "$oid": "65da9aea132a42ad74c11fc8"
+  },
+  "userId": {
+    "$oid": "65cb95b7024d6854bb0b1592"
+  },
+  "typePost": "normal",
+  "content": "",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-02-25T01:42:02.465Z"
+  },
+  "updatedAt": {
+    "$date": "2024-02-25T01:42:22.565Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65da9afe132a42ad74c12030"
+  },
+  "userId": {
+    "$oid": "65cb95b7024d6854bb0b1592"
+  },
+  "typePost": "normal",
+  "content": "",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-02-25T01:42:22.567Z"
+  },
+  "updatedAt": {
+    "$date": "2024-02-27T04:12:59.242Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65da9fd5132a42ad74c12138"
+  },
+  "userId": {
+    "$oid": "65cb95b7024d6854bb0b1592"
+  },
+  "typePost": "normal",
+  "content": "",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-02-25T02:03:01.906Z"
+  },
+  "updatedAt": {
+    "$date": "2024-02-25T02:03:01.906Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65daa148132a42ad74c121fb"
+  },
+  "userId": {
+    "$oid": "65cb95b7024d6854bb0b1592"
+  },
+  "typePost": "normal",
+  "content": "",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-02-25T02:09:12.615Z"
+  },
+  "updatedAt": {
+    "$date": "2024-02-25T02:09:12.615Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65dd614b365e791af97ccf30"
+  },
+  "userId": {
+    "$oid": "65cb95b7024d6854bb0b1592"
+  },
+  "typePost": "avartar",
+  "content": "",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-02-27T04:12:59.263Z"
+  },
+  "updatedAt": {
+    "$date": "2024-02-27T04:12:59.263Z"
+  },
+  "__v": 0
+}]

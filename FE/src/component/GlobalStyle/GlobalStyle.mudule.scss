@@ -1,0 +1,41 @@
+@import 'normalize.css';
+
+
+:root {
+    --height-header: 56px;
+    --primary: rgb(19, 85, 254);
+    --color-icon: #65676B;
+    --background-chidren: #f0f2f5;
+    --color-hoverButton: #E4E6EB;
+    --color-hoverComponent: #dfe0e2;
+    --color-boder: #ced0d4;
+    --color-text: #474748;
+    --disabled-icon : #BCC0C4;
+}
+
+html {
+    font-size:  62.5%;
+}
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    user-select: none;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    text-rendering: optimizeSpeed; 
+}
+button, input, [tabIndex] {
+    border: none;
+    outline: none;
+}
+a[href] {
+    color: var(--text-color);
+    text-decoration: none;
+}
+svg {
+    color: var(--primary);
+}

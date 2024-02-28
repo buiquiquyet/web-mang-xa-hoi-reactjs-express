@@ -1,0 +1,42 @@
+.wrapper {
+    border-radius: 10px;
+    padding: 12px 0;
+    width: 100%;
+    
+}
+.notif-lable {
+    margin: 0 14px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+.notif-content {
+    margin: 10px 7px;
+
+}
+.notif-item {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    padding: 10px 7px ;
+    &:hover {
+        background-color: var(--color-hoverButton);
+    }
+    img {
+        width: 56px;
+        height: 56px;
+        border-radius: 100%;
+    }
+}
+
+.item-content {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+.item-text {
+    font-size: 1.4rem;
+}
+.item-time {
+    font-size: 1.3rem;
+    color: var(--primary);
+}

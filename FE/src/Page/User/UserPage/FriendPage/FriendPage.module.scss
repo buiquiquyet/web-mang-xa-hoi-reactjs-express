@@ -1,0 +1,126 @@
+.wrapper {
+    padding: 16px 226px;
+    background-color: var(--background-chidren);
+}
+.content {
+    padding: 16px;
+    background-color: white;
+    border-radius: 10px;
+}
+.header-friend {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header-lable {
+    span {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+}
+.header-searchSendFriend {
+    display: flex;
+    align-items: center;
+}
+.header-search {
+    background-color: var(--background-chidren);
+    border-radius: 999px;
+    overflow: hidden;
+    padding: 0 12px;
+    display: flex;
+    align-items: center;
+    input {
+        flex: 1;
+        background-color: var(--background-chidren);
+        padding:  10px;
+        font-size: 1.5rem;
+    }
+    .search-icon {
+        height: 16px;
+        width: 16px;
+        filter: invert(50%);
+    }
+}
+.header-SendFriend {
+    color: var(--primary);
+    padding: 6px 12px;
+    border-radius: 10px;
+    margin-left: 20px;
+    &:hover {
+        cursor: pointer;
+        background-color: var(--background-chidren);
+
+    }
+}
+//all friend
+.all-friend {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    .allFriend-lable {
+        color: var(--primary);
+        font-weight: bold;
+        padding: 12px; 
+        border-bottom: 3px solid var(--primary);
+    }
+}
+//nav friend
+.friend-nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 20px 0;
+
+}
+.friend-item {
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 49%;
+    max-width: 49%;
+    border: 0.2px solid #e4e4e4;
+    padding: 16px;
+    border-radius: 10px;
+}
+.friend-infoPerson {
+    display: flex;
+    align-items: center;
+    
+}
+.friend-img {
+    display: flex;
+    align-items: center;
+    img {
+        height: 80px;
+        width: 80px;
+        border-radius: 8px;
+    }
+    &:hover {
+        cursor: pointer;
+        filter: brightness(95%);
+    }
+}
+.friend-name {
+    margin-left: 20px;
+    font-weight: bold;
+    &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+    }
+}
+.friend-icon {
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    &:hover {
+        background-color: var(--background-chidren);
+        border-radius: 100%;
+        
+        cursor: pointer;
+    }
+    .icon {
+        filter: invert(50%);
+    }
+}

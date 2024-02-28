@@ -1,0 +1,76 @@
+
+
+.wrapper {
+    position: fixed;
+    width: 360px;
+    top:  var(--height-header);
+    left: 0;
+    height: 100%;
+
+    padding: 18px  8px 8px;
+    z-index: 1;
+    transition: overflow-y 0.3s; 
+   
+    overflow-y: hidden;
+    background-color: var(--background-chidren);
+    &:hover {
+        overflow-y: auto;
+        scroll-behavior: smooth;
+    }
+}
+.item-app {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 8px;
+    border-radius: 12px;
+    &:hover {
+        background-color: var(--color-hoverButton);
+    }
+}
+.item-text {
+    margin-left: 8px;
+    flex: 1;
+    font-size: 1.45rem;
+    font-weight: 500;
+   
+}
+@mixin iconStyles($backgroundPosition) {
+    background-image: url('./../../../../Img/iconFb.png');
+    background-position: $backgroundPosition;
+    background-size: 38px 570px;
+    width: 36px;
+    height: 36px;
+    background-repeat: no-repeat;
+    display: inline-block;
+  }
+.item-iconUser {
+    img {
+        border-radius: 100%;
+        height: 36px;
+        width: 36px;
+    }
+    
+}
+.item-iconFriend {
+    @include iconStyles(0 -304px);
+}
+.item-iconSave {
+    @include iconStyles(0 -190px);
+}
+.item-iconMemory {
+    @include iconStyles(0 -456px);
+}
+.item-iconGroup {
+    @include iconStyles(0 -38px);
+}
+.item-iconVideo {
+    @include iconStyles(0 -532px);
+}
+.item-iconMarket {
+    @include iconStyles(0 -418px);
+}
+
+.item-iconEvent {
+    @include iconStyles(0 -38px);
+}

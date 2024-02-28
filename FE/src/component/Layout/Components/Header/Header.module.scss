@@ -1,0 +1,132 @@
+.wrapper {
+    height: var( --height-header);
+    max-height: var( --height-header);
+    padding: 6px 16px;
+    box-shadow: 2px 2px 5px 0px #dddddd;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    background-color: #fff;
+}
+.app {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    
+}
+
+.logo-search {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    width: 20%;
+    .search-div {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 999px;
+        background-color: #f0f2f5;
+        padding: 12px ;
+        margin: 0 8px;
+        .search-input {
+            background-color: #f0f2f5;
+            height: 100%;
+            margin-left: 5px;
+            font-size: 1.5rem;
+            color: black;
+        }
+        .icon-search{
+            width: 16px;
+            color: var(--color-icon);
+            height: 16px;
+            
+        }
+    }
+    .logo-main {
+        width: 4rem;
+        height: 4rem;
+    }
+    
+}
+.optionBar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // flex: 1;
+    .iconBar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 46px;
+        margin: 0 4px;
+        border-radius: 10px;
+        transition: all .3s linear;
+        cursor: pointer;
+        &:hover {
+            transition: all .2s linear;
+            background-color:  var(--color-hoverComponent);
+        }
+        .iconOptionBar {
+            
+            color: var(--color-icon);
+            width: 24px;
+            height: 24px;
+            
+        }
+    }
+}
+.rightUser {
+    display: flex;
+    align-items: center;
+    margin-right: 2px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    .rightUser-iconDiv {
+        cursor: pointer;
+        border-radius: 100%;
+        background-color: #e4e6eb;
+        padding: 10px;
+        margin: 0 4px;
+        color: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+            background-color: var(--color-hoverComponent);
+        }
+        .rightUser-icon {
+            width: 20px;
+            height: 20px;
+            color: black;
+            
+        }
+        
+    }
+   .rightUser-iconUser {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        img {
+            border-radius: 100%;
+            width: 40px;
+            height: 40px;
+        }
+   }
+}
+.active-navbar {
+    
+    border-bottom: 3.5px solid var(--primary);
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    transition: all .3s linear !important;
+    svg {
+        color: var(--primary) !important;
+    }
+}

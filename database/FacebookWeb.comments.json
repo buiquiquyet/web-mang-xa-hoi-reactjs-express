@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "65daa9ed132a42ad74c1229d"
+  },
+  "userId": {
+    "$oid": "65cb95b7024d6854bb0b1592"
+  },
+  "postId": {
+    "$oid": "65daa148132a42ad74c121fb"
+  },
+  "content": "ok",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-02-25T02:46:05.683Z"
+  },
+  "updatedAt": {
+    "$date": "2024-02-25T02:46:05.683Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65daaa19132a42ad74c122d5"
+  },
+  "userId": {
+    "$oid": "65cb95b7024d6854bb0b1592"
+  },
+  "postId": {
+    "$oid": "65daa148132a42ad74c121fb"
+  },
+  "content": "kk",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-02-25T02:46:49.704Z"
+  },
+  "updatedAt": {
+    "$date": "2024-02-25T02:46:49.704Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65daaa38fd4596690a94f8c4"
+  },
+  "userId": {
+    "$oid": "65cb95b7024d6854bb0b1592"
+  },
+  "postId": {
+    "$oid": "65daa148132a42ad74c121fb"
+  },
+  "content": "j",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-02-25T02:47:20.339Z"
+  },
+  "updatedAt": {
+    "$date": "2024-02-25T02:47:20.339Z"
+  },
+  "__v": 0
+}]

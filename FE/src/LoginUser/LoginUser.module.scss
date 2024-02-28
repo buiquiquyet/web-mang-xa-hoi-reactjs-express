@@ -1,0 +1,261 @@
+
+.wrapper {
+    display: flex;
+    
+    width: 980px;
+    position: relative;
+    margin: 150px auto;
+    align-items: center;
+}
+.left-content {
+   width: 580px;
+}
+.left-imgLogoFb {
+    margin: 0 -28px;
+    img {
+        height: 106px;
+    }
+}
+.left-text {
+    font-size: 2.8rem;
+    line-height: 3.2rem;
+    margin-top: -10px;
+    width: 500px;
+
+}
+.right-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+    box-sizing: border-box;
+    margin: 40px 0 0;
+    padding: 20px 0 28px;
+    width: 396px;
+}
+.right-form {
+    margin: 0 16px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+}
+.form-input {
+    position: relative;
+    input {
+        border: 1px solid #dddfe2;
+        border-radius: 10px;
+        padding: 14px 16px ;
+        font-size: 1.7rem;
+        width: 100%;
+        margin: 6px 0 ;
+        &:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px #e7f3ff;
+            caret-color: var(--primary);
+        }
+    }
+    .showPass {
+        position: absolute;
+        background: url('./../Img/passwordCheck.png');
+        height: 16px;
+        width: 16px;
+        top: 85px;
+        right: 20px;
+        cursor: pointer;
+    }
+    .hidePass {
+        position: absolute;
+        background: url('./../Img/passwordShow.png');
+        height: 16px;
+        width: 16px;
+        top: 85px;
+        right: 20px;
+        cursor: pointer;
+    }
+    
+}
+.form-button {
+    
+   margin: 10px 0;
+    button {
+        padding: 0 16px ;
+        width: 100%;
+        font-size: 2rem;
+        font-weight: bold;
+        color: white;
+        background-color: var(--primary);
+        border-radius: 6px;
+        line-height: 4.8rem;
+        cursor: pointer;
+    }
+}
+.forgot-pass {
+    text-align: center;
+    font-size: 1.4rem;
+    color: var(--primary);
+}
+.create-account {
+    margin: 30px 0 0;
+    .link-create {
+        cursor: pointer;
+        border: none;
+        border-radius: 6px;
+        font-size: 17px;
+        padding: 12px 16px;
+        font-weight: bold;
+        background-color: #42b72a;
+        color: white;
+    }
+}
+
+//modal
+.register-modal {
+    
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color:rgba(255, 255, 255, .8);
+    overflow-y: auto;
+    transition: all .5s linear;
+}
+
+.content-modal {
+    background-color: #fefefe;
+    margin: 8% auto;
+    
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 432px;
+    border-radius: 10px;
+}
+.header-register {
+    padding: 2px 16px 12px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc ;
+    span{
+        color: var(--color-text);
+        font-size: 1.5rem;
+    }
+    .close-modal {
+        margin-top: 10px;
+        color: var(--color-text);
+        &:hover {
+            cursor: pointer;
+        }
+    }
+    
+}   
+.register-text {
+    padding: 2px 16px ;
+    margin-top: 12px;
+    .register-name {
+        display: flex;
+        justify-content: space-between;
+        .name-input {
+            width: 96%;
+            max-width: 96%;
+            
+            input {
+                border: 1px solid #ccc;
+               
+                width: 100%;
+                font-size: 15px;
+                line-height: 16px;
+                padding: 12px;
+                border-radius: 10px;
+                background-color: #f5f6f7;
+                
+                
+            }
+        }
+    }
+    .register-emailPass {
+        margin: 12px 0;
+        
+        input {
+            
+            border: 1px solid #ccc;
+            width: 100%;
+            background-color: #f5f6f7;
+            
+            font-size: 15px;
+            line-height: 16px;
+            padding: 12px;
+            border-radius: 10px;
+            
+        }
+    }
+}
+.check-email {
+    font-size: 1.3rem;
+    color: red;
+    margin-left: 6px;
+}
+.register-birthGender {
+    padding: 2px 16px ;
+    margin-bottom: 10px;
+    .register-lableInput {
+        display: flex;
+        align-items: center;
+        font-size: 1.3rem;
+        color: var(--color-text);
+    }
+    .lableBirth-icon {
+        background-image: url('./../Img/loginIcon.png');
+        background-size: 24px 80px;
+        background-repeat: no-repeat;
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        background-position: 0 -66px;
+        margin-left: 4px;
+    }
+    .register-input {
+        display: flex;
+        justify-content: space-between;
+        select, .gender-input{
+            padding: 10px;
+            width: 31.5%;
+            border-radius: 10px;
+            max-width: 33%;
+            outline: none;
+            border: 1px solid #ccc;
+            font-size: 1.5rem;
+        }
+        select {
+            cursor: pointer;
+        }
+        .gender-input {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+}
+.register-button {
+    padding: 20px 16px ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    button{
+        
+        cursor: pointer;
+        background-color: #00a400;
+        padding: 10px 60px;
+        border-radius: 10px;
+        color: white;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 1.6rem;
+        &:hover {
+            filter: brightness(110%);
+        }
+    }
+}

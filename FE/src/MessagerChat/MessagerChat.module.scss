@@ -1,0 +1,107 @@
+.wrapper {
+    position: fixed;
+    bottom: 0px;
+    right: 80px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .1), 0 8px 16px rgba(0, 0, 0, .1);
+    border-radius: 8px;
+    width: 330px;
+    height: 455px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    z-index: 1;
+}
+.header-chat {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px;
+    align-items: center;
+    box-shadow: 2px 2px 5px 0px #dddddd;
+
+}
+.chat-person {
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    border-radius: 6px;
+    &:hover {
+        background-color: var(--color-hoverButton);
+    }
+    img{
+        width: 32px;
+        height: 32px;
+        border-radius: 100%;
+    }
+    span{
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-left: 6px;
+    }
+}
+.icon-header {
+    display: flex;
+    .icon-closeZoomOut {
+        margin-right: 4px;
+        display: flex;
+        align-items: center;
+        border-radius: 100%;
+        padding: 2px;
+        justify-content: center;
+        &:hover {
+            background-color: var(--color-hoverButton);
+        }
+        .icon {
+            cursor: pointer;
+            color: var(--primary);
+        }
+    }
+}
+.content-chat {
+    flex: 1;
+    overflow-y: scroll;
+}
+.footer-chat {
+    display: flex;
+    margin: 10px;
+    align-items: flex-end;
+    justify-content: center;
+}
+.chat-input {
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    .input {
+       
+        width: 100%;
+        max-width: 100%;
+        background-color: var(--background-chidren);
+        border-radius: 20px;
+        padding:  6px 16px ;
+        outline: none;
+        border: none;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        user-select: text;
+        max-height: 120px;
+        
+       
+    }
+    
+}
+.button-sendChat {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    margin-bottom: 8px;
+    .icon-send{
+        cursor: pointer;
+        color: var(--primary);
+        &:hover {
+            scale: 1.2;
+        }
+    }
+    
+}

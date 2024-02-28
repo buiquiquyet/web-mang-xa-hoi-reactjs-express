@@ -1,0 +1,10 @@
+const express = require('express')
+const router = express.Router()
+const UserController = require('../app/controller/UserController')
+const middlewareVerify = require('../app/middleware/UserMiddleware')
+router.post('/login', UserController.index)
+router.post('/create', UserController.create)
+router.get('/profile', middlewareVerify, UserController.profile)
+router.get('/:userId',  UserController.getName)
+// router.get('/getAll', UserController.findAll)
+module.exports = router

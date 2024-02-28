@@ -1,0 +1,24 @@
+[{
+  "_id": {
+    "$oid": "65cb95b7024d6854bb0b1592"
+  },
+  "email": "1",
+  "password": "1",
+  "first_name": "Bùi Quí",
+  "last_name": "Quyết\n",
+  "birthdate": {
+    "$date": {
+      "$numberLong": "-1262329200000"
+    }
+  },
+  "gender": "nam",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-02-13T16:15:51.969Z"
+  },
+  "updatedAt": {
+    "$date": "2024-02-13T16:15:51.969Z"
+  },
+  "slug": "gmail-com",
+  "__v": 0
+}]

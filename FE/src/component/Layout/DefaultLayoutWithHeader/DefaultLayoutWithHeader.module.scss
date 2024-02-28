@@ -1,0 +1,21 @@
+
+//wrapper
+.wrapper {
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    
+}
+.container{
+    position: relative;
+}
+.app-content {
+    position: relative;
+    display: flex;
+
+    background-color: var( --background-chidren);
+    height: 100%;
+    margin: var(--height-header) 0 0;
+}

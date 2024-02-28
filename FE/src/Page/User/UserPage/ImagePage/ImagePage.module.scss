@@ -1,0 +1,57 @@
+.wrapper {
+    padding: 16px 226px;
+    background-color: var(--background-chidren);
+}
+.content {
+    padding: 16px;
+    background-color: white;
+    border-radius: 10px;
+}
+.header-friend {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.header-lable {
+    span {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+}
+
+//all friend
+.all-friend {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    .allFriend-lable {
+        color: var(--primary);
+        font-weight: bold;
+        padding: 12px; 
+        border-bottom: 3px solid var(--primary);
+    }
+}
+//nav Image
+.Image-nav {
+    margin: 20px 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+.Image-item {
+    width: 19%;
+    max-width: 19%;
+    
+    border-radius: 10px;
+    overflow: hidden;
+    height: 188px;
+    margin-top: 10px;
+    cursor: pointer;
+    img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+    }
+}

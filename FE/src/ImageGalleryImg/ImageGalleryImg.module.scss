@@ -1,0 +1,39 @@
+.image-gallery-slide  {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 99;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0;
+    background-color: black;
+    text-align: center;
+    
+  
+    .image-slide--logo {
+        cursor: pointer;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        z-index: 9;
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+            background-color: var(--color-text);
+        }
+        .logo {
+            padding: 10px;
+            width: 50px;
+            height: 50px;
+        }
+    }
+    img {
+        width: 100%;
+        max-height: 100vh !important;
+        
+
+    }
+  }

@@ -1,0 +1,174 @@
+//header
+.header {
+    width: 100%;
+    padding: 0 186px;
+}
+
+.header-addCoverImg {
+    position: absolute;
+    top: 402px;
+    right: 227px;
+    z-index: 1;
+}
+.coverImg {
+    width: 100%;
+    height: 460px;
+    border-radius: 10px;
+    overflow: hidden;
+    
+    img {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        
+    }
+    cursor: pointer;
+}
+.addCoverImg{
+    padding: 8px 20px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    span {
+        margin-left: 6px;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    &:hover {
+        filter: brightness(95%);
+    }
+}
+.cameraIcon{
+    background-image: url('./../../../../Img/userPage.png');
+    background-position: 0px -106px;
+    background-size: 22px 174px;
+    width: 16px;
+    height: 16px;
+    background-repeat: no-repeat;
+    display: inline-block;
+
+}
+//avatart
+.header-avatar {
+    padding: 0 0 74px;
+    margin: 0 40px;
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    border-bottom: 1px solid #ccc;
+}
+.avatar-person {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: -52px;
+    left: 0px;
+}
+.avatar-div {
+    height: 168px;
+    width: 168px;
+   
+    
+}
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    padding: 4px;
+    border-radius: 100%;
+    background-color: white;
+    cursor: pointer;
+    &:hover {
+        filter: brightness(95%);
+    }
+    img {
+        border-radius: 100%;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        box-shadow: 2px 2px 10px 5px #dddddd;
+
+    }
+}
+.avatarIcon {
+    position: absolute;
+    top: 118px;
+    left: 130px;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e4e6eb;
+    border-radius: 100%;
+    cursor: pointer;
+}
+.avatar-info {
+    margin: 40px 16px 0;
+    
+}
+.avatar-name {
+    font-size: 2.8rem;
+    font-weight: bold;
+}
+.avatar-friend {
+    font-size: 1.6rem;
+    color: var(--color-text);
+    font-weight: bold;
+}
+.avatar-option {
+    margin: 22px 0 0 ;
+}
+.option-addEdit {
+    display: flex;
+}
+.option-addFeed {
+    display: flex;
+    align-items: center;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    background-color: #0866ff;
+    margin-right: 8px;
+    cursor: pointer;
+    span {
+        color: white;
+        font-size: 1.5rem;
+        margin-left: 4px;
+    }
+    img {
+        height: 16px;
+        width: 16px;
+        filter: invert(100%);
+    }
+    &:hover {
+        filter: brightness(95%);
+    }
+}
+.option-editSefl {
+    display: flex;
+    align-items:center;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background-color: #e4e6eb;
+    cursor: pointer;
+    font-weight: bold;
+    span {
+        font-size: 1.5rem;
+        margin-left: 4px;
+    }
+    img {
+        height: 16px;
+        width: 16px;
+       
+    }
+    &:hover {
+        filter: brightness(95%);
+    }
+}
+
+.none-coverImg {
+    height: 100%;
+    background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.6));
+}

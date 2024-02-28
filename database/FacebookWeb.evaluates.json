@@ -1,0 +1,20 @@
+[{
+  "_id": {
+    "$oid": "65dd5f07365e791af97cce66"
+  },
+  "userId": {
+    "$oid": "65cb95b7024d6854bb0b1592"
+  },
+  "postCommentId": {
+    "$oid": "65daa148132a42ad74c121fb"
+  },
+  "typeEvaluate": "post",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-02-27T04:03:19.554Z"
+  },
+  "updatedAt": {
+    "$date": "2024-02-27T04:03:19.554Z"
+  },
+  "__v": 0
+}]

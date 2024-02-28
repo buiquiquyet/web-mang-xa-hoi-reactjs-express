@@ -1,0 +1,53 @@
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.messager-zoomOut {
+    position: absolute;
+    top: 650px;
+    right: -90px;
+    animation: slideIn 0.5s ease;
+    transition: all 0.5s linear;
+    &:hover .zoomOut-icon {
+        display: block;
+        
+    }
+    .zoomOut-icon {
+        position: absolute;
+        top: -4px;
+        right: -2px;
+        display: none;
+        .icon {
+            background-color: white;
+            border-radius: 100%;
+            color: var(--color-text);
+            height: 16px;
+            width: 16px;
+            padding: 2px;
+            &:hover {
+                
+                cursor: pointer;
+                scale: 1.2;
+            }
+        }
+    }
+    .zoomOut-img {
+        cursor: pointer;
+       
+        img {
+            
+            height: 48px;
+            width: 48px;
+            border-radius: 100%;
+            
+        }
+    }
+}
+

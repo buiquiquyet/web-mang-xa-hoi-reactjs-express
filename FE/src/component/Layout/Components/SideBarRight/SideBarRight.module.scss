@@ -1,0 +1,153 @@
+
+
+    
+.wrapper {
+    position: fixed;
+    width: 360px;
+    top:  var(--height-header);
+    right: 0;
+    height: 100%;
+    padding: 18px  8px 8px;
+    z-index: 1;
+    transition: overflow-y 0.3s; 
+   
+    overflow-y: hidden;
+    background-color: var(--background-chidren);
+    &:hover {
+        overflow-y: auto;
+        scroll-behavior: smooth;
+    }
+}
+
+.siderbar-rightHeader {
+    display: flex;
+    flex-direction: column;
+    padding-bottom:  12px ;
+    border-bottom:  2px solid var(--color-boder);
+}
+.addFriend-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 4px 0 10px;
+    
+    .lableall-add {
+        color: #0064d1;
+        font-size: 1.5rem;
+        padding: 6px ;
+        border-radius: 5px;
+        &:hover {
+            background-color: var(--color-hoverButton);
+        }
+    }
+
+}
+.lable-add {
+    color: #65676b;
+    font-weight: 600;
+    font-size: 1.6rem;
+}
+.addFriend-info {
+    display: flex;
+    padding: 10px ;
+    justify-content: space-between;
+    border-radius: 10px;
+    &:hover {
+        background-color: var(--color-hoverButton);
+    }
+    .add-imgMain {
+        img {
+            width: 46px;
+            height: 46px;
+            border-radius: 100%;
+        }
+    }
+    .add-info {
+        margin-left: 14px;
+        flex: 1;
+        .infoName {
+            color: var(--color-text);
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-bottom: 2px;
+        }
+        .commonFriend {
+            display: flex;
+            align-items: center;
+            img {
+                width: 16px;
+                height: 16px;
+                margin-right: 4px;
+                border-radius: 100%;
+            }
+        }
+        .info-person {
+            display: flex;
+            flex: 1;
+            justify-content: space-between;
+            
+            
+        }
+        .infoName-comomFriend {
+            
+            color: #75777b;
+            font-size: 1.3rem;
+        }
+        .info-time {
+            color: #75777b;
+            font-size: 1.3rem;
+        }
+        .button-submitAdd {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            button {
+                padding: 9px 12px;
+                background-color: #0064d1;
+                margin-right: 6px ;
+                border-radius: 5px;
+                width: 50%;
+                max-width: 50%;
+                color: white;
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+        }
+        
+    }
+}
+//birthday
+.siderbar-rightBirthDay {
+   
+    margin: 14px 0;
+    border-bottom: 1px solid var(--color-boder);
+    .rightBirthDayChil {
+        display: flex;
+        
+        align-items: center;
+        justify-content: space-evenly;
+        border-radius: 10px;
+        margin: 6px 0 8px;
+        padding: 6px 8px ;
+        &:hover {
+            background-color: var(--color-hoverButton);
+        }
+        .giftbox {
+            height: 36px;
+            width: 36px;
+            background-image: url('./../../../../Img/giftSearch.png');
+            background-position: 0 0;
+            background-size: 31px 50px;
+            background-repeat: no-repeat;
+            display: inline-block;
+            margin-right: 10px;
+        }
+        span {
+            font-size: 1.5rem;
+            color: var( --color-text);
+            b {
+                font-size: 1.4rem;
+            }
+        }
+    }
+}
