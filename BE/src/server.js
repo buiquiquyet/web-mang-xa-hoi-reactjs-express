@@ -36,6 +36,7 @@ router(app)
 //socket
 eventEmitter.setMaxListeners(20);
 eventEmitterCommentFeedback.setMaxListeners(20)
+eventEmitterMesseger.setMaxListeners(20)
 io.on('connection', (socket) => {
     console.log('Client connected', socket.id);
 
