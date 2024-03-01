@@ -1,19 +1,29 @@
 import { useDispatch, useSelector } from 'react-redux'
-import testImg from './../../../../../Img/test.jpg'
-import testImg1 from './../../../../../Img/test1.jpg'
-import testImg2 from './../../../../../Img/test2.jpg'
-import testImg3 from './../../../../../Img/test3.jpg'
+import userNoneImg from './../../../../../Img/userNone.png'
+
 import { setMessItem, zoomOutHideToMessItem } from '../../../../../useReducerMessager/actions'
 import styles from './SideBarRightPersonContact.module.scss'
 import classNames from 'classnames/bind';
 import MessagerChat from '../../../../../MessagerChat'
+import { memo, useContext, useEffect, useState } from 'react'
+import * as ServiceFriendApi from './../../../../../apiServices/friendAPI'
+import * as ServicePostApi from './../../../../../apiServices/postAPI'
+import * as ServiceUserApi from './../../../../../apiServices/userAPI'
+import { MyContext } from '../../../../../App'
 const cx = classNames.bind(styles)
 
 function SideBarRightPersonContact() {
+
+    const { dataUser, ImageUrlPath } = useContext(MyContext)
+
     const messagerState = useSelector(state => state.messager)
     const { jobsZoomOut, jobs } = messagerState
     
     const dispatch = useDispatch();
+   
+    const [userIdFriends, setUserIdFriends] = useState([])
+    const [dataByUserIdFriend, setDataByUserIdFriend] = useState([])
+    //dispatch
     const handleShowMessLogorShowMess = (item) => {
        
         dispatch(setMessItem(item))
@@ -21,58 +31,56 @@ function SideBarRightPersonContact() {
             dispatch(zoomOutHideToMessItem(item))
         }
     }
+    const fecthGetAllFriend = async (userId) => {
+        const rs = await ServiceFriendApi.getAllFriend(userId, 'accepted')
+        if(rs.success) {
+            setUserIdFriends(rs.data)
+        }
+    }
+    useEffect(() => {
+        if(dataUser) {
+            fecthGetAllFriend(dataUser._id);
+        }
+    },[dataUser])
+    useEffect(() => {
+        const fecthProfileUsers = async (userIdFriends) => {
+            const IdUsers = userIdFriends.map((item) => {
+                    if(item.userId1 === dataUser._id) return item.userId2
+                    else return item.userId1
+            })
+            const profileUsers = await Promise.all(IdUsers.map(async (item) => {
+                const fullNames = await ServiceUserApi.getNameUser(item)
+                const imagesAvartar = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'avartar', userId: item})
+                if(fullNames.success && imagesAvartar.success) {
+                    const fullName = fullNames.data
+                    const image = imagesAvartar.result.image.flat()[0]
+                    return {fullName, image}
+                }
+                return {fullName: fullNames.data}
+            }))
+            setDataByUserIdFriend(profileUsers)
+        }
+        if(userIdFriends.length > 0 && dataUser ) {
+            fecthProfileUsers(userIdFriends)
+        }else {
+            setDataByUserIdFriend([])
+        }
+    },[userIdFriends, dataUser])
     return ( 
         <>
             <div  style={{paddingBottom:'10px'}} className={cx('siderbar-rightBirthDay')}>
                 <div style={{ padding: '2px 8px 6px' }}className={cx('lable-add')}>Người liên hệ</div>
-                
-                <div className={cx('rightPersonConnect')} onClick={() => handleShowMessLogorShowMess(5)}>
-                    <img src={testImg} alt='img' />
-                    <span>Vu Quang Dat</span>
-                </div>
-                <div className={cx('rightPersonConnect')}  onClick={() => handleShowMessLogorShowMess(6)}>
-                    <img src={testImg1} alt='img' />
-                    <span>Bui Duy</span>
-                </div>
-            
-                <div className={cx('rightPersonConnect')} onClick={() => handleShowMessLogorShowMess(7)}>
-                    <img src={testImg2} alt='img' />
-                    <span>Thanh Cong</span>
-                </div>
-            
-                <div className={cx('rightPersonConnect')} onClick={() => handleShowMessLogorShowMess(8)}>
-                    <img src={testImg3} alt='img' />
-                    <span>Tran Minh Hieu</span>
-                </div>
-            
-            </div>
-            <div to={''} style={{marginBottom:'45px'}}className={cx('siderbar-rightBirthDay')}>
-                <div style={{ padding: '2px 8px 6px' }}className={cx('lable-add')}>Cuộc trò chuyện nhóm</div>
-                <div  >
-                    <div className={cx('rightPersonConnect')}>
-                        <img src={testImg1} alt='img' />
-                        <span>Động muối tồn kho</span>
+                {
+                    dataByUserIdFriend.length > 0 &&
+                    dataByUserIdFriend.map((item, index) => (
+                    <div key={index} className={cx('rightPersonConnect')} onClick={() => handleShowMessLogorShowMess(item.fullName._id)}>
+                        <img src={item.image 
+                            ? ImageUrlPath + item.image.url
+                            : userNoneImg} alt='img'/>
+                        <span>{item.fullName.first_name + ' ' + item.fullName.last_name}</span>
                     </div>
-                </div>
-                <div  >
-                    <div className={cx('rightPersonConnect')}>
-                        <img src={testImg2} alt='img' />
-                        <span>Người nghẹo</span>
-                    </div>
-                </div>
-                <div  >
-                    <div className={cx('rightPersonConnect')}>
-                        <img src={testImg3} alt='img' />
-                        <span>FC Gia Lộc</span>
-                    </div>
-                </div>
-                <div  >
-                    <div className={cx('rightPersonConnect')}>
-                        <img src={testImg} alt='img' />
-                        <span>FC Hải Dương</span>
-                    </div>
-                </div>
-                
+                ))
+                }
             </div>
             {
                 jobs.slice(-2).map((item, index) => (
@@ -80,6 +88,7 @@ function SideBarRightPersonContact() {
                         key={index} 
                         id={item} 
                         style={index > 0 ? { right: `420px` } : null }
+                       
                     />
                 ))
             } 
@@ -87,4 +96,4 @@ function SideBarRightPersonContact() {
      );
 }
 
-export default SideBarRightPersonContact;
+export default memo(SideBarRightPersonContact);

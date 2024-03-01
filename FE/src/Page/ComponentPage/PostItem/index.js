@@ -1,9 +1,9 @@
-import testImg from './../../../Img/test3.jpg'
+import userNoneImg from './../../../Img/userNone.png'
 import classNames from 'classnames/bind';
 import styles from './PostItem.module.scss';
 import PostItemComment from './PostItemComment';
 import {  LogoNavMore } from '../../../Icon';
-import { memo, useContext, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import moment from 'moment';
 
 import PostIemEvaluate from './PostIemEvaluate';
@@ -14,17 +14,18 @@ import * as ServiceCommentApi from './../../../apiServices/commentAPI'
 import * as ServiceCommentFeedbackApi from './../../../apiServices/commentFeedbackAPI'
 import PostItemUsersComment from './PostItemUsersComment';
 import ImageGalleryImg from '../../../ImageGalleryImg';
-import { MyContext } from '../../../App';
 
 const cx = classNames.bind(styles);
 
-function PostItem({dataUser, post, images , onClickCheckToFecth}) {
-    const { ImageUrlPath } = useContext(MyContext)
+function PostItem({ImageUrlPath, imageAvartar, dataUser, post, images , onClickCheckToFecth}) {
+
     const [imageSlide, setImageSlide] = useState({})
     const [isOpenSlide, setIsOpenSlide] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isFocusComment, setIsFocusComment] = useState(false)
     const [statusSendComment, setStatusSendComment] = useState(false);
+
+    
 
     const handleChangeStatusSendComment = (newValue) => {
         setStatusSendComment(newValue);
@@ -72,7 +73,6 @@ function PostItem({dataUser, post, images , onClickCheckToFecth}) {
        
     };
     const handleDeletePost = async () => {
-       
         const imageUrls = images.length > 0 ? images.map(item => item.url) : []
         const dataPostDel = new FormData()
         dataPostDel.append('postId', post._id)
@@ -115,6 +115,7 @@ function PostItem({dataUser, post, images , onClickCheckToFecth}) {
           document.body.style.overflow = 'auto';
         };
       }, [isOpenSlide]);
+     
     return ( 
          <>
             {
@@ -123,7 +124,11 @@ function PostItem({dataUser, post, images , onClickCheckToFecth}) {
                     <div className={cx('headerPost')}>
                         <div className={cx('headerInfo-post')}>
                             <div className={cx('avatar-post')}>
-                                <img src={testImg} alt='img'/>
+                                <img  src={Object.keys(imageAvartar).length > 0 
+                                            ? ImageUrlPath+imageAvartar.url
+                                            : userNoneImg}  
+                                            alt='img'
+                                />
                             </div>
                             <div className={cx('name-post')}>
                                 <div className={cx('status-post')}>
@@ -196,6 +201,7 @@ function PostItem({dataUser, post, images , onClickCheckToFecth}) {
                         
                         handleFocusComment={handleFocusComment}/>
                     <PostItemComment 
+                        ImageUrlPath={ImageUrlPath}
                         postId={post._id}
                         userId={dataUser._id} 
                         handleFocusComment={handleFocusComment} 
@@ -204,6 +210,7 @@ function PostItem({dataUser, post, images , onClickCheckToFecth}) {
                         onClickChangeStatusSendComment = {handleChangeStatusSendComment}
                         isFocusComment={isFocusComment}/>
                     <PostItemUsersComment 
+                        ImageUrlPath={ImageUrlPath}
                         postId={post._id}
                         statusSendComment={statusSendComment}
                         userId={dataUser._id} />

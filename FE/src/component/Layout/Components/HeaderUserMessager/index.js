@@ -6,7 +6,7 @@ import styles from './HeaderUserMessager.module.scss'
 import { setMessLog, zoomOutMessItem } from '../../../../useReducerMessager/actions';
 import MessagerChat from './../../../../MessagerChat'
 import MessagerChatZoomOut from '../../../../MessagerChatZoomOut';
-import { useEffect } from 'react';
+import { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 const cx = classNames.bind(styles);
 
@@ -54,8 +54,6 @@ function HeaderUserMessager({children}) {
                     <MessagerChat 
                         key={index} 
                         id={item} 
-                       
-                       
                         style={index > 0 ? { right: `420px` } : null}
                     />
                 ))
@@ -73,4 +71,4 @@ function HeaderUserMessager({children}) {
      );
 }
 
-export default HeaderUserMessager;
+export default memo(HeaderUserMessager);

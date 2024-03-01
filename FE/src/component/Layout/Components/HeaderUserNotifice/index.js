@@ -3,6 +3,7 @@ import { Wrapper } from '../../../../Popper';
 import classNames from 'classnames/bind';
 import MenuNotif from '../../../../MenuHeader/MenuNotif';
 import styles from './HeaderUserNotifice.module.scss'
+import { memo } from 'react';
 const cx = classNames.bind(styles);
 
 function HeaderUserNotifice({children}) {
@@ -25,4 +26,4 @@ function HeaderUserNotifice({children}) {
      );
 }
 
-export default HeaderUserNotifice;
+export default memo(HeaderUserNotifice);

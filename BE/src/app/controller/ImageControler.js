@@ -26,8 +26,6 @@ class ImageController {
             console.error('Error uploading images:', error);
             res.status(500).json({ error: 'Error uploading images' });
           }
-        
-      
     }
     async single (req, res, next) {
         try {

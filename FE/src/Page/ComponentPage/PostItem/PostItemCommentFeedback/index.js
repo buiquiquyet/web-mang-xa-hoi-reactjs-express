@@ -7,11 +7,14 @@ import PostIemEvaluate from '../PostIemEvaluate';
 const cx = classNames.bind(styles);
 
 
-function PostItemCommentFeedback({dataFeedback, handleOpenFeedback,checkShowHideFeedbackData}) {
+function PostItemCommentFeedback({ImageUrlPath, 
+                                dataFeedback, 
+                                handleOpenFeedback,
+                                checkShowHideFeedbackData, 
+                                onClickHandleCheckDelComment}) {
 
     const [nameUserFeedback, setNameUserFeedback] = useState([])
     
-
     const fecthNameUser = async (userId) => {
         const rs = await ServiceUserApi.getNameUser(userId)
         return rs.data.first_name + ' ' + rs.data.last_name
@@ -53,12 +56,14 @@ function PostItemCommentFeedback({dataFeedback, handleOpenFeedback,checkShowHide
                     
                     <div className={cx('userComment-timeAndOption')}>
                         <PostIemEvaluate
+                            ImageUrlPath={ImageUrlPath}
                             postId={item._id} 
                             userId={item.userId} 
                             convertDate={convertDate(item.createdAt)}
                             namePerson={nameUserFeedback[index]}
                             content={item.content}
-                            typeLike={'feedback'}/>
+                            typeLike={'feedback'}
+                            onClickHandleCheckDelComment={onClickHandleCheckDelComment}/>
                     </div>
                   </div >
                 ))

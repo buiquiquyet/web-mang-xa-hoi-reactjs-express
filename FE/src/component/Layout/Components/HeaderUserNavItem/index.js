@@ -3,6 +3,7 @@ import { Wrapper } from '../../../../Popper';
 import classNames from 'classnames/bind';
 import MenuUser from '../../../../MenuHeader/MenuUser';
 import styles from './HeaderUserNavItem.module.scss'
+import { memo } from 'react';
 const cx = classNames.bind(styles);
 
 function HeaderUserNavItem({children}) {
@@ -24,4 +25,4 @@ function HeaderUserNavItem({children}) {
      );
 }
 
-export default HeaderUserNavItem;
+export default memo(HeaderUserNavItem);

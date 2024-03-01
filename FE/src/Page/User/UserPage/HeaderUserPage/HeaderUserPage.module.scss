@@ -130,7 +130,7 @@
     border-radius: 6px;
     font-weight: bold;
     background-color: #0866ff;
-    margin-right: 8px;
+    margin: 0px 8px;
     cursor: pointer;
     span {
         color: white;
@@ -171,4 +171,36 @@
 .none-coverImg {
     height: 100%;
     background-image: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.6));
+}
+
+.unFriend {
+    
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 2px 2px 2px 2px #dddddd;
+    
+    .unFriend-item {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        &:hover {
+            cursor: pointer;
+            background-color: #dddddd;
+        }
+        .unFriend-icon {
+            background-image: url('./../../../../Img/pageUser.png');
+            background-position: 0px -192px;
+            background-size: 26px 254px;
+            width: 20px;
+            height: 20px;
+            background-repeat: no-repeat;
+            display: inline-block;
+        }
+        span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    }
 }

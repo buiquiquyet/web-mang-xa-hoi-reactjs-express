@@ -2,110 +2,120 @@
 import classNames from 'classnames/bind';
 import styles from './LeftPostUserPage.module.scss';
 import houseImg from './../../../../../Img/house.png'
-import testImg from './../../../../../Img/test4.jpg'
+import { memo, useEffect, useRef, useState } from 'react';
+import { LogoSend } from '../../../../../Icon';
+import * as ServiceUserApi from './../../../../../apiServices/userAPI'
+import LeftPostUserPageImage from './LeftPostUserPageImage';
+import LeftPostUserPageFriend from './LeftPostUserPageFriend';
 const cx = classNames.bind(styles);
 
-function LeftPostUserPage() {
+function LeftPostUserPage({userId, dataUser}) {
+
+    const [isShowUpdateStory, setIsShowUpdateStory] = useState(false)
+    const [dataComment, setDataComment] = useState('')
+    const [isFocusComment, setIsFocusComment] = useState(false)
+    const [dataStory, setDataStory] = useState('')
+    const [dataProfileUser, setDataProfileUser] = useState(null)
+    const inputRef = useRef()
+    
+    const handleShowUpdateStory = () => {
+        setIsShowUpdateStory(!isShowUpdateStory)
+    }
+    const handleFocusComment = () => {
+        setIsFocusComment(true)
+    }
+    const handleInputComment = () => {
+       
+        setDataComment(inputRef.current.textContent)
+    }  
+    const handleSubmitComment = async (userId, dataComment) => {
+        const rs = await ServiceUserApi.updateStory({userId, story: dataComment})
+        if(rs.success) {
+            setIsShowUpdateStory(false)
+            setDataStory(rs.story)
+            setDataComment('')
+        }
+    }
+    const renderAddStory = (dataUser, userId, isShowUpdateStory) => {
+        if(dataUser && dataUser._id === userId && !isShowUpdateStory) {
+            return  <div className={cx('introduce-box')} onClick={handleShowUpdateStory}>
+                    <span>Thêm tiểu sử</span>
+                </div>
+        }
+        if(dataUser && dataUser._id && isShowUpdateStory) {
+            return <div className={cx('comment-sendStory', )}>
+                        <div
+                            contentEditable="true"
+                            className={cx('input-postStory', {'input-post--focusStory' : isFocusComment})}
+                            onFocus={handleFocusComment}
+                            suppressContentEditableWarning={true}
+                            onInput={handleInputComment}
+                            ref={inputRef}
+                        />
+                        {
+                            dataComment.length === 0 &&
+                            <div className={cx('placeholder-inputStory')} >
+                                Mô tả về bạn
+                            </div>  
+                        }
+                        
+                        <div className={cx('button-sendCommentStory')} 
+                            style={isFocusComment ? {display:'flex'} : null }
+                            onClick={() => handleSubmitComment(dataUser._id, dataComment)}>
+                            <LogoSend className={cx('icon-send',{ 'check-icon': dataComment.length === 0})}/>
+                        </div>
+                    </div>
+            
+        }
+    }
+    useEffect(() => {
+        if(dataUser) {
+            setDataStory(dataUser.story)
+        }
+    }, [dataUser])
+    useEffect(() => {
+        if(userId) {
+            const fecthProfile = async (userId) => {
+                const rs = await ServiceUserApi.getProfileByUserId(userId)
+                if(rs.success) {
+                    setDataProfileUser(rs.data)
+                }
+            }
+            fecthProfile(userId)
+        }
+    }, [userId])
+    
     return ( 
         <div className={cx('wrapper')}>
             <div className={cx('wrapper-box')}>
                 <div className={cx('label')}>
                     <span>Giới thiệu</span>
                 </div>
-                <div className={cx('introduce-box')}>
-                    <span>Thêm tiểu sử</span>
-                </div>
+                {
+                   renderAddStory(dataUser, userId, isShowUpdateStory)
+                }
+                {
+                    dataStory !== ''  && dataUser && dataUser._id === userId ?  
+                    <div className={cx('introduce-live')} style={{justifyContent: 'center'}}>
+                        <span className={cx('introduceLive-bold')} >{dataStory }</span>
+                    </div>
+                    :
+                    <div className={cx('introduce-live')} style={{justifyContent: 'center'}}>
+                        <span className={cx('introduceLive-bold')} >{dataProfileUser && dataProfileUser.story }</span>
+                    </div>
+                }
                 <div className={cx('introduce-live')}>
                     <img src={houseImg} alt='img'/>
                     <span>Sống tại</span>
-                    <span className={cx('introduceLive-bold')}>Gia Lộc</span>
+                    <span className={cx('introduceLive-bold')}>Việt Nam</span>
                 </div>
-                <div className={cx('introduce-box')}>
-                    <span>Chỉnh sửa chi tiết</span>
-                </div>
-                <div className={cx('introduce-box')}>
-                    <span>Thêm nội dung đáng chú ý</span>
-                </div>
+                
             </div>
-            <div className={cx('wrapper-box')}>
-                <div className={cx('friend-box')}>
-                    <div className={cx('label')}>
-                        <span>Ảnh</span>
-                    </div>
-                    <div className={cx('friendBox-seeAll')}>
-                        <span>Xem tất cả ảnh</span>
-                    </div>
-                </div>
-            </div>
-            <div className={cx('wrapper-box')}>
-                <div className={cx('friend-box')}>
-                    <div className={cx('label')}>
-                        <span>Bạn bè</span>
-                    </div>
-                    <div className={cx('friendBox-seeAll')}>
-                        <span>Xem tất cả bạn bè</span>
-                    </div>
-                </div>
-                <div className={cx('friend-total')}>
-                    <span>2345 người bạn</span>
-                </div>
-                <div className={cx('friend-person')}>
-                    <div className={cx('friend-list')}>
-                        <div className={cx('friend-item')}>
-                            <div className={cx('friend-img')}>
-                                <img src={testImg} alt='img'/>
-                            </div>
-                            <div className={cx('friend-name')}>
-                                <span>Lê Hồng</span>
-                            </div>
-                        </div>
-                        <div className={cx('friend-item')}>
-                            <div className={cx('friend-img')}>
-                                <img src={testImg} alt='img'/>
-                            </div>
-                            <div className={cx('friend-name')}>
-                                <span>Lê Hồng</span>
-                            </div>
-                        </div>
-                        <div className={cx('friend-item')}>
-                            <div className={cx('friend-img')}>
-                                <img src={testImg} alt='img'/>
-                            </div>
-                            <div className={cx('friend-name')}>
-                                <span>Lê Hồng</span>
-                            </div>
-                        </div>
-                        <div className={cx('friend-item')}>
-                            <div className={cx('friend-img')}>
-                                <img src={testImg} alt='img'/>
-                            </div>
-                            <div className={cx('friend-name')}>
-                                <span>Lê Hồng</span>
-                            </div>
-                        </div>
-                        <div className={cx('friend-item')}>
-                            <div className={cx('friend-img')}>
-                                <img src={testImg} alt='img'/>
-                            </div>
-                            <div className={cx('friend-name')}>
-                                <span>Lê Hồng</span>
-                            </div>
-                        </div>
-                        <div className={cx('friend-item')}>
-                            <div className={cx('friend-img')}>
-                                <img src={testImg} alt='img'/>
-                            </div>
-                            <div className={cx('friend-name')}>
-                                <span>Lê Hồng</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
+            <LeftPostUserPageImage userId={userId}/>
+            <LeftPostUserPageFriend userId={userId}/>
             
         </div>
      );
 }
 
-export default LeftPostUserPage;
+export default memo(LeftPostUserPage);

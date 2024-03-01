@@ -13,6 +13,7 @@ const User = new Schema(
         birthdate: { type: Date },
         gender: { type: String,  required: true },
         role: { type: String},
+        story: {type: String},
         slug: {type: String, slug: "email", unique: true}
     }, 
     {

@@ -90,6 +90,10 @@
 .userComment-normal {
     display: flex;
     width: 100%;
+    cursor: pointer;
+    &:hover > .userComment-moreOption {
+        display: flex;
+    }
 }
 .userComment-img {
     img {
@@ -111,6 +115,7 @@
     margin-left: 6px;
     word-wrap: break-word;
     background-color: var(--background-chidren);
+    
 }
 .userComment-name {
     font-weight: bold;
@@ -118,6 +123,30 @@
 }
 .userComment-content {
     font-size: 1.5rem;
+}
+.userComment-moreOption {
+    display: none;
+    align-self: center;
+    padding: 6px;
+    margin-left: 30px;
+    border-radius: 100%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    &:hover {
+        background-color: var(--background-chidren);
+    }
+}
+.userComment-moreOptionIcon {
+    color: var(--color-text);
+}
+.del-optionIcon {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px 2px #ccc;
+    padding: 4px 8px;
+    font-size: 1.4rem;
+    font-weight: bold;
 }
 .likeComment {
     position: absolute;

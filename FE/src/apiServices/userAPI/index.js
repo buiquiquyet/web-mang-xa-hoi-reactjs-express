@@ -28,9 +28,25 @@ export const getProfileUser = async (token) => {
         throw error
     }
 }
+export const getProfileByUserId = async (userId) => {
+    try {
+        const res = await request.get(`/profileByUserId/${userId}`, )
+        return res
+    } catch (error) {
+        throw error
+    }
+}
 export const getNameUser = async (userId) => {
     try {
-        const res = await request.get(`/${userId}`, )
+        const res = await request.get(`/${userId}` )
+        return res
+    } catch (error) {
+        throw error
+    }
+}
+export const updateStory = async (option) => {
+    try {
+        const res = await request.post(`/updateStory`,option )
         return res
     } catch (error) {
         throw error

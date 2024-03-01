@@ -5,10 +5,12 @@ import * as ServicePostApi from './../../../../apiServices/postAPI'
 import { useContext, useEffect, useState } from "react";
 import { MyContext } from "../../../../App";
 import ImageGalleryImg from "../../../../ImageGalleryImg";
+import { useParams } from "react-router-dom";
 const cx = classNames.bind(styles)
 
 
 function ImagePage() {
+    const {userId} = useParams()
     const {ImageUrlPath} = useContext(MyContext)
     const [showDataPost, setShowDataPost] = useState({})
 
@@ -31,15 +33,18 @@ function ImagePage() {
         setIsOpenSlide(true)
     }
 
-    const fecthPostByUser = async ( token ) => {
-        const rs = await ServicePostApi.showPostByUser(token)
-        if(rs.result.posts.length > 0) {
-            setShowDataPost(rs.result.images.flat())
+    const fecthPostByUser = async ( userId ) => {
+        const rs = await ServicePostApi.showPostByUser(userId)
+       
+        if(rs.success) {
+            if(rs.result.posts.length > 0) {
+                setShowDataPost(rs.result.images.flat())
+            }
         }
     }
     useEffect(() => {
-        fecthPostByUser(localStorage.getItem('tokenFb'))
-    },[])
+        fecthPostByUser(userId)
+    },[userId])
     return ( 
         <div className={cx('wrapper')}>
             <div className={cx('content')}>

@@ -101,7 +101,9 @@
             display: flex;
             justify-content: space-between;
             margin-top: 6px;
+           
             button {
+                cursor: pointer;
                 padding: 9px 12px;
                 background-color: #0064d1;
                 margin-right: 6px ;

@@ -24,7 +24,7 @@ module.exports =  async function  middlewareVerify(req, res, next) {
             req.user = user;
             next();
         } catch (error) {
-            return res.json({ error: 'Đã xảy ra lỗi' });
+            return res.json({ error: 'Đã xảy ra lỗi?' });
         }
     }
     

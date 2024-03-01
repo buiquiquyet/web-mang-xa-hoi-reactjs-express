@@ -55,5 +55,21 @@
     margin-top: 20px;
 }
 
+//tippy
+.tippyHeadeless {
+    background-color: white;
+    box-shadow: 2px 2px 10px 2px #ccc;
+    border-radius: 10px;
+    padding: 6px;
+    .tippy-item {
+        border-radius: 10px;
+        cursor: pointer;
+        padding: 4px;
+        &:hover {
+            background-color: var(--color-hoverButton);
+        }
+    }
+}
+
 
 

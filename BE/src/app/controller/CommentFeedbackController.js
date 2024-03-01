@@ -15,10 +15,10 @@ class CommentFeedbackController {
             // Kích hoạt sự kiện 'newCommentFeedback' và truyền commentFCommentFeedback mới đã được tạo
             eventEmitterCommentFeedback.emit('newCommentFeedback', {data: [newCommentFeedback], commentId});
 
-            return res.json({ success: 'commentFCommentFeedback thành công' })
+            return res.json({ success: 'comment thành công' })
            
        } catch (error) {
-            return res.json({ error: 'commentFCommentFeedback không thành công' })
+            return res.json({ error: 'comment không thành công' })
         
        }
    }
@@ -29,9 +29,29 @@ class CommentFeedbackController {
             CommentFeedback.find({postId: {$in: commentIds}}).lean().select('_id'),
             CommentFeedback.deleteMany({postId: {$in: commentIds}})
         ])
-        .then(([data]) =>  res.json({ success: 'xóa commentFCommentFeedback thành công' , data}))
-        .catch(() =>  res.json({ error: 'xóa commentFCommentFeedback không thành công' }))
+        .then(([data]) =>  res.json({ success: 'xóa comment thành công' , data}))
+        .catch(() =>  res.json({ error: 'xóa comment không thành công' }))
     }
+    //[DELETE] /:feedbackId
+    async deleteByCommentFeedbackId(req,res, next) {
+        const commentFeedId = req.params.commentFeedId
+        await CommentFeedback.deleteOne({ _id: commentFeedId })
+        
+        .then(() =>  res.json({ success: 'xóa comment thành công' }))
+        .catch(() =>  res.json({ error: 'xóa comment không thành công' }))
+    }
+     //[DELETE] /:commentId
+     async deleteByCommentId(req, res, next) {
+        try {
+            const commentId = req.body.commentId;
+            const commentFeedId = await CommentFeedback.find({postId: commentId}).select('_id')
+            await CommentFeedback.deleteMany({ postId: commentId });
+            res.json({ success: 'Xóa comment thành công', data: commentFeedId});
+        } catch (error) {
+            res.status(500).json({ error: 'Xóa comment không thành công', message: error.message });
+        }
+    }
+    
      //[GET] /show
     async  show(req, res, next) {
         const commentId = req.query.postId

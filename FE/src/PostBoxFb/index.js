@@ -3,19 +3,18 @@ import styles from './PostBoxFb.module.scss';
 import { LogoClose } from '../Icon';
 import { Upload, message } from 'antd';
 import { useContext, useRef, useState } from 'react';
-import testImg from './../Img/test3.jpg'
+import userNoneImg from './../Img/userNone.png'
 import imageImg from './../Img/imageImg.png'
 import { MyContext } from '../App';
 import ImgCrop from 'antd-img-crop';
 import * as ServicePostApi from './../apiServices/postAPI'
 const cx = classNames.bind(styles);
-function PostBoxFb({onClickShowHideModal, onClickCheckToFecth, typePost}) {
-
+function PostBoxFb({ImageUrlPath, imageAvartar, onClickShowHideModal, onClickCheckToFecth, typePost}) {
     const {dataUser} = useContext(MyContext)
     const [dataPost, setDataPost] = useState('')
     const [fileList, setFileList] = useState([ ]);
     const inputRef = useRef()
-
+    
     const handleInputComment = () => {
        
         setDataPost(inputRef.current.textContent)
@@ -81,7 +80,8 @@ function PostBoxFb({onClickShowHideModal, onClickCheckToFecth, typePost}) {
             return
         }
     }; 
- 
+   
+    
     return ( 
         <div className={cx('posts-modal')}>
                 
@@ -96,7 +96,11 @@ function PostBoxFb({onClickShowHideModal, onClickCheckToFecth, typePost}) {
                 </div>
                 <div className={cx('Modal-person')}>
                     <div className={cx('ModalPerson-img')}>
-                        <img src={testImg} alt=''/>
+                        <img  src={imageAvartar && Object.keys(imageAvartar).length > 0 
+                                    ? ImageUrlPath+imageAvartar.url
+                                    : userNoneImg}  
+                                    alt='img'
+                        />
                     </div>
                     <div className={cx('ModalPerson-fullname')}>
                         {dataUser && <span>{dataUser.first_name+ ' ' +dataUser.last_name}</span>}

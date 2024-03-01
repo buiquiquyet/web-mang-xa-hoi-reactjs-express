@@ -24,6 +24,21 @@ export const DeleteByPostId = async ( postIds) => {
     } catch (error) {
         throw error
     }
-
+}
+export const DeleteByCommentFeedId = async ( commentFeedId) => {
+    try {
+        const res = await request.Delete(`/commentFeedback/deleteByCommentFeedbackId/${commentFeedId}`,)
+        return res
+    } catch (error) {
+        throw error
+    }
+}
+export const DeleteByCommentId = async ( commentId) => {
+    try {
+        const res = await request.post(`/commentFeedback/deleteByCommentId`,commentId)
+        return res
+    } catch (error) {
+        throw error
+    }
 }
 

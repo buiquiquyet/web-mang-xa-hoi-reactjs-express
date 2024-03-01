@@ -2,25 +2,37 @@
 import style from './SideBarLeft.module.scss'
 import classNames from 'classnames/bind';
 import ImgFeed from './../../../../Img/ImgFeed.png'
-import ImgLogo from './../../../../Img/LogoUser.png'
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { MyContext } from '../../../../App';
+import * as ServicePostApi from './../../../../apiServices/postAPI'
+import UserImg from './../../../../Img/userNone.png'
 const cx = classNames.bind(style)
 function SideBarLeft() {
-    const { dataUser } = useContext(MyContext)
+    const { dataUser, ImageUrlPath } = useContext(MyContext)
+    const [imageAvartar, setImageAvartar] = useState('')
+    useEffect(() => {
+        const fecthImgUser = async (token) => {
+            const rs = await ServicePostApi.showPostByUserAvartarImg(token)
+            if(rs.image && rs.image.length > 0) {
+                setImageAvartar(rs.image.flat()[0].url)
+               
+            }
+        }
+        fecthImgUser(localStorage.getItem('tokenFb'))
+    },[])
     return ( 
         <div className={cx('wrapper')}>
             <ul className={cx('sidebarLeft-app')}>
-                <Link to={'/userPost'} className={cx('item-app')}>
+                <Link to={dataUser && `/userPost/${dataUser._id}`} className={cx('item-app')}>
                     <div className={cx('item-iconUser')}>
-                        <img src={ImgLogo} alt='img'/>
+                        <img src={imageAvartar !== '' ? ImageUrlPath + imageAvartar : UserImg} alt='img'/>
                     </div>
                     <div  className={cx('item-text')}>
                         {dataUser  && <span>{dataUser.first_name + ' ' +  dataUser.last_name} </span>}
                     </div>
                 </Link>
-                <Link to={''}className={cx('item-app')}>
+                <Link to={`/friendPage`}className={cx('item-app')}>
                     <div className={cx('item-iconFriend')}>
                     </div>
                     <div className={cx('item-text')}>

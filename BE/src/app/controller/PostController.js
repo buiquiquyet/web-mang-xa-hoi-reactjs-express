@@ -1,6 +1,7 @@
 
 
 const Image = require('../model/Images')
+const User = require('../model/User')
 const Post = require('../model/Post')
 const path = require('path')
 const fs = require('fs');
@@ -9,8 +10,9 @@ class PostController {
     //[POST] /showByUser
     async showByUser (req, res, next) {
        try {
-            const user = req.user
-            const posts = await Post.find({ userId: user._id }).sort({ createdAt: -1 }).lean();
+            const userId = req.params.userId
+            const user = await User.findOne({ _id: userId}).lean()
+            const posts = await Post.find({ userId: userId }).sort({ createdAt: -1 }).lean();
             const images = await Promise.all(posts.map(async (post) => {
                 const image = await Image.find({ postId: post._id }).lean();
                 return   image ;
@@ -33,10 +35,10 @@ class PostController {
     //[POST] /showByUserAvartarCover
     async showByUserAvartarCover (req, res, next) {
         try {
-             const user = req.user
+             const userId = req.body.userId
              const typePost = req.body.typePost
              const post = await Post.findOne(
-                { userId: user._id, 
+                { userId: userId, 
                     typePost:  typePost 
                 })
                 .lean();
@@ -51,6 +53,26 @@ class PostController {
             });
             }
             return  res.json({ error: 'Không tìm thấy bài viết bị lỗi' });
+        } catch (error) {
+             return  res.json({ error: 'Đã xảy ra lỗi' });
+        }
+     }
+    //[GET] /showByUserAvatarImg
+    async showByUserAvartarImg (req, res, next) {
+        try {
+             const user = req.user
+             const post = await Post.findOne(
+                { userId: user._id, 
+                    typePost:  'avartar' 
+                })
+                .lean();
+            const  image = await Image.find({ postId: post._id }).lean();
+            if(image) {
+                return res.json({ success: 'Tìm ảnh avatar thành công' ,
+                image
+            });
+            }
+            return  res.json({ error: 'Không tìm thấy avatar' });
         } catch (error) {
              return  res.json({ error: 'Đã xảy ra lỗi' });
         }

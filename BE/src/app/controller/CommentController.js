@@ -30,6 +30,15 @@ class CommentController {
         .then(([data]) =>  res.json({ success: 'xóa comment thành công' , data}))
         .catch(() =>  res.json({ error: 'xóa comment không thành công' }))
     }
+     //[DELETE] /:commentId
+     async deleteByCommentId(req,res, next) {
+        try {
+            await Comment.deleteOne({ _id: req.params.commentId})
+            res.json({ success: 'Xóa comment thành công' });
+        } catch (error) {
+            return res.json({ error: 'đã xảy ra lỗi' })
+        }
+    }
      //[GET] /show
     async  show(req, res, next) {
         const postId = req.query.postId

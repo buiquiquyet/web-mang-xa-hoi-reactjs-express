@@ -1,8 +1,14 @@
 import classNames from "classnames/bind";
 import styles from './HeaderUserPage.module.scss'
+import HeadelessTippy from '@tippyjs/react/headless';
+import 'tippy.js/dist/tippy.css';
 
 import plusImg from './../../../../Img/plus.png'
 import editImg from './../../../../Img/edit.png'
+import friendImg from './../../../../Img/friend.png'
+import messImg from './../../../../Img/mess.png'
+import addFriend from './../../../../Img/addFriend.png'
+import unFriend from './../../../../Img/unFriend.png'
 import userNoneImg from './../../../../Img/userNone.png'
 import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../../../../App";
@@ -10,15 +16,35 @@ import PostBoxFb from "../../../../PostBoxFb";
 import { useDispatch, useSelector } from "react-redux";
 import { setStatus } from "../../../../useReducerUpdateImageUser/actions";
 import * as ServicePostApi from './../../../../apiServices/postAPI'
+import * as ServiceUserApi from './../../../../apiServices/userAPI'
+import * as ServiceFriendApi from './../../../../apiServices/friendAPI'
 import ImageGalleryImg from "../../../../ImageGalleryImg";
+import { setMessItem, zoomOutHideToMessItem } from '../../../../useReducerMessager/actions'
+
 const cx = classNames.bind(styles)
 
-function HeaderUserPage() {
+function HeaderUserPage({userId}) {
+    
     const {dataUser, ImageUrlPath} = useContext(MyContext)
 
     const imageUploadState = useSelector(state => state.imageUpload)
     const { checkStatusUploadImage } = imageUploadState
+
+    const messagerState = useSelector(state => state.messager)
+    const { jobsZoomOut } = messagerState
+    
+    const handleShowMessLogorShowMess = (item) => {
+       
+        dispatch(setMessItem(item))
+        if(jobsZoomOut.length > 0) {
+            dispatch(zoomOutHideToMessItem(item))
+        }
+    }
     const dispatch = useDispatch()
+
+    //friend
+    const [statusFriend, setStatusFriend] = useState(false)
+    const [totalFriend, setTotalFriend] = useState()
 
     const [isCheckModal, setIsCheckModal] = useState(false)
     const [typePost, setTypePost] = useState('')
@@ -27,6 +53,8 @@ function HeaderUserPage() {
 
     const [imageSlide, setImageSlide] = useState([])
     const [isOpenSlide, setIsOpenSlide] = useState(false);
+
+    const [fullNameUser, setFullNameUser] = useState(null)
     const handleCloseSlide = () => {
         setIsOpenSlide(false);
        
@@ -48,24 +76,122 @@ function HeaderUserPage() {
     const handleCheckToFecth = () => {
         dispatch(setStatus(!checkStatusUploadImage))
     }
-    useEffect(() => {
-        const fecthImageAvartarCover = async (userId) => {
-            const imageAvartar = await ServicePostApi.showPostByUserAvartarCover(userId, {typePost: 'avartar'})
-            const imageCover = await ServicePostApi.showPostByUserAvartarCover(userId, {typePost: 'cover'})
-        
-            if(imageCover.success) {
-                if(imageCover.result.image.length > 0) {
-                    setImageCover(imageCover.result.image[0])
-                }
-            }
-            if(imageAvartar.success) {
-                if(imageAvartar.result.image.length > 0) {
-                    setImageAvartar(imageAvartar.result.image[0])
-                }
-            }
+    //add friend
+    const handleAddFriend = async (userId1, userId2) => {
+        const rs = await ServiceFriendApi.createFriend({userId1, userId2})
+        if(rs.success) {
+            setStatusFriend(rs.data)
         }
-        fecthImageAvartarCover(localStorage.getItem('tokenFb'))
-    },[])
+    }
+    //handle Cance add friend 
+    const handleCancelAddFriend = async (userId1, userId2) => {
+        const rs = await ServiceFriendApi.cancelAddFriend({userId1, userId2})
+        if(rs.success) {
+            setStatusFriend(false)
+        }
+    }
+    //handle Acceoted add friend 
+    const handleAcceptedAddFriend = async (userId1, userId2) => {
+        const rs = await ServiceFriendApi.updateAcceptedFriend({userId1, userId2})
+        console.log(rs);
+        if(rs.success) {
+            setStatusFriend(rs.data)
+        }
+    }
+    const fecthStatusFriend = async (userId1, userId2) => {
+        const rs = await ServiceFriendApi.getStatusFriend({userId1, userId2})
+        if(rs.success) {
+            setStatusFriend(rs.data)
+        }
+    }
+    const fecthGetTotalFriend = async (userId) => {
+        const rs = await ServiceFriendApi.getTotalFriend(userId)
+        if(rs.success) {
+            setTotalFriend(rs.data)
+        }
+    }
+    const renderStatusFriend = (statusFriend, dataUser, userId) => {
+        if(statusFriend) {
+            if(statusFriend.status === 'pending') {
+                return    dataUser._id === statusFriend.receiver_id 
+                            ?
+                            (
+                                <div className={cx('option-editSefl')} onClick={() => handleAcceptedAddFriend(dataUser._id, userId)}>
+                                    <img src={friendImg} alt="img"/>
+                                    <span>Xác nhận kết bạn </span>
+                                </div>
+                            )
+                            :
+                            (
+                                <div className={cx('option-editSefl')} onClick={() => handleCancelAddFriend(dataUser._id, userId)}>
+                                    <img src={unFriend} alt="img"/>
+                                    <span>Hủy lời mời </span>
+                                </div> 
+                            )
+                           
+            }
+            return <HeadelessTippy
+                            render={attrs => (
+                                <div className={cx('unFriend')} tabIndex="-1" {...attrs}>
+                                    <div className={cx('unFriend-item')} onClick={() => handleCancelAddFriend(dataUser._id, userId)}>
+                                        <div className={cx('unFriend-icon')}></div>
+                                        <span>Hủy kết bạn</span>
+                                    </div>
+                                </div>
+                        )}
+                        interactive   
+                        trigger='click'
+                        placement="top"
+                        arrow={true}
+                    >
+                    <div className={cx('option-editSefl')}>
+                        <img src={friendImg} alt="img"/>
+                        <span>Bạn bè</span>
+                    </div>
+                </HeadelessTippy>
+        }
+           
+        return   <div className={cx('option-editSefl')} onClick={() => handleAddFriend(dataUser._id, userId)}>
+                    <img src={addFriend} alt="img"/>
+                    <span>Thêm bạn bè</span>
+                </div>
+    }
+    useEffect(() => {
+        if(userId) {
+            const fecthImageAvartarCover = async (userId) => {
+                const imageAvartar = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'avartar', userId: userId})
+                const imageCover = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'cover', userId: userId})
+                if(imageCover.success) {
+                    if(imageCover.result.image.length > 0) {
+                        setImageCover(imageCover.result.image[0])
+                    }
+                }
+                if(imageAvartar.success) {
+                    if(imageAvartar.result.image.length > 0) {
+                        setImageAvartar(imageAvartar.result.image[0])
+                    }
+                }
+            }
+            const fecthNameUser = async (userId) => {
+                const rs = await ServiceUserApi.getNameUser(userId)
+                if(rs.success) {
+                    setFullNameUser({
+                        firstName: rs.data.first_name,
+                        lastName: rs.data.last_name,
+                    })
+                }
+            }
+            fecthImageAvartarCover(userId)
+            fecthNameUser(userId)
+            fecthGetTotalFriend(userId)
+        }
+    },[userId])
+   
+    useEffect(() => {
+        if(dataUser && dataUser._id !== userId) {
+            fecthStatusFriend(dataUser._id, userId)
+        }
+    }, [dataUser, userId])
     return ( 
         <>
             {
@@ -81,21 +207,23 @@ function HeaderUserPage() {
                                         :
                                         <div  className={cx('none-coverImg')}></div>
                                     }
-                                    <div className={cx('header-addCoverImg')} onClick={() => handleShowHideModal('cover')}>
-                                        <div className={cx('addCoverImg')}>
-                                            <div className={cx('cameraIcon')}></div>
-                                            {
-                                                Object.keys(imageCover).length > 0
-                                                ?
-                                                <span>Chỉnh sửa ảnh bìa</span>
-                                                :
-                                                <span>Thêm ảnh bìa</span>
-                                            }
+                                    {
+                                        dataUser && dataUser._id === userId &&
+                                        <div className={cx('header-addCoverImg')} onClick={() => handleShowHideModal('cover')}>
+                                            <div className={cx('addCoverImg')}>
+                                                <div className={cx('cameraIcon')}></div>
+                                                {
+                                                    Object.keys(imageCover).length > 0
+                                                    ?
+                                                    <span>Chỉnh sửa ảnh bìa</span>
+                                                    :
+                                                    <span>Thêm ảnh bìa</span>
+                                                }
+                                            </div>
                                         </div>
-                                    </div>
+                                    }
                                 </div>
                             </div>
-                       
                     <div className={cx('header-avatar')}>
                             <div  className={cx('avatar-person')}>
                                 <div className={cx('avatar-div')}>
@@ -112,30 +240,50 @@ function HeaderUserPage() {
                                             }}
                                             />
                                     </div>
-                                    <div className={cx('avatarIcon')} onClick={() => handleShowHideModal('avartar')}>
-                                        <div className={cx('cameraIcon')}></div>
-                                    </div>
+                                    {
+                                        dataUser && dataUser._id === userId &&
+                                        <div className={cx('avatarIcon')} onClick={() => handleShowHideModal('avartar')}>
+                                            <div className={cx('cameraIcon')}></div>
+                                        </div>
+                                    }
                                 </div>
                                 <div className={cx('avatar-info')}>
                                     <div className={cx('avatar-name')}>
-                                        {dataUser.first_name + ' ' +  dataUser.last_name}                               
+                                        {fullNameUser && fullNameUser.firstName + ' ' +  fullNameUser.lastName}                               
                                     </div>
-                                    <span className={cx('avatar-friend')}>2355 bạn bè</span>
+                                    <span className={cx('avatar-friend')}> {totalFriend && totalFriend } bạn bè</span>
                                 </div>
                             </div>
                             
                         <div className={cx('avatar-option')}>
                             <div className={cx('option-addEdit')}>
-                                <div className={cx('option-addFeed')}>
-                                    <img src={plusImg} alt="img"/>
-                                    <span>Thêm vào tin</span>
-                                </div>
-                                <div className={cx('option-editSefl')}>
-                                    <img src={editImg} alt="img"/>
-                                    <span>
-                                        Chỉnh sửa trang cá nhân
-                                    </span>
-                                </div>
+                            {
+                                dataUser && dataUser._id === userId ?
+                                    <>
+                                        <div className={cx('option-addFeed')}>
+                                            <img src={plusImg} alt="img"/>
+                                            <span>Thêm vào tin</span>
+                                        </div>
+                                        <div className={cx('option-editSefl')}>
+                                            <img src={editImg} alt="img"/>
+                                            <span>
+                                                Chỉnh sửa trang cá nhân
+                                            </span>
+                                        </div>
+                                    </>
+                                    :
+                                    <>
+                                        {
+                                            renderStatusFriend(statusFriend, dataUser, userId)
+                                        }
+                                        <div className={cx('option-addFeed')} onClick={() => handleShowMessLogorShowMess(userId)}>
+                                            <img src={messImg} alt="img"/>
+                                            <span>
+                                                Nhắn tin
+                                            </span>
+                                        </div>
+                                    </>
+                            }
                             </div>
                         </div>
                     </div>

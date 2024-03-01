@@ -1,48 +1,160 @@
-const Comment = require('../model/Comment')
+const Friend = require('../model/Friend')
 
 
 class FriendController {
-    //[POST] /create
-    async create(req, res, next) {
+    //[POST] /createFriend
+    createFriend(req, res, next) {
        try {
-            const newComment = await Comment.create({
-                userId: req.body.userId,
-                postId: req.body.postId,
-                content: req.body.content
+            const userId1 = req.body.userId1
+            const userId2 = req.body.userId2
+            const newFriend = new Friend({
+                userId1: userId1,
+                userId2: userId2,
+                sender_id: userId1,
+                receiver_id: userId2,
+                status: 'pending'
             })
+            newFriend.save()
+            .then((rs) => {
+                if(rs) {
+                    return res.json({ success: 'gửi lời mời thành công',data: rs })
+                }
+                return res.json({ error: 'gửi lời mời không thành công' })
 
-            return res.json({ success: 'comment thành công' })
+            })
+            .catch(() => res.json({ error: 'gửi lời mời không thành công' }))
+            
            
        } catch (error) {
-            return res.json({ error: 'comment không thành công' })
-        
+            return res.json({ error: 'đã xảy ra lỗi' })
        }
    }
-     //[DELETE] /:postId
-     async deleteByPostId(req,res, next) {
-        await Promise.all([
-            Comment.find({postId: req.params.postId}).lean().select('_id'),
-            Comment.deleteMany({postId: req.params.postId})
-        ])
-        .then(([data]) =>  res.json({ success: 'xóa comment thành công' , data}))
-        .catch(() =>  res.json({ error: 'xóa comment không thành công' }))
-    }
-     //[GET] /show
-    async  show(req, res, next) {
-        const postId = req.query.postId
-        const limit = req.query.limit
-        const countDocs = 5
-        const count = limit * countDocs
+   //[POST] /getStatus
+   async getStatusFriend(req, res, next) {
+        try {
+            const userId1 = req.body.userId1
+            const userId2 = req.body.userId2
+            const rs = await Friend.findOne({
+                $or: [
+                    { userId1: userId1, userId2: userId2 },
+                    { userId1: userId2, userId2: userId1 }
+                ]
+            })
+            if(rs) {
+                return res.status(200).json({ success: 'lấy trạng thái thành công', data: rs });
+            }
+            return res.json({ error: 'lấy trạng thái không thành công' })
+            
+        } catch (error) {
+            return res.json({ error: 'đã xảy ra lỗi' })
         
-        await Promise.all([
-            Comment.find({postId: postId})
-            .sort({ createdAt: -1 }) 
-            .limit(count),
-            Comment.countDocuments({postId: postId})
-        ])
-        .then(([data, total]) =>  res.json({ success: 'lấy comment thành công' , data, total, limit, countDocs}))
-        .catch(() =>  res.json({ error: 'lấy comment không thành công' }))
-   }
+        }
+    }
+     //[POST] /cancelAddFriend
+    async cancelAddFriend(req, res, next) {
+        try {
+            const userId1 = req.body.userId1
+            const userId2 = req.body.userId2
+            const rs = await Friend.deleteOne({
+                $or: [
+                    { userId1: userId1, userId2: userId2 },
+                    { userId1: userId2, userId2: userId1 }
+                ]
+            })
+            if(rs) {
+                return res.status(200).json({ success: 'Hủy kết bạn thành công'});
+            }
+            return res.json({ error: 'Hủy kết bạn không thành công' })
+            
+        } catch (error) {
+            return res.json({ error: 'đã xảy ra lỗi' })
+        
+        }
+        
+    }
+     //[POST] /cancelAddFriend
+     async updateAcceptedFriend(req, res, next) {
+        try {
+            const userId1 = req.body.userId1
+            const userId2 = req.body.userId2
+            const rs = await Friend.updateOne(
+                {
+                $or: [
+                    { userId1: userId1, userId2: userId2 },
+                    { userId1: userId2, userId2: userId1 }
+                ] 
+                },
+                { $set: {status: 'accepted'} }
+            )
+            if(rs) {
+                return res.status(200).json({ success: 'Chấp nhận kết bạn thành công'});
+            }
+            return res.json({ error: 'Chấp nhận kết bạn không thành công' })
+            
+        } catch (error) {
+            return res.json({ error: 'đã xảy ra lỗi' })
+        }
+    }
+    //[GET] /getNewLessAdd
+    async getNewLessAdd(req, res, next) {
+       
+        try {
+            const userRecive = req.params.userRecive
+            const rs = await Friend.findOne({receiver_id: userRecive, status: 'pending' }).sort({created_at: -1}).exec()
+            if(rs) {
+                return res.status(200).json({ success: 'Lấy newLess kết bạn thành công', data: rs});
+            }
+            return res.json({ error: 'Lấy newLess kết bạn không thành công' })
+            
+        } catch (error) {
+            return res.json({ error: 'đã xảy ra lỗi' })
+        }
+    }
+    //[GET] /getAllFriend
+    async getAllFriend(req, res, next) {
+        try {
+            const userId = req.query.userId
+            const typeFriend = req.query.typeFriend
+            const rs = await Friend.find(
+                {
+                    $or: [
+                        { $and: [{ userId1: userId }, { userId2: { $ne: userId } },{ status: typeFriend }] },
+                        { $and: [{ userId2: userId }, { userId1: { $ne: userId } },{ status: typeFriend }] }
+                    ]
+                    }
+            ).sort({created_at: -1}).lean()
+            if(rs) {
+                return res.status(200).json({ success: 'Lấy allFriend kết bạn thành công', data: rs});
+            }
+            return res.json({ error: 'Lấy allFriend kết bạn không thành công' })
+            
+        } catch (error) {
+            return res.json({ error: 'đã xảy ra lỗi' })
+        }
+    }
+    //[GET] /getTotalFriend
+    async getTotalFriend(req, res, next) {
+        try {
+            const userId = req.params.userId
+            const rs = await Friend.countDocuments(
+                {
+                    $or: [
+                        { userId1: userId, status: 'accepted' },
+                        { userId2: userId, status: 'accepted' }
+                    ]
+                }
+            )
+            if(rs) {
+                return res.status(200).json({ success: 'Lấy total kết bạn thành công', data: rs});
+            }
+            return res.json({ error: 'Lấy total kết bạn không thành công' })
+            
+        } catch (error) {
+            return res.json({ error: 'đã xảy ra lỗi' })
+        }
+    }
+    
+    
 }
 
-module.exports = { FriendController };
+module.exports = new FriendController ;

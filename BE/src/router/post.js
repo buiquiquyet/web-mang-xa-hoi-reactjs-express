@@ -8,8 +8,9 @@ const upload = multer()
 
 router.post('/text',  middlewareVerify, PostController.post)
 router.post('/delete',upload.none(),   PostController.delete)
-router.post('/showByUser',  middlewareVerify, PostController.showByUser)
-router.post('/showByUserAvartarCover',upload.none(),  middlewareVerify, PostController.showByUserAvartarCover)
+router.get('/showByUser/:userId', PostController.showByUser)
+router.post('/showByUserAvartarCover',upload.none(), PostController.showByUserAvartarCover)
+router.post('/showByUserAvartarImg',upload.none(),  middlewareVerify, PostController.showByUserAvartarImg)
 router.post('/multiple', uploadImage.array('images'),middlewareVerify, PostController.postWithMultipleImage)
 router.post('/single', uploadImage.single('images'),middlewareVerify, PostController.postWithSingleImage)
 

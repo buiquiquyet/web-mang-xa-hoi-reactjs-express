@@ -1,0 +1,83 @@
+.wrapper {
+    padding:  36px;
+}
+.lable {
+    span {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    margin-bottom: 14px;
+}
+.friend-nav{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.friend-item {
+    max-width: 200px;
+    width: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 2px 2px 10px 2px #ccc;
+    
+}
+.item-img{
+    width: 100%;
+    height: 200px;
+    
+    img {
+        object-fit: cover;
+        width: 100%;
+    }
+    cursor: pointer;
+}
+.item-fullname{
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    span {
+        font-size: 1.4rem;
+        color: var(--color-text);
+    }
+    .fullname-person{
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: black;
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+}
+.item-button{
+    padding: 0px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px ;
+    margin-bottom: 14px;
+    button {
+        padding:  10px;
+        border-radius: 10px;
+        font-size: 1.5rem;
+        color: white;
+        font-weight: bold;
+        &:hover {
+            cursor: pointer;
+            filter: brightness(90%);
+        }
+    }
+    .button-submit{
+        background-color: var(--primary);
+    }
+    .button-del{
+        color: black;
+        background-color: var(--color-hoverComponent);
+    }
+}
+.friend-none {
+    
+    
+    span {
+        font-size: 2rem;
+    }
+}

@@ -9,18 +9,7 @@ function Main() {
     return ( 
         <div className={cx('wrapper')}>
            <PostItem/>
-           <PostItem/>
-           <PostItem/>
-           <PostItem/>
-           <PostItem/>
-           <PostItem/>
-           <PostItem/>
-           <PostItem/>
-           <PostItem/>
-           <PostItem/>
-           <PostItem/>
-           <PostItem/>
-           <PostItem/>
+           
           
         </div>
      );

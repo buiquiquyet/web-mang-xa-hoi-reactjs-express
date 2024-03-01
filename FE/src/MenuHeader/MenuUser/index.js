@@ -1,23 +1,37 @@
 import classNames from "classnames/bind";
 import styles from './MenuUser.module.scss'
 import { Link, useNavigate } from "react-router-dom";
-import UserImg from './../../Img/LogoUser.png'
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { MyContext } from "../../App";
+import * as ServicePostApi from './../../apiServices/postAPI'
+import UserImg from './../../Img/userNone.png'
 const cx = classNames.bind(styles)
 function MenuUser() {
-    const {dataUser} = useContext(MyContext)
+    const {dataUser, ImageUrlPath} = useContext(MyContext)
     const navigate = useNavigate()
+    const [imageAvartar, setImageAvartar] = useState('')
+
     const handleGoToLogin = () => {
         localStorage.setItem('tokenFb', '')
         navigate('/login')
     }
+    useEffect(() => {
+        const fecthImgUser = async (token) => {
+            const rs = await ServicePostApi.showPostByUserAvartarImg(token)
+            if(rs.image && rs.image.length > 0) {
+                setImageAvartar(rs.image.flat()[0].url)
+               
+            }
+        }
+        fecthImgUser(localStorage.getItem('tokenFb'))
+    },[])
     return ( 
         <div to={''} className={cx('wrapper')} > 
             <div className={cx('content')}>
-               <Link to={'/userPost'} className={cx('header-content')}>
+               <Link to={dataUser && `/userPost/${dataUser._id}`} className={cx('header-content')}>
                 <div className={cx('imgUser')}>
-                        <img src={UserImg} alt="img"/>
+                    <img src={imageAvartar !== '' ? ImageUrlPath + imageAvartar : UserImg} alt='img'/>
+
                     </div>
                     <div className={cx('nickname')}>
                         <span>

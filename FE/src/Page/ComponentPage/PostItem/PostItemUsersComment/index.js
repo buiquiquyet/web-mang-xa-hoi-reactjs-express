@@ -15,7 +15,7 @@ import { MyContextSocket } from '../../../..';
 
 const cx = classNames.bind(styles);
 
-function PostItemUsersComment({postId, statusSendComment}) {
+function PostItemUsersComment({ImageUrlPath, postId, statusSendComment}) {
     const {socket} = useContext(MyContextSocket)
     const [isFocusComment, setIsFocusComment] = useState(false)
     const [showDataComment, setShowDataCommet] = useState([])
@@ -24,6 +24,9 @@ function PostItemUsersComment({postId, statusSendComment}) {
     const [limitDataComment, setLimitDataComment] = useState(0)
     const [countDocs, setCountDocs] = useState(0)
     const [postIdToShowFeedback, setPostIdToShowFeedback] = useState([])
+
+    //check action del to render post
+    const [checkActionDelComment, setCheckActionDelComment] = useState(false)
 
     //commentFeedback
     const [showDataCommentFeedback, setShowDataCommetFeedback] = useState([])
@@ -60,7 +63,10 @@ function PostItemUsersComment({postId, statusSendComment}) {
         setShowDataCommentFeedbackSocket([])
        
     }
-    
+    //check action del comment
+    const handleCheckActionDelComment = () => {
+        setCheckActionDelComment(!checkActionDelComment)
+    }
     const convertDate = (dateString) => {
         const dateObject = moment(dateString);
         const day = dateObject.date();
@@ -98,10 +104,11 @@ function PostItemUsersComment({postId, statusSendComment}) {
                 .filter(item => item.commentId === commentId)
                 .map((item, index) => (
                     <PostItemCommentFeedback 
+                        ImageUrlPath={ImageUrlPath}
                         key={index} 
                         dataFeedback={item.data} 
-                        
                         handleOpenFeedback={() => handleOpenFeedback(commentId)}
+                        onClickHandleCheckDelComment={handleCheckActionDelComment}
                     />
                 ));
         } else {
@@ -126,16 +133,18 @@ function PostItemUsersComment({postId, statusSendComment}) {
             .reverse()
             .map((value, index) => (
                 <PostItemCommentFeedback 
+                    ImageUrlPath={ImageUrlPath}
                     key={index} 
                     checkShowHideFeedbackData={true}
-                    dataFeedback={value.data} 
+                    dataFeedback={value.data}
+                    onClickHandleCheckDelComment={handleCheckActionDelComment} 
                 />
             ))
         )
     }
     useEffect(() => {
         fecthShowComment(postId, 1)
-    }, [postId, statusSendComment])
+    }, [postId, statusSendComment, checkActionDelComment])
     useEffect(() => {
        if(showDataComment.length > 0){
             const fetchNames = async () => {
@@ -169,7 +178,6 @@ function PostItemUsersComment({postId, statusSendComment}) {
         return () => {
             socket.off('newComment');
             socket.off('newCommentFeedback');
-            socket.disconnect();
         };
     }, [postId,socket]);
     return ( 
@@ -184,20 +192,22 @@ function PostItemUsersComment({postId, statusSendComment}) {
                             <div key={index} className={cx('userComment-item')}>
                                 
                                 <PostIemEvaluate 
+                                    ImageUrlPath={ImageUrlPath}
                                     postId={item._id} 
                                     userId={item.userId} 
                                     convertDate={convertDate(item.createdAt)}
                                     namePerson={nameUserComment[index]}
                                     content={item.content}
                                     handleFocusComment={() => handleFocusCommentWithPostId(item._id)}
-                                    typeLike={'comment'}/>
+                                    typeLike={'comment'}
+                                    onClickHandleCheckDelComment={handleCheckActionDelComment}/>
                                 {
                                 isFocusComment && postIdToShowFeedback.includes(item._id)
                                 &&
                                 <div style={{margin: '0 20px'}}>
                                     <PostItemComment 
                                         postId={item._id} 
-                                        userId={item.userId} 
+                                        ImageUrlPath={ImageUrlPath}
                                         isFocusComment={isFocusComment} 
                                         typeComment={'feedback'} 
                                         handleFocusComment={handleFocusComment}/>

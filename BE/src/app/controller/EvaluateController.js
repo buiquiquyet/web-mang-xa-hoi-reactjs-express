@@ -36,7 +36,7 @@ class EvaluateController {
         
             const users = await User.find({ _id: { $in: userIds } }).lean();
         
-            res.json({ total, users });
+            res.json({success:'lấy like thành công', total, users });
         } catch (error) {
             res.json({ error: 'đã xảy ra lỗi' });
         }
@@ -76,7 +76,6 @@ class EvaluateController {
         }
     }
      //[DELETE] /:postId
-
     async deleteByPostId(req,res, next) {
         try {
             await Evaluate.deleteMany({postCommentId: req.params.postId})

@@ -1,7 +1,6 @@
 import style from './Header.module.scss'
 import classNames from 'classnames/bind';
-import { LogoFb,LogoHomeActive,LogoGameActive,LogoGroupActive,LogoMarketAcitve, LogoGame, LogoGroup, LogoHome, LogoMarket, LogoMessage, LogoNotif, LogoOption, LogoSearch, LogoWatch } from '../../../../Icon';
-import ImgUser from './../../../../Img/LogoUser.png'
+import { LogoFb,LogoHomeActive,  LogoHome, LogoMessage, LogoNotif, LogoOption, LogoSearch, LogoWatch, LogoFriendActive, LogoFriend } from '../../../../Icon';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/material.css';
@@ -11,16 +10,32 @@ import HeaderUserMessager from '../HeaderUserMessager';
 import { setMessLog } from '../../../../useReducerMessager/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useContext } from 'react';
+import { memo, useContext, useEffect, useState } from 'react';
 import { MyContext } from '../../../../App';
+import UserImg from './../../../../Img/userNone.png'
+import * as ServicePostApi from './../../../../apiServices/postAPI'
+
 const cx = classNames.bind(style)
 function Header() {
    
-    const {typePage} = useContext(MyContext)
+    const {typePage, ImageUrlPath} = useContext(MyContext)
    
     const messagerState = useSelector(state => state.messager)
     const { checkMesLog } = messagerState
     const dispatch = useDispatch()
+    const [imageAvartar, setImageAvartar] = useState('')
+    
+    useEffect(() => {
+        const fecthImgUser = async (token) => {
+            const rs = await ServicePostApi.showPostByUserAvartarImg(token)
+            if(rs.image && rs.image.length > 0) {
+                setImageAvartar(rs.image.flat()[0].url)
+               
+            }
+        }
+        fecthImgUser(localStorage.getItem('tokenFb'))
+    },[])
+
     return ( 
         <div  className={cx('wrapper')}>
             <div className={cx('app')}>
@@ -45,6 +60,17 @@ function Header() {
                             </Link>
                         }
                     </Tippy>
+                    <Tippy content="Bạn bè" arrow={false} >
+                    {
+                            typePage === 'friendPage' 
+                            ? <Link to={'/friendPage'}  className={cx('iconBar','active-navbar')}>
+                                <LogoFriendActive className={cx('iconOptionBar')}/>   
+                            </Link>
+                            : <Link to={'/friendPage'}  className={cx('iconBar')}>
+                                <LogoFriend className={cx('iconOptionBar')}/>   
+                            </Link>
+                        }
+                    </Tippy>
                     <Tippy content="Video" arrow={false} >
                     {
                             typePage === 'homeVideo' 
@@ -56,39 +82,7 @@ function Header() {
                             </Link>
                         }
                     </Tippy>
-                    <Tippy content="Marketplace" arrow={false} >
-                    {
-                            typePage === 'homeMarket' 
-                            ? <Link to={'/homeMarket'}  className={cx('iconBar','active-navbar')}>
-                                <LogoMarketAcitve className={cx('iconOptionBar')}/>   
-                            </Link>
-                            : <Link to={'/homeMarket'}  className={cx('iconBar')}>
-                                <LogoMarket className={cx('iconOptionBar')}/>   
-                            </Link>
-                        }
-                    </Tippy>
-                    <Tippy content="Nhóm" arrow={false} >
-                    {
-                            typePage === 'homeGroup' 
-                            ? <Link to={'/homeGroup'}  className={cx('iconBar','active-navbar')}>
-                                <LogoGroupActive className={cx('iconOptionBar')}/>   
-                            </Link>
-                            : <Link to={'/homeGroup'}  className={cx('iconBar')}>
-                                <LogoGroup className={cx('iconOptionBar')}/>   
-                            </Link>
-                        }
-                    </Tippy>
-                    <Tippy content="Trò chơi" arrow={false} >
-                    {
-                            typePage === 'homeGame' 
-                            ? <Link to={'/homeGame'}  className={cx('iconBar','active-navbar')}>
-                                <LogoGameActive className={cx('iconOptionBar')}/>   
-                            </Link>
-                            : <Link to={'/homeGame'}  className={cx('iconBar')}>
-                                <LogoGame className={cx('iconOptionBar')}/>   
-                            </Link>
-                        }
-                    </Tippy>
+                    
                 </div>
                 <div className={cx('rightUser')}>
                     <Tippy content='Menu' arrow={false}>
@@ -113,7 +107,7 @@ function Header() {
                    <HeaderUserNavItem>
                         <Tippy content="Tài khoản" arrow={false}>
                             <div  className={cx('rightUser-iconUser')}>
-                                <img  src={ImgUser} alt='img'/>
+                                <img src={imageAvartar !== '' ? ImageUrlPath + imageAvartar : UserImg} alt='img'/>
                             </div>
                         </Tippy>
                    </HeaderUserNavItem>
@@ -125,4 +119,4 @@ function Header() {
      );
 }
 
-export default Header;
+export default memo(Header);

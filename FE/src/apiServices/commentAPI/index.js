@@ -26,4 +26,13 @@ export const DeleteByPostId = async ( postId) => {
     }
 
 }
+export const DeleteByCommentId = async ( commentId) => {
+    try {
+        const res = await request.Delete(`/comment/delByCommentId/${commentId}`)
+        return res
+    } catch (error) {
+        throw error
+    }
+
+}
 

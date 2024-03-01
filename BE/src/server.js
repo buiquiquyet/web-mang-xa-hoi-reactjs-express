@@ -7,6 +7,7 @@ const cors = require('cors');
 const router = require('./router')
 const {eventEmitter} = require('./app/controller/CommentController');
 const {eventEmitterCommentFeedback} = require('./app/controller/CommentFeedbackController');
+const {eventEmitterMesseger} = require('./app/controller/MessegerChatController');
 const http = require('http');
 const { Server } = require('socket.io');
 const server = http.createServer(app);
@@ -43,24 +44,26 @@ io.on('connection', (socket) => {
       socket.emit('newComment', newComment);
     };
     const handleNewCommentFeedback = (newComment) => {
-      // Gửi comment mới cho client vừa kết nối
       socket.emit('newCommentFeedback', newComment);
     };
+    const handleNewMesseger = (newMesseger) => {
+      socket.emit('newMesseger', newMesseger);
+    };
     
-    // Lắng nghe sự kiện 'disconnect' để loại bỏ trình lắng nghe khi client ngắt kết nối
-    socket.on('disconnect', () => {
-        console.log('Client disconnected', socket.id);
-        // Loại bỏ trình lắng nghe sự kiện 'newComment' khi client ngắt kết nối
-        eventEmitter.off('newComment', handleNewComment);
-        eventEmitterCommentFeedback.off('newCommentFeedback', handleNewCommentFeedback);
-
-    });
-
+    
     // Gắn trình lắng nghe sự kiện 'newComment' khi client kết nối
     eventEmitter.on('newComment', handleNewComment);
     eventEmitterCommentFeedback.on('newCommentFeedback', handleNewCommentFeedback);
+    eventEmitterMesseger.on('newMesseger', handleNewMesseger);
 
-   
+   // Lắng nghe sự kiện 'disconnect' để loại bỏ trình lắng nghe khi client ngắt kết nối
+    socket.on('disconnect', () => {
+      console.log('Client disconnected', socket.id);
+      // Loại bỏ trình lắng nghe sự kiện 'newComment' khi client ngắt kết nối
+      eventEmitter.off('newComment', handleNewComment);
+      eventEmitterCommentFeedback.off('newCommentFeedback', handleNewCommentFeedback);
+      eventEmitterMesseger.off('newMesseger', handleNewMesseger);
+    });
 });
 
 server.listen(3001, () => {

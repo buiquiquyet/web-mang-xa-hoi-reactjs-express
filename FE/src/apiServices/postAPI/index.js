@@ -22,22 +22,27 @@ export const deletePost = async ( option) => {
     }
 
 }
-export const showPostByUser = async (token) => {
+export const showPostByUser = async (userId) => {
     try {
-        const res = await request.post('/post/showByUser',{}, {
-            headers: {
-                'Authorization': `Bearer ${token}`, 
-              }, 
-        })
+        const res = await request.get(`/post/showByUser/${userId}`)
         return res
     } catch (error) {
         throw error
     }
 
 }
-export const showPostByUserAvartarCover = async (token, option) => {
+export const showPostByUserAvartarCover = async ( option) => {
     try {
-        const res = await request.post('/post/showByUserAvartarCover',option, {
+        const res = await request.post(`/post/showByUserAvartarCover`,option)
+        return res
+    } catch (error) {
+        throw error
+    }
+
+}
+export const showPostByUserAvartarImg = async (token) => {
+    try {
+        const res = await request.post(`/post/showByUserAvartarImg`,{}, {
             headers: {
                 'Authorization': `Bearer ${token}`, 
               }, 
