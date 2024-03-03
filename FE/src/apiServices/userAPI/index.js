@@ -52,3 +52,15 @@ export const updateStory = async (option) => {
         throw error
     }
 }
+export const checkOnlineUser = async (token) => {
+    try {
+        const res = await request.get('/checkOnlineUser', {
+            headers: {
+                'Authorization': `Bearer ${token}`, 
+              },
+        })
+        return res
+    } catch (error) {
+        throw error
+    }
+}

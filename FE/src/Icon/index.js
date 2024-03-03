@@ -153,4 +153,47 @@ export const LogoFriendActive = ({ width = '2rem', height = '2rem', className })
   width={width}
   className={className}  ><path d="M8 2.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9zM17.5 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7zM5.25 13A4.75 4.75 0 0 0 .5 17.75 3.25 3.25 0 0 0 3.75 21h8.5a3.25 3.25 0 0 0 3.25-3.25A4.75 4.75 0 0 0 10.75 13h-5.5zm12.394 1.5a1 1 0 0 0-.95 1.31c.198.61.306 1.261.306 1.94 0 .661-.135 1.289-.377 1.858a1 1 0 0 0 .92 1.392H20.7a2.8 2.8 0 0 0 2.8-2.8 3.7 3.7 0 0 0-3.7-3.7h-2.156z"></path></svg>
   )
+export const LogoPlus = ({ width = '2rem', height = '2rem', className }) => (
+  <svg
+      fill="none"
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      viewBox="0 0 24 24"
+      height={height}
+      width={width}
+      className={className} 
+    >
+      <path d="M22 12 A10 10 0 0 1 12 22 A10 10 0 0 1 2 12 A10 10 0 0 1 22 12 z" />
+      <path d="M12 8v8M8 12h8" />
+    </svg>
+  )
+export const LogoEdit = ({ width = '2rem', height = '2rem', className }) => (
+<svg
+    fill="none"
+    stroke="currentColor"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeWidth={2}
+    viewBox="0 0 24 24"
+    height={height}
+      width={width}
+      className={className} 
+  >
+    <path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z" />
+  </svg>
   
+  )
+export const LogoDel = ({ width = '2rem', height = '2rem', className }) => (
+  <svg
+      viewBox="0 0 1024 1024"
+      fill="currentColor"
+      height={height}
+      width={width}
+      className={className} 
+    >
+      <path d="M360 184h-8c4.4 0 8-3.6 8-8v8h304v-8c0 4.4 3.6 8 8 8h-8v72h72v-80c0-35.3-28.7-64-64-64H352c-35.3 0-64 28.7-64 64v80h72v-72zm504 72H160c-17.7 0-32 14.3-32 32v32c0 4.4 3.6 8 8 8h60.4l24.7 523c1.6 34.1 29.8 61 63.9 61h454c34.2 0 62.3-26.8 63.9-61l24.7-523H888c4.4 0 8-3.6 8-8v-32c0-17.7-14.3-32-32-32zM731.3 840H292.7l-24.2-512h487l-24.2 512z" />
+    </svg>
+    
+    )

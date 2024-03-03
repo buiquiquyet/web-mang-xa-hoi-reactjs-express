@@ -1,5 +1,6 @@
 const User = require('../model/User')
 const jwt = require('jsonwebtoken')
+const eventEmitterUser = require('./../socket/eventEmitter')
 
 class UserController {
     //[GET] /login
@@ -12,6 +13,7 @@ class UserController {
         .then( user => {
             if(user) {
                 const token = jwt.sign({ _id: user._id}, 'quyet',{ expiresIn: 36000 })
+                eventEmitterUser.emit('login', user._id )
                 return res.json({
                     success: 'success',
                     token
@@ -23,6 +25,15 @@ class UserController {
             }
         })
         .catch(err => res.status(500).json('Đã xảy ra lỗi'))
+    }
+     //[GET] /checkOnlineUser
+     checkOnlineUser(req, res, next) {
+       const user = req.user
+       eventEmitterUser.emit('login', user._id )
+       return res.json({
+        success: 'success',
+        
+    })
     }
     //[POST] /create
     create(req, res, next) {
@@ -83,4 +94,4 @@ class UserController {
     }
 }
 
-module.exports = new UserController
+module.exports = {UserController, eventEmitterUser}

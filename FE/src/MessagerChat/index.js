@@ -15,7 +15,7 @@ import { MyContextSocket } from "..";
 
 const cx = classNames.bind(styles)
 
-function MessagerChat({ id, style }) {
+function MessagerChat({ id, style, newMesseger }) {
 
     const {socket} = useContext(MyContextSocket)
     const {dataUser, ImageUrlPath} = useContext(MyContext)
@@ -52,6 +52,7 @@ function MessagerChat({ id, style }) {
             setAvartarImg(null)
         }
     }
+    
     const fecthAllDataBetwenUsers = async (userId1, userId2) => {
         const formData = new FormData()
         formData.append('userId1', userId1)
@@ -75,16 +76,11 @@ function MessagerChat({ id, style }) {
             socket.emit('newMesseger', inputMesseger);
             const rs = await ServiceMessegerChatApi.Create(formData)
             if(rs.success) {
-                console.log(rs);
                 setInputMesseger('')
                 inputRef.current.textContent = ''
             }
         }
     }
-    useEffect(() => {
-        fecthNameUser(id)
-        fecthAvartarUser(id)
-    }, [id])
     useEffect(() => {
         if (contentRef.current) {
             inputRef.current.focus()
@@ -94,28 +90,44 @@ function MessagerChat({ id, style }) {
     useEffect(() => {
         if(dataUser) {
             fecthAllDataBetwenUsers(dataUser._id, id)
+            
         }
+        fecthNameUser(id)
+        fecthAvartarUser(id)
     }, [dataUser, id])
     useEffect(() => {
-        if(dataUser) {
-            socket.on('newMesseger', (messeger) => {
-                if(messeger) {
-                    if ((messeger.receiverId === id && messeger.senderId === dataUser._id) 
-                        || (messeger.receiverId === dataUser._id && messeger.senderId === id)) {
-                        setDataMesseger(prev => {
-                            return [
-                                ...prev,
-                                messeger
-                            ]
-                        })
-                    }
-                }
-            });
-            return () => {
-                socket.off('newMesseger');
-            };
+        if(newMesseger) {
+            if ((newMesseger.receiverId === id && newMesseger.senderId === dataUser._id) 
+                || (newMesseger.receiverId === dataUser._id && newMesseger.senderId === id)) {
+                setDataMesseger(prev => {
+                    return [
+                        ...prev,
+                        newMesseger
+                    ]
+                })
+            }
         }
-    }, [id,socket, dataUser]);
+    },[newMesseger, id, dataUser])
+    // useEffect(() => {
+    //     if(dataUser) {
+    //         socket.on('newMesseger', (messeger) => {
+    //             if(messeger) {
+    //                 if ((messeger.receiverId === id && messeger.senderId === dataUser._id) 
+    //                     || (messeger.receiverId === dataUser._id && messeger.senderId === id)) {
+    //                     setDataMesseger(prev => {
+    //                         return [
+    //                             ...prev,
+    //                             messeger
+    //                         ]
+    //                     })
+    //                 }
+    //             }
+    //         });
+    //         return () => {
+    //             socket.off('newMesseger');
+    //         };
+    //     }
+    // }, [id,socket, dataUser]);
     return ( 
         <div  className={cx('wrapper')} style={style}>
             <div className={cx('header-chat')}>
@@ -155,7 +167,16 @@ function MessagerChat({ id, style }) {
                         </div>
                     ))
                     :
-                    <div className={cx('none-chat')}>Chưa có tin nhắn. Hãy bắt đầu chat!</div>
+                    <div className={cx('none-chat')}>
+                        <div  className={cx('noneChat-nav')}>
+                            <img src={avartarImg
+                                ? ImageUrlPath + avartarImg.url
+                                : userNoneImg} alt='img'/>
+                            <span className={cx('fullname-noneChat')}>{fullNameUser && fullNameUser.first_name + ' ' + fullNameUser.last_name}</span>
+                            <span>Facebook</span>
+                            <span>Các bạn là bạn bè trên Facebook</span>
+                        </div>
+                    </div>
                 }
             </div>
             <div className={cx('footer-chat')}>
@@ -166,9 +187,14 @@ function MessagerChat({ id, style }) {
                         contentEditable="true"
                         onInput={handleInputMesseger}
                         suppressContentEditableWarning={true}
-                        data-placeholder="Aa"
                     ></div>
                 </div>
+                {
+                    inputMesseger.length === 0 &&
+                    <div className={cx('placeholder-input')} >
+                        Aa
+                    </div>  
+                }
                 {
                     dataUser &&
                     <div className={cx('button-sendChat')} onClick={() => handleSubmitMesseger(dataUser._id, id)}>

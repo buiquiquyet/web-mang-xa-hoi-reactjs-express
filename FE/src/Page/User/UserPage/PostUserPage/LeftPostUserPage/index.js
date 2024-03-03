@@ -2,9 +2,14 @@
 import classNames from 'classnames/bind';
 import styles from './LeftPostUserPage.module.scss';
 import houseImg from './../../../../../Img/house.png'
-import { memo, useEffect, useRef, useState } from 'react';
+import schoolImg from './../../../../../Img/school.png'
+import locationImg from './../../../../../Img/location.png'
+import statusImg from './../../../../../Img/statusLove.png'
+import phoneNumberImg from './../../../../../Img/phone.png'
+import React, { memo, useEffect, useRef, useState } from 'react';
 import { LogoSend } from '../../../../../Icon';
 import * as ServiceUserApi from './../../../../../apiServices/userAPI'
+import * as ServiceIntroduceApi from './../../../../../apiServices/introduceAPI'
 import LeftPostUserPageImage from './LeftPostUserPageImage';
 import LeftPostUserPageFriend from './LeftPostUserPageFriend';
 const cx = classNames.bind(styles);
@@ -16,6 +21,7 @@ function LeftPostUserPage({userId, dataUser}) {
     const [isFocusComment, setIsFocusComment] = useState(false)
     const [dataStory, setDataStory] = useState('')
     const [dataProfileUser, setDataProfileUser] = useState(null)
+    const [dataIntroduce, setDataIntroduce] = useState(null)
     const inputRef = useRef()
     
     const handleShowUpdateStory = () => {
@@ -34,6 +40,8 @@ function LeftPostUserPage({userId, dataUser}) {
             setIsShowUpdateStory(false)
             setDataStory(rs.story)
             setDataComment('')
+        }else {
+            setDataStory('')
         }
     }
     const renderAddStory = (dataUser, userId, isShowUpdateStory) => {
@@ -43,30 +51,39 @@ function LeftPostUserPage({userId, dataUser}) {
                 </div>
         }
         if(dataUser && dataUser._id && isShowUpdateStory) {
-            return <div className={cx('comment-sendStory', )}>
-                        <div
-                            contentEditable="true"
-                            className={cx('input-postStory', {'input-post--focusStory' : isFocusComment})}
-                            onFocus={handleFocusComment}
-                            suppressContentEditableWarning={true}
-                            onInput={handleInputComment}
-                            ref={inputRef}
-                        />
-                        {
-                            dataComment.length === 0 &&
-                            <div className={cx('placeholder-inputStory')} >
-                                Mô tả về bạn
-                            </div>  
-                        }
-                        
-                        <div className={cx('button-sendCommentStory')} 
-                            style={isFocusComment ? {display:'flex'} : null }
-                            onClick={() => handleSubmitComment(dataUser._id, dataComment)}>
-                            <LogoSend className={cx('icon-send',{ 'check-icon': dataComment.length === 0})}/>
-                        </div>
+            return (
+                <div className={cx('comment-sendStory', )}>
+                    <div
+                        contentEditable="true"
+                        className={cx('input-postStory', {'input-post--focusStory' : isFocusComment})}
+                        onFocus={handleFocusComment}
+                        suppressContentEditableWarning={true}
+                        onInput={handleInputComment}
+                        ref={inputRef}
+                    />
+                    {
+                        dataComment.length === 0 &&
+                        <div className={cx('placeholder-inputStory')} >
+                            Mô tả về bạn
+                        </div>  
+                    }
+                    <div className={cx('button-sendCommentStory')} 
+                        style={isFocusComment ? {display:'flex'} : null }
+                        onClick={() => handleSubmitComment(dataUser._id, dataComment)}>
+                        <LogoSend className={cx('icon-send',{ 'check-icon': dataComment.length === 0})}/>
                     </div>
-            
+                </div>
+            )
         }
+    }
+    const renderIntroduce = (urlImg, text, key,  dataIntroduce) => {
+        return (
+            <div className={cx('introduce-live')}>
+                <img src={urlImg} alt='img'/>
+                <span>{text}</span>
+                <span className={cx('introduceLive-bold')}>{dataIntroduce[key]}</span>
+            </div>
+        )
     }
     useEffect(() => {
         if(dataUser) {
@@ -81,10 +98,16 @@ function LeftPostUserPage({userId, dataUser}) {
                     setDataProfileUser(rs.data)
                 }
             }
+            const fecthIntroduce = async (userId) => {
+                const rs = await ServiceIntroduceApi.GetByUserId(userId)
+                if(rs.success && rs.data) {
+                    setDataIntroduce(rs.data)
+                }
+            }
+            fecthIntroduce(userId)
             fecthProfile(userId)
         }
     }, [userId])
-    
     return ( 
         <div className={cx('wrapper')}>
             <div className={cx('wrapper-box')}>
@@ -104,12 +127,26 @@ function LeftPostUserPage({userId, dataUser}) {
                         <span className={cx('introduceLive-bold')} >{dataProfileUser && dataProfileUser.story }</span>
                     </div>
                 }
-                <div className={cx('introduce-live')}>
-                    <img src={houseImg} alt='img'/>
-                    <span>Sống tại</span>
-                    <span className={cx('introduceLive-bold')}>Việt Nam</span>
-                </div>
-                
+                {
+                    dataIntroduce && [
+                        { img: houseImg, label: 'Sống tại', key: 'province' },
+                        { img: schoolImg, label: 'Đã học tại', key: 'school' },
+                        { img: locationImg, label: 'Đến từ', key: 'place' },
+                        { img: statusImg, label: '', key: 'status' },
+                        { img: phoneNumberImg, label: '', key: 'phoneNumber' }
+                    ].map((info, index) => {
+                        return (
+                            <React.Fragment key={index}>
+                            {
+                                (dataIntroduce.hasOwnProperty(info.key) 
+                                && dataIntroduce[info.key] !== ''
+                                && dataIntroduce[info.key] !== null ) &&
+                                renderIntroduce(info.img, info.label, info.key, dataIntroduce)
+                            }
+                            </React.Fragment>
+                        )
+                    })
+                }
             </div>
             <LeftPostUserPageImage userId={userId}/>
             <LeftPostUserPageFriend userId={userId}/>

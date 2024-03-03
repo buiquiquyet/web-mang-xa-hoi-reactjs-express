@@ -10,10 +10,12 @@ import * as ServiceFriendApi from './../../../../../apiServices/friendAPI'
 import * as ServicePostApi from './../../../../../apiServices/postAPI'
 import * as ServiceUserApi from './../../../../../apiServices/userAPI'
 import { MyContext } from '../../../../../App'
+import { MyContextSocket } from '../../../../..';
 const cx = classNames.bind(styles)
 
 function SideBarRightPersonContact() {
 
+    const {socket} = useContext(MyContextSocket)
     const { dataUser, ImageUrlPath } = useContext(MyContext)
 
     const messagerState = useSelector(state => state.messager)
@@ -23,6 +25,9 @@ function SideBarRightPersonContact() {
    
     const [userIdFriends, setUserIdFriends] = useState([])
     const [dataByUserIdFriend, setDataByUserIdFriend] = useState([])
+
+    const [newMesseger, setNewMesseger] = useState(null)
+
     //dispatch
     const handleShowMessLogorShowMess = (item) => {
        
@@ -66,6 +71,42 @@ function SideBarRightPersonContact() {
             setDataByUserIdFriend([])
         }
     },[userIdFriends, dataUser])
+    useEffect(() => {
+        if(dataUser) {
+            socket.on('newMesseger', (messeger) => {
+                console.log(3);
+                if(messeger) {
+                    setNewMesseger(messeger) 
+                }
+            });
+            socket.on('login', (userId) => {
+                if(userId) {
+                    console.log('online',userId);
+                }
+            });
+            socket.on('userOffline', (userId) => {
+                if(userId) {
+                    console.log('userOffline',userId);
+                }
+            });
+            socket.on('disconnect', (userId) => {
+                console.log('userOffline2',userId);
+            });
+            return () => {
+                socket.off('newMesseger');
+                socket.off('login');
+                socket.off('userOffline');
+                socket.off('disconnect');
+            };
+        }
+    }, [socket, dataUser]);
+    useEffect(() => {
+        const fecthUserId = async (userId) => {
+            await ServiceUserApi.checkOnlineUser(userId)
+        }
+        fecthUserId(localStorage.getItem('tokenFb'))
+
+    }, [])
     return ( 
         <>
             <div  style={{paddingBottom:'10px'}} className={cx('siderbar-rightBirthDay')}>
@@ -85,6 +126,7 @@ function SideBarRightPersonContact() {
             {
                 jobs.slice(-2).map((item, index) => (
                     <MessagerChat 
+                        newMesseger={newMesseger}
                         key={index} 
                         id={item} 
                         style={index > 0 ? { right: `420px` } : null }

@@ -69,7 +69,7 @@
 .none-chat{
     font-size: 1.5rem;
     text-align: center;
-    margin-top: 20px;
+    margin-bottom: 160px;
 }
 .contentChat-nav {
     display: flex;
@@ -129,6 +129,14 @@
     font-size: 1.5rem;
     max-width: 70%;
 }
+.placeholder-input {
+    position: absolute;
+    top: 416px;
+    left: 26px;
+    font-size: 1.5rem;
+    color: var(--color-text);
+    pointer-events: none;
+ }
 .button-sendChat {
     display: flex;
     align-items: center;
@@ -148,4 +156,29 @@
         }
     }
     
+}
+.noneChat-nav {
+    flex-direction: column;
+    gap: 6px;
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    border-radius: 6px;
+  
+   
+    img {
+        height: 60px;
+        width: 60px;
+        border-radius: 100%;
+    }
+    span {
+        font-size: 1.3rem;
+        font-weight: 100;
+        color: var(--color-text);
+    }
+    .fullname-noneChat {
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: black;
+    }
 }

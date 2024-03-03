@@ -14,16 +14,22 @@ import { memo, useContext, useEffect, useState } from 'react';
 import { MyContext } from '../../../../App';
 import UserImg from './../../../../Img/userNone.png'
 import * as ServicePostApi from './../../../../apiServices/postAPI'
+import * as ServiceCountChatApi from './../../../../apiServices/countChatAPI'
+import { MyContextSocket } from '../../../..';
 
 const cx = classNames.bind(style)
 function Header() {
    
-    const {typePage, ImageUrlPath} = useContext(MyContext)
-   
+    const {socket} = useContext(MyContextSocket)
+    const {dataUser, typePage, ImageUrlPath} = useContext(MyContext)
+
     const messagerState = useSelector(state => state.messager)
-    const { checkMesLog } = messagerState
+    const { checkMesLog, jobs } = messagerState
     const dispatch = useDispatch()
+    
     const [imageAvartar, setImageAvartar] = useState('')
+    const [countChat, setCountChat] = useState(null)
+    const [newMesseger, setNewMesseger] = useState(null)
     
     useEffect(() => {
         const fecthImgUser = async (token) => {
@@ -35,7 +41,51 @@ function Header() {
         }
         fecthImgUser(localStorage.getItem('tokenFb'))
     },[])
-
+    const CreateCountChat = async (dataUserId, senderId) => {
+        return await ServiceCountChatApi.Create(dataUserId, senderId) 
+    }
+    const fecthCountChatById = async (userId) => {
+        const rs = await ServiceCountChatApi.GetByUserId(userId)
+        if(rs.success) {
+            setCountChat(rs.data)
+        }
+    }
+    const delCountChat = async (userId, senderId) => {
+        await ServiceCountChatApi.delCountChat({userId, senderId})
+    }
+    useEffect(() => {
+        socket.on('newMesseger',async (messeger) => {
+            if(messeger) {
+                setNewMesseger(messeger)
+                if(dataUser._id === messeger.receiverId && !jobs.includes(messeger.senderId) ) {
+                    const rs = await CreateCountChat({userId: messeger.receiverId, senderId: messeger.senderId})
+                    if(rs.success) {
+                        setCountChat(prev => {
+                            return [
+                                ...prev,
+                                messeger.senderId
+                            ]
+                        })
+                    }
+                }
+            }
+        });
+        return () => {
+            socket.off('newMesseger');
+        }
+    }, [socket, dataUser,jobs]);
+   
+    useEffect(() => {
+       const handleLogic = async (dataUser) => {
+            if(dataUser) {
+                if(jobs.length > 0) {
+                    await delCountChat(dataUser._id, jobs[jobs.length - 1])
+                }
+                await fecthCountChatById(dataUser._id)
+            }
+       }
+       handleLogic(dataUser)
+    }, [dataUser, jobs])
     return ( 
         <div  className={cx('wrapper')}>
             <div className={cx('app')}>
@@ -90,13 +140,23 @@ function Header() {
                             <LogoOption className={cx('rightUser-icon')}/>
                         </div>
                     </Tippy>
-                    <HeaderUserMessager   >
+                    <HeaderUserMessager  newMesseger={newMesseger} countChat={countChat} >
                         <Tippy content="Messager" arrow={false}>
                             <div className={cx('rightUser-iconDiv')} onClick={() => dispatch(setMessLog(!checkMesLog))}>
                                 <LogoMessage className={cx('rightUser-icon')}/>
                             </div>
                         </Tippy>
+                       
                     </HeaderUserMessager>
+                    {
+                        ( countChat 
+                        && countChat.length > 0 
+                        && !checkMesLog 
+                        ) &&
+                        <div className={cx('countChat')}>
+                            { countChat.length }
+                        </div>
+                    }
                     <HeaderUserNotifice>
                         <Tippy content="Thông báo" arrow={false}>
                             <div  className={cx('rightUser-iconDiv')}>

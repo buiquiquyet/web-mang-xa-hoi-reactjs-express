@@ -23,6 +23,8 @@ function LeftPostUserPageFriend({userId}) {
         const rs = await ServiceFriendApi.getAllFriend(userId, 'accepted')
         if(rs.success) {
             setUserIdFriends(rs.data)
+        }else {
+            setUserIdFriends([])
         }
     }
     useEffect(() => {
@@ -63,7 +65,7 @@ function LeftPostUserPageFriend({userId}) {
                 </Link>
             </div>
             <div className={cx('friend-total')}>
-                <span>2345 người bạn</span>
+                <span>{dataByUserIdFriend && dataByUserIdFriend.length} bạn bè</span>
             </div>
             <div className={cx('friend-person')}>
                 <div className={cx('friend-list')}>

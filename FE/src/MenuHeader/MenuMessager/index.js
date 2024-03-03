@@ -14,7 +14,7 @@ import * as ServiceMessegerApi from './../../apiServices/messegerChatAPI'
 
 const cx = classNames.bind(styles)
 
-function MenuMessager() {
+function MenuMessager({countChat}) {
     const {ImageUrlPath, dataUser} = useContext(MyContext)
 
     const messagerState = useSelector(state => state.messager)
@@ -86,6 +86,7 @@ function MenuMessager() {
             setDataByUserIdFriend([])
         }
     },[userIdFriends, dataUser])
+    console.log(lastestMesseger);
     return ( 
         <div className={cx('wrapper')}>
             <div className={cx('messager-lable')}>Đoạn chat</div>
@@ -108,14 +109,19 @@ function MenuMessager() {
                             {lastestMesseger[index].senderId === dataUser._id &&
                             <span>Bạn: </span>
                             } 
-                            <span >{lastestMesseger[index].content}</span> 
+                            <span className={cx({
+                                'active-span':countChat && countChat.length > 0 &&
+                                countChat.includes(item.fullName._id)
+                                } )}>    
+                                { lastestMesseger[index].content } 
+                            </span> 
+                            
                         </div>
                     </div>
                 </div>
-                
-                
-            ))}
-                
+            ))
+        
+            }
             </div>
             
         </div>

@@ -10,7 +10,7 @@ const cx = classNames.bind(styles);
 function LeftPostUserPageImage({userId}) {
 
     const {ImageUrlPath} = useContext(MyContext)
-    const [showDataPost, setShowDataPost] = useState({})
+    const [showDataPost, setShowDataPost] = useState([])
 
     const fecthPostByUser = async ( userId ) => {
         const rs = await ServicePostApi.showPostByUser(userId)
@@ -18,7 +18,11 @@ function LeftPostUserPageImage({userId}) {
         if(rs.success) {
             if(rs.result.posts.length > 0) {
                 setShowDataPost(rs.result.images.flat())
+            }else {
+                setShowDataPost([])
             }
+        }else {
+            setShowDataPost([])
         }
     }
     useEffect(() => {

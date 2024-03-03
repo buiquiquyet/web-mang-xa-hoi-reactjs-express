@@ -71,9 +71,9 @@ function NavItemOption({userId}) {
                         <Link to={`/userPost/${userId}`} className={cx('list-item', {'ative-item': 'userPost' === typePage})} >
                             <span>Bài viết</span>
                         </Link>
-                        {/* <Link to={''} className={cx('list-item', {'ative-item': '' === typePage})}>
+                        <Link to={`/userIntroduce/${userId}`} className={cx('list-item', {'ative-item': 'userIntroduce' === typePage})}>
                             <span>Giới thiệu</span>
-                        </Link> */}
+                        </Link>
                         <Link to={`/userFriend/${userId}`} className={cx('list-item', {'ative-item': 'userFriend' === typePage})}>
                             <span>Bạn bè</span>
                         </Link>

@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import styles from './LoginUser.module.scss'
 import logoLoginImg from './../Img/loginLogo.svg'
 import { Link } from "react-router-dom";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LogoClose } from "../Icon";
 import * as ServiceUserApi from './../apiServices/userAPI/index'
 import { message } from 'antd';
@@ -95,6 +95,7 @@ function LoginUser() {
             message.error(rs.error);
         }
     }
+    
     return ( 
         <>
         <div className={cx('wrapper')}>

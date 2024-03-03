@@ -13,8 +13,10 @@ function MenuUser() {
 
     const handleGoToLogin = () => {
         localStorage.setItem('tokenFb', '')
+        window.location.reload();
         navigate('/login')
     }
+    
     useEffect(() => {
         const fecthImgUser = async (token) => {
             const rs = await ServicePostApi.showPostByUserAvartarImg(token)
@@ -69,7 +71,7 @@ function MenuUser() {
                     <div className={cx('item-iconDiv')}>
                         <div className={cx('item-iconOut')}></div>
                     </div>
-                    <span  className={cx('item-text')}>Đăng xuất</span>
+                    <span  className={cx('item-text')} >Đăng xuất</span>
                 </div>
             </div>
             

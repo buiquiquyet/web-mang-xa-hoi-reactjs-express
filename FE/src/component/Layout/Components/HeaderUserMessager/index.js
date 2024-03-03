@@ -8,10 +8,12 @@ import MessagerChat from './../../../../MessagerChat'
 import MessagerChatZoomOut from '../../../../MessagerChatZoomOut';
 import { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+
 const cx = classNames.bind(styles);
 
-function HeaderUserMessager({children}) {
+function HeaderUserMessager({children, newMesseger, countChat}) {
 
+    
     const messagerState = useSelector(state => state.messager)
     const { jobsZoomOut, checkMesLog, jobs } = messagerState
 
@@ -28,6 +30,7 @@ function HeaderUserMessager({children}) {
         }
     }, [jobs, jobsZoomOut, dispatch])
     
+    
     return ( 
         <div style={{position:'relative'}}>
             <HeadelessTippy
@@ -36,7 +39,7 @@ function HeaderUserMessager({children}) {
                         {
                             checkMesLog && 
                             <Wrapper>
-                                <MenuMessager  data={''}/>
+                                <MenuMessager countChat={countChat} />
                             </Wrapper>  
                         }
                     </div>
@@ -52,6 +55,7 @@ function HeaderUserMessager({children}) {
             {
                 jobs.slice(-2).map((item, index) => (
                     <MessagerChat 
+                        newMesseger={newMesseger}
                         key={index} 
                         id={item} 
                         style={index > 0 ? { right: `420px` } : null}
