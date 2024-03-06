@@ -17,8 +17,90 @@
     "$date": "2024-02-13T16:15:51.969Z"
   },
   "updatedAt": {
-    "$date": "2024-02-13T16:15:51.969Z"
+    "$date": "2024-03-06T03:07:20.971Z"
   },
   "slug": "gmail-com",
-  "__v": 0
+  "__v": 0,
+  "story": "Bùi Qúi Quyết",
+  "isOnline": "true",
+  "socketId": "GKZsHMEIv33CzzH7AAAr"
+},
+{
+  "_id": {
+    "$oid": "65dee4630ff53005519c8b99"
+  },
+  "email": "2",
+  "password": "2",
+  "first_name": "trần văn",
+  "last_name": "đãng",
+  "birthdate": {
+    "$date": {
+      "$numberLong": "-1262329200000"
+    }
+  },
+  "gender": "nam",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-02-28T07:44:35.995Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-05T11:27:58.949Z"
+  },
+  "slug": "2-gmail-com",
+  "__v": 0,
+  "story": "hhh",
+  "isOnline": "false",
+  "socketId": "9IE5_JS9RJPnQ6tOAAAr"
+},
+{
+  "_id": {
+    "$oid": "65df583c62254c43dbfcb81b"
+  },
+  "email": "3",
+  "password": "3",
+  "first_name": "Trần Đình",
+  "last_name": "Hồ",
+  "birthdate": {
+    "$date": {
+      "$numberLong": "-1262329200000"
+    }
+  },
+  "gender": "nam",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-02-28T15:58:52.660Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-05T07:44:03.633Z"
+  },
+  "slug": "3-gmail-com",
+  "__v": 0,
+  "isOnline": "false",
+  "socketId": "kfMBYbfYO7drRVIjAAAN"
+},
+{
+  "_id": {
+    "$oid": "65e6ca6e5f595f37d18b3d00"
+  },
+  "email": "1@gmail.com",
+  "password": "1",
+  "first_name": "Vũ Đình",
+  "last_name": "Huynh",
+  "birthdate": {
+    "$date": {
+      "$numberLong": "-1262329200000"
+    }
+  },
+  "gender": "nam",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-03-05T07:31:58.465Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-06T01:55:53.515Z"
+  },
+  "slug": "1-gmail-com",
+  "__v": 0,
+  "isOnline": "false",
+  "socketId": "kkMj5wX6qDZwCGZWAABd"
 }]

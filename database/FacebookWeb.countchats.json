@@ -1,0 +1,19 @@
+[{
+  "_id": {
+    "$oid": "65e6ea491f8c318946b4efca"
+  },
+  "userId": {
+    "$oid": "65e6ca6e5f595f37d18b3d00"
+  },
+  "senderId": {
+    "$oid": "65cb95b7024d6854bb0b1592"
+  },
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-03-05T09:47:53.658Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-05T09:47:53.658Z"
+  },
+  "__v": 0
+}]

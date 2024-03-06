@@ -72,19 +72,37 @@
 },
 {
   "_id": {
-    "$oid": "65dd614b365e791af97ccf30"
+    "$oid": "65df4417f48a0068043ea494"
   },
   "userId": {
-    "$oid": "65cb95b7024d6854bb0b1592"
+    "$oid": "65dee4630ff53005519c8b99"
   },
   "typePost": "avartar",
   "content": "",
   "deleted": false,
   "createdAt": {
-    "$date": "2024-02-27T04:12:59.263Z"
+    "$date": "2024-02-28T14:32:55.655Z"
   },
   "updatedAt": {
-    "$date": "2024-02-27T04:12:59.263Z"
+    "$date": "2024-02-28T14:32:55.655Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65e7d3c3cf9468ad1cf0041d"
+  },
+  "userId": {
+    "$oid": "65cb95b7024d6854bb0b1592"
+  },
+  "typePost": "cover",
+  "content": "",
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-03-06T02:24:03.075Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-06T02:24:03.075Z"
   },
   "__v": 0
 }]

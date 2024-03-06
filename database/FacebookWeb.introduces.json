@@ -1,0 +1,39 @@
+[{
+  "_id": {
+    "$oid": "65e2ea494f11eb43f81a7f35"
+  },
+  "userId": {
+    "$oid": "65dee4630ff53005519c8b99"
+  },
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-03-02T08:58:49.911Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-02T08:58:59.247Z"
+  },
+  "__v": 0,
+  "school": "Sao Đỏ",
+  "place": "Hải Dương"
+},
+{
+  "_id": {
+    "$oid": "65e34732766eead9ca45abc0"
+  },
+  "userId": {
+    "$oid": "65cb95b7024d6854bb0b1592"
+  },
+  "deleted": false,
+  "createdAt": {
+    "$date": "2024-03-02T15:35:14.467Z"
+  },
+  "updatedAt": {
+    "$date": "2024-03-02T16:10:11.085Z"
+  },
+  "__v": 0,
+  "school": "Đại học Sao Đỏ Chí Linh",
+  "province": "Hải Dương",
+  "place": "Gia Lộc",
+  "status": "Độc thân",
+  "phoneNumber": 123456789
+}]
