@@ -4,7 +4,7 @@ import styles from './UserFriend.module.scss';
 import PendingFriendImg from './../../../Img/addFriend.png'
 import FriendImg from './../../../Img/friend.png'
 import UserFriendPageChild from './UserFriendPageChild';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 const cx = classNames.bind(styles);
 
 
@@ -37,10 +37,8 @@ function UserFriend() {
            <div className={cx('friend-right')}>
                 <UserFriendPageChild typeFriendPage={typeFriendPage}/>
            </div>
-           
-          
         </div>
      );
 }
 
-export default UserFriend;
+export default memo(UserFriend);

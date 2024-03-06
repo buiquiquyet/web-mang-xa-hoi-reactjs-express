@@ -10,12 +10,12 @@ import * as ServiceFriendApi from './../../../../../apiServices/friendAPI'
 import * as ServicePostApi from './../../../../../apiServices/postAPI'
 import * as ServiceUserApi from './../../../../../apiServices/userAPI'
 import { MyContext } from '../../../../../App'
-import { MyContextSocket } from '../../../../..';
+// import { MyContextSocket } from '../../../../..';
 const cx = classNames.bind(styles)
 
-function SideBarRightPersonContact() {
+function SideBarRightPersonContact({newMesseger, checkUserOnline}) {
 
-    const {socket} = useContext(MyContextSocket)
+    // const {socket} = useContext(MyContextSocket)
     const { dataUser, ImageUrlPath } = useContext(MyContext)
 
     const messagerState = useSelector(state => state.messager)
@@ -25,8 +25,9 @@ function SideBarRightPersonContact() {
    
     const [userIdFriends, setUserIdFriends] = useState([])
     const [dataByUserIdFriend, setDataByUserIdFriend] = useState([])
+    // const [checkUserOnline, setCheckUserOnline] = useState(false)
 
-    const [newMesseger, setNewMesseger] = useState(null)
+    // const [newMesseger, setNewMesseger] = useState(null)
 
     //dispatch
     const handleShowMessLogorShowMess = (item) => {
@@ -55,13 +56,15 @@ function SideBarRightPersonContact() {
             })
             const profileUsers = await Promise.all(IdUsers.map(async (item) => {
                 const fullNames = await ServiceUserApi.getNameUser(item)
+                const statusOnlines = await ServiceUserApi.getStatusOnline(item)
                 const imagesAvartar = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'avartar', userId: item})
-                if(fullNames.success && imagesAvartar.success) {
+                if(fullNames.success && imagesAvartar.success && statusOnlines.success) {
                     const fullName = fullNames.data
+                    const statusOnline = statusOnlines.data
                     const image = imagesAvartar.result.image.flat()[0]
-                    return {fullName, image}
+                    return {fullName, image, statusOnline}
                 }
-                return {fullName: fullNames.data}
+                return {fullName: fullNames.data, statusOnline: statusOnlines.data}
             }))
             setDataByUserIdFriend(profileUsers)
         }
@@ -70,43 +73,29 @@ function SideBarRightPersonContact() {
         }else {
             setDataByUserIdFriend([])
         }
-    },[userIdFriends, dataUser])
-    useEffect(() => {
-        if(dataUser) {
-            socket.on('newMesseger', (messeger) => {
-                console.log(3);
-                if(messeger) {
-                    setNewMesseger(messeger) 
-                }
-            });
-            socket.on('login', (userId) => {
-                if(userId) {
-                    console.log('online',userId);
-                }
-            });
-            socket.on('userOffline', (userId) => {
-                if(userId) {
-                    console.log('userOffline',userId);
-                }
-            });
-            socket.on('disconnect', (userId) => {
-                console.log('userOffline2',userId);
-            });
-            return () => {
-                socket.off('newMesseger');
-                socket.off('login');
-                socket.off('userOffline');
-                socket.off('disconnect');
-            };
-        }
-    }, [socket, dataUser]);
-    useEffect(() => {
-        const fecthUserId = async (userId) => {
-            await ServiceUserApi.checkOnlineUser(userId)
-        }
-        fecthUserId(localStorage.getItem('tokenFb'))
+    },[userIdFriends, dataUser, checkUserOnline])
+    
+    // useEffect(() => {
+    //     if(dataUser) {
+    //         socket.on('newMesseger', (messeger) => {
+    //             if(messeger) {
+    //                 setNewMesseger(messeger) 
+    //             }
+    //         });
+           
+    //         socket.on('userStatus', (status) => {
+    //             if(status) {
+    //                 setCheckUserOnline(!checkUserOnline)
+    //             }});
+    //         return () => {
+    //             socket.off('newMesseger');
+    //             socket.off('userStatus');
+    //         };
+    //     }
+    // }, [socket, dataUser, checkUserOnline]);
+    // useEffect(() => {
 
-    }, [])
+    // }, [checkUserOnline])
     return ( 
         <>
             <div  style={{paddingBottom:'10px'}} className={cx('siderbar-rightBirthDay')}>
@@ -119,6 +108,12 @@ function SideBarRightPersonContact() {
                             ? ImageUrlPath + item.image.url
                             : userNoneImg} alt='img'/>
                         <span>{item.fullName.first_name + ' ' + item.fullName.last_name}</span>
+                        {
+                            item.statusOnline.isOnline === 'true' &&
+                            <div className={cx('status-online')}>
+                                <div className={cx('status-onlineDiv')}></div>
+                            </div>
+                        }
                     </div>
                 ))
                 }

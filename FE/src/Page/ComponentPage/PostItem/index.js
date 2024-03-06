@@ -14,10 +14,11 @@ import * as ServiceCommentApi from './../../../apiServices/commentAPI'
 import * as ServiceCommentFeedbackApi from './../../../apiServices/commentFeedbackAPI'
 import PostItemUsersComment from './PostItemUsersComment';
 import ImageGalleryImg from '../../../ImageGalleryImg';
+import { Link } from 'react-router-dom';
 
 const cx = classNames.bind(styles);
 
-function PostItem({ImageUrlPath, imageAvartar, dataUser, post, images , onClickCheckToFecth}) {
+function PostItem({ImageUrlPath, imageAvartar, dataUser, post, images , onClickCheckToFecth, placeShow}) {
 
     const [imageSlide, setImageSlide] = useState({})
     const [isOpenSlide, setIsOpenSlide] = useState(false);
@@ -123,20 +124,20 @@ function PostItem({ImageUrlPath, imageAvartar, dataUser, post, images , onClickC
                 <div className={cx('postDiv')}>
                     <div className={cx('headerPost')}>
                         <div className={cx('headerInfo-post')}>
-                            <div className={cx('avatar-post')}>
+                            <Link to={`userPost/${dataUser._id}`} className={cx('avatar-post')}>
                                 <img  src={Object.keys(imageAvartar).length > 0 
                                             ? ImageUrlPath+imageAvartar.url
                                             : userNoneImg}  
                                             alt='img'
                                 />
-                            </div>
+                            </Link>
                             <div className={cx('name-post')}>
-                                <div className={cx('status-post')}>
+                                <Link to={`userPost/${dataUser._id}`} className={cx('status-post')}>
                                     <span className={cx('fullname-post')}>
                                         {  dataUser.first_name + ' ' + dataUser.last_name}
                                     </span>
                                     <span className={cx('status')}>{handleRenderTypePost(post.typePost, images)}</span>
-                                </div>
+                                </Link>
                                 <div className={cx('time-post')}>
                                     <span> { 
                                     convertDate(post.createdAt).day + ' tháng ' 
@@ -145,26 +146,29 @@ function PostItem({ImageUrlPath, imageAvartar, dataUser, post, images , onClickC
                                 </div>
                             </div>
                         </div>
-                        
-                        <HeadelessTippy
-                            render={attrs => (
-                                <div className={cx('navMore-option')} tabIndex="-1" {...attrs}>
-                                    
-                                    <div className={cx('navMore-option--item')} onClick={handleDeletePost}>
-                                        <span>Xóa bài viết</span>
+                        {
+                            placeShow === 'user' &&
+                            <HeadelessTippy
+                                render={attrs => (
+                                    <div className={cx('navMore-option')} tabIndex="-1" {...attrs}>
+                                        
+                                        <div className={cx('navMore-option--item')} onClick={handleDeletePost}>
+                                            <span>Xóa bài viết</span>
+                                        </div>
                                     </div>
+                                )}
+                                interactiveBorder={1}
+                                interactive   
+                                placement="bottom"
+                                trigger='click'
+                                arrow={true}
+                            >
+                                <div className={cx('navMore-post')}>
+                                    <LogoNavMore className={cx('navMore-icon')}/>
                                 </div>
-                            )}
-                            interactiveBorder={1}
-                            interactive   
-                            placement="bottom"
-                            trigger='click'
-                            arrow={true}
-                        >
-                            <div className={cx('navMore-post')}>
-                                <LogoNavMore className={cx('navMore-icon')}/>
-                            </div>
-                        </HeadelessTippy>
+                            </HeadelessTippy>
+                        }
+                        
                     </div>
                     <div className={cx('post-content')}>
                         <div className={cx('content-lableText')}>

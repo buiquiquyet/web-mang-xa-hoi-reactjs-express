@@ -37,8 +37,10 @@ function NavItemOption({userId}) {
             if(imageAvartar.success) {
                 if(imageAvartar.result.image.length > 0) {
                     setImageAvartar(imageAvartar.result.image[0])
+                    return
                 }
             }
+            setImageAvartar({})
         }
         const fecthFullNameUser = async (userId) => {
             const rs = await ServiceUserApi.getNameUser(userId)

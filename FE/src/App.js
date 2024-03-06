@@ -1,14 +1,15 @@
 import {  Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { publicRouter } from "./router";
-import  {createContext, useEffect, useMemo, useState } from 'react';
+import  {createContext, useContext, useEffect, useMemo, useState } from 'react';
 import * as ServiceUserProfileApi from './apiServices/userAPI'
+import { MyContextSocket } from ".";
 
 export const MyContext = createContext();
 
 function App() {
   const navigate = useNavigate()
   const [dataUser, setDataUser] = useState(null)
-  
+  const {socket} = useContext(MyContextSocket)
   const ImageUrlPath = useMemo(() => {
     return 'http://localhost:3001/uploads/'
   },[])
@@ -23,6 +24,11 @@ function App() {
       }
       fecthApi(localStorage.getItem('tokenFb'))
   }, [navigate])
+  useEffect(() => {
+    if(dataUser) {
+        socket.emit('login', dataUser._id)
+    }
+  }, [dataUser, socket])
   return ( 
     
       <div className="App">

@@ -31,6 +31,15 @@ export const showPostByUser = async (userId) => {
     }
 
 }
+export const showAllPost = async () => {
+    try {
+        const res = await request.get(`/post/showAllPost`)
+        return res
+    } catch (error) {
+        throw error
+    }
+
+}
 export const showPostByUserAvartarCover = async ( option) => {
     try {
         const res = await request.post(`/post/showByUserAvartarCover`,option)

@@ -10,10 +10,12 @@ import VideoPage from "../Page/User/UserPage/VideoPage"
 import PageNotFound from "../PageNotFound"
 import UserFriend from "../Page/User/UserFriend"
 import IntroducePage from "../Page/User/UserPage/IntroducePage"
+import UserSearch from "../Page/User/UserSearch"
 const publicRouter = [
     {path: '/', component: Main, layout: DefaultLayout, type: 'homeUser'},
     {path: '/login', component: LoginUser, type: 'homeUser'},
     {path: '/friendPage',  component: UserFriend, layout: DefaultLayoutWithHeader, type: 'friendPage'},
+    {path: '/searchPage/:nameUser',  component: UserSearch, layout: DefaultLayoutWithHeader, type: 'searchPage'},
     {path: '/userPost/:userId', children: PostUserPage, component: UserPage, layout: DefaultLayoutWithHeader, type: 'userPost'},
     {path: '/userFriend/:userId', children: FriendPage, component: UserPage, layout: DefaultLayoutWithHeader, type: 'userFriend'},
     {path: '/userIntroduce/:userId', children: IntroducePage, component: UserPage, layout: DefaultLayoutWithHeader, type: 'userIntroduce'},

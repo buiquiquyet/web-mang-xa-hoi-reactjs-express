@@ -1,0 +1,121 @@
+.wrapper {
+    background-color: var(--background-chidren);
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    margin-top: var(--height-header);
+}
+.friend-left {
+    position: fixed;
+    top: var(--height-header);
+    left: 0px;
+    width: 360px;
+    background-color: white;
+    height: 100%;
+    box-shadow: 2px 2px 10px 2px #dddd;
+    padding: 10px;
+}
+.friendLeft-lable {
+    font-size: 2.2rem;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+}
+.friendLeft-nav {
+    margin: 10px 0;
+    
+}
+.friendLeft-item {
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    cursor: pointer;
+    span {
+        font-weight: bold;
+    }
+    &:hover {
+        background-color: var(--background-chidren);
+    }
+    
+}
+.friendLeft-div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    padding: 6px;
+    margin-right: 10px;
+    background-color: white;
+}
+.friendLeft-img {
+    background-image: url('./../../../Img/search.png');
+    background-position: 0px -92px;
+    background-size: 26px 246px;
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    display: inline-block;
+}
+.active {
+    background-color: var(--background-chidren);
+}
+
+.friend-right {
+    height: 100%;
+    margin-left: 360px;
+    padding: 46px;
+    width: 100%;
+   
+}
+.friendRight-app {
+    padding: 18px;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.friendRight-lable {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.friendRight-nav {
+    display: flex;
+    flex-direction: column;
+    
+    margin-top: 16px;
+}
+.friendRight-item {
+    display: flex;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    img {
+        height: 60px;
+        width: 60px;
+        border-radius: 100%;
+        margin-right: 16px;
+    }
+    &:hover {
+        background-color: var(--background-chidren);
+    }
+}
+.friendRight-fullname {
+    display: flex;
+    flex-direction: column;
+    span {
+        font-size: 1.4rem;
+        color: var(--color-text);
+    }
+    .fullname {
+        font-size: 1.6rem;
+        font-weight: bold;
+        color: black;
+    }
+}
+.search-value {
+    font-weight: 100;
+    font-size: 1.5rem;
+}

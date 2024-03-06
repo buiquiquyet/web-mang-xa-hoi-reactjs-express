@@ -51,14 +51,16 @@ function MenuMessager({countChat}) {
                     else return item.userId1
             })
             const profileUsers = await Promise.all(IdUsers.map(async (item) => {
+                const statusOnlines = await ServiceUserApi.getStatusOnline(item)
                 const fullNames = await ServiceUserApi.getNameUser(item)
                 const imagesAvartar = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'avartar', userId: item})
-                if(fullNames.success && imagesAvartar.success) {
+                if(fullNames.success && imagesAvartar.success && statusOnlines.success) {
                     const fullName = fullNames.data
+                    const statusOnline = statusOnlines.data
                     const image = imagesAvartar.result.image.flat()[0]
-                    return {fullName, image}
+                    return {fullName, image, statusOnline}
                 }
-                return {fullName: fullNames.data}
+                return {fullName: fullNames.data, statusOnline: statusOnlines.data}
             }))
             if(profileUsers) {
                 setDataByUserIdFriend(profileUsers)
@@ -86,7 +88,6 @@ function MenuMessager({countChat}) {
             setDataByUserIdFriend([])
         }
     },[userIdFriends, dataUser])
-    console.log(lastestMesseger);
     return ( 
         <div className={cx('wrapper')}>
             <div className={cx('messager-lable')}>Đoạn chat</div>
@@ -114,10 +115,25 @@ function MenuMessager({countChat}) {
                                 countChat.includes(item.fullName._id)
                                 } )}>    
                                 { lastestMesseger[index].content } 
-                            </span> 
-                            
+                                
+                            </span>    
                         </div>
+                        
                     </div>
+                    {
+                        item.statusOnline.isOnline === 'true' &&
+                        <div className={cx('status-online')}>
+                            <div className={cx('status-onlineDiv')}></div>
+                        </div>
+                    }
+                    {
+                        countChat && countChat.length > 0 &&
+                        countChat.includes(item.fullName._id)&&
+                        <div className={cx('no-Rep')}>
+                            <div className={cx('no-RepIcon')}></div>
+                        </div>
+                    }
+                    
                 </div>
             ))
         

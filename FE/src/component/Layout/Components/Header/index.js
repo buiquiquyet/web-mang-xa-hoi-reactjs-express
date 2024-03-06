@@ -9,19 +9,20 @@ import HeaderUserNotifice from '../HeaderUserNotifice';
 import HeaderUserMessager from '../HeaderUserMessager';
 import { setMessLog } from '../../../../useReducerMessager/actions';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { memo, useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { memo, useContext, useEffect, useRef, useState } from 'react';
 import { MyContext } from '../../../../App';
 import UserImg from './../../../../Img/userNone.png'
 import * as ServicePostApi from './../../../../apiServices/postAPI'
 import * as ServiceCountChatApi from './../../../../apiServices/countChatAPI'
-import { MyContextSocket } from '../../../..';
+// import { MyContextSocket } from '../../../..';
 
 const cx = classNames.bind(style)
-function Header() {
+function Header({newMesseger}) {
    
-    const {socket} = useContext(MyContextSocket)
+    // const {socket} = useContext(MyContextSocket)
     const {dataUser, typePage, ImageUrlPath} = useContext(MyContext)
+    const navigate = useNavigate();
 
     const messagerState = useSelector(state => state.messager)
     const { checkMesLog, jobs } = messagerState
@@ -29,8 +30,9 @@ function Header() {
     
     const [imageAvartar, setImageAvartar] = useState('')
     const [countChat, setCountChat] = useState(null)
-    const [newMesseger, setNewMesseger] = useState(null)
+    // const [newMesseger, setNewMesseger] = useState(null)
     
+    const inputRef = useRef()
     useEffect(() => {
         const fecthImgUser = async (token) => {
             const rs = await ServicePostApi.showPostByUserAvartarImg(token)
@@ -41,9 +43,9 @@ function Header() {
         }
         fecthImgUser(localStorage.getItem('tokenFb'))
     },[])
-    const CreateCountChat = async (dataUserId, senderId) => {
-        return await ServiceCountChatApi.Create(dataUserId, senderId) 
-    }
+    // const CreateCountChat = async (dataUserId, senderId) => {
+    //     return await ServiceCountChatApi.Create(dataUserId, senderId) 
+    // }
     const fecthCountChatById = async (userId) => {
         const rs = await ServiceCountChatApi.GetByUserId(userId)
         if(rs.success) {
@@ -53,27 +55,34 @@ function Header() {
     const delCountChat = async (userId, senderId) => {
         await ServiceCountChatApi.delCountChat({userId, senderId})
     }
-    useEffect(() => {
-        socket.on('newMesseger',async (messeger) => {
-            if(messeger) {
-                setNewMesseger(messeger)
-                if(dataUser._id === messeger.receiverId && !jobs.includes(messeger.senderId) ) {
-                    const rs = await CreateCountChat({userId: messeger.receiverId, senderId: messeger.senderId})
-                    if(rs.success) {
-                        setCountChat(prev => {
-                            return [
-                                ...prev,
-                                messeger.senderId
-                            ]
-                        })
-                    }
-                }
-            }
-        });
-        return () => {
-            socket.off('newMesseger');
+    const handleSearch = () => {
+        if(inputRef.current.value.length > 0) {
+            navigate(`searchPage/${inputRef.current.value}`);
+            return
         }
-    }, [socket, dataUser,jobs]);
+
+    }
+    // useEffect(() => {
+    //     socket.on('newMesseger',async (messeger) => {
+    //         if(messeger) {
+    //             setNewMesseger(messeger)
+    //             // if(dataUser._id === messeger.receiverId && !jobs.includes(messeger.senderId) ) {
+    //             //     const rs = await CreateCountChat({userId: messeger.receiverId, senderId: messeger.senderId})
+    //             //     if(rs.success) {
+    //             //         setCountChat(prev => {
+    //             //             return [
+    //             //                 ...prev,
+    //             //                 messeger.senderId
+    //             //             ]
+    //             //         })
+    //             //     }
+    //             // }
+    //         }
+    //     });
+    //     return () => {
+    //         socket.off('newMesseger');
+    //     }
+    // }, [socket, dataUser,jobs]);
    
     useEffect(() => {
        const handleLogic = async (dataUser) => {
@@ -85,7 +94,7 @@ function Header() {
             }
        }
        handleLogic(dataUser)
-    }, [dataUser, jobs])
+    }, [dataUser, jobs, newMesseger])
     return ( 
         <div  className={cx('wrapper')}>
             <div className={cx('app')}>
@@ -93,9 +102,13 @@ function Header() {
                     <Link to={'/'}  style={{ display: 'flex', alignItems: 'center'}}>
                         <LogoFb className={cx('logo-main')}  />
                     </Link>
-                    <div className={cx('search-div')}>
-                        <LogoSearch className={cx('icon-search')}/>
-                        <input placeholder='Tìm kiếm trên Facebook' className={cx('search-input')}/>
+                    <div className={cx('search-app')}>
+                        <div className={cx('search-div')} onClick={handleSearch}>
+                            <LogoSearch className={cx('icon-search')} />
+                        </div>
+                        <div className={cx('search-input')}>
+                            <input placeholder='Tìm kiếm trên Facebook' ref={inputRef} className={cx('search-input')}/>
+                        </div>
                     </div>
                 </div>
                 <div className={cx('optionBar')}>   

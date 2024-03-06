@@ -14,6 +14,8 @@ const User = new Schema(
         gender: { type: String,  required: true },
         role: { type: String},
         story: {type: String},
+        isOnline: {type: String},
+        socketId: {type: String},
         slug: {type: String, slug: "email", unique: true}
     }, 
     {

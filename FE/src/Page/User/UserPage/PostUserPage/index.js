@@ -4,7 +4,7 @@ import LeftPostUserPage from './LeftPostUserPage';
 import RightPostUserPage from './RightPostUserPage';
 import StickyBox from 'react-sticky-box';
 import { useParams } from 'react-router-dom';
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { MyContext } from '../../../../App';
 
 const cx = classNames.bind(styles);
@@ -28,4 +28,4 @@ function PostUserPage() {
     );
 }
 
-export default PostUserPage;
+export default memo(PostUserPage);

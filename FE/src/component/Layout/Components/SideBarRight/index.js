@@ -11,7 +11,7 @@ import * as ServicePostApi from './../../../../apiServices/postAPI'
 import { MyContext } from '../../../../App';
 import { message } from 'antd';
 const cx = classNames.bind(styles)
-function SideBarRight() {
+function SideBarRight({newMesseger, checkUserOnline}) {
     
     const {dataUser, ImageUrlPath} = useContext(MyContext)
     const [newLessUserAddFriend, setNewLessUserAddFriend] = useState(null)
@@ -96,14 +96,14 @@ function SideBarRight() {
                                         {newLessUserAddFriend && newLessUserAddFriend.data && Object.keys(newLessUserAddFriend.data).length > 0 &&
                                         newLessUserAddFriend.data.first_name + ' ' + newLessUserAddFriend.data.last_name }
                                     </div>
-                                    <div className={cx('commonFriend')}>
+                                    {/* <div className={cx('commonFriend')}>
                                         <img src={userNoneImg}  alt='img'/>
                                         <span>1 bạn chung</span>
-                                    </div>
+                                    </div> */}
                                 </div>
-                                <div className={cx('info-time')}>
+                                {/* <div className={cx('info-time')}>
                                     <span>5 ngày</span>
-                                </div>
+                                </div> */}
                             </div>
                             <div className={cx('button-submitAdd')}>
                                 
@@ -116,7 +116,7 @@ function SideBarRight() {
                     </div>
                 </div>
             }
-            <div  className={cx('siderbar-rightBirthDay')}>
+            {/* <div  className={cx('siderbar-rightBirthDay')}>
                 <Link to={'/'}>
                     <span style={{ padding: '6px 8px' }}className={cx('lable-add')}>Sinh nhật</span>
                     <div className={cx('rightBirthDayChil')}>
@@ -124,8 +124,8 @@ function SideBarRight() {
                         <span>Hôm nay sinh nhật của <b>Bùi Lan Anh</b> và <b>6 người khác</b></span>
                     </div>
                 </Link>
-            </div>
-            <SideBarRightPersonContact/>
+            </div> */}
+            <SideBarRightPersonContact newMesseger={newMesseger} checkUserOnline={checkUserOnline}/>
             
         </div>
      );

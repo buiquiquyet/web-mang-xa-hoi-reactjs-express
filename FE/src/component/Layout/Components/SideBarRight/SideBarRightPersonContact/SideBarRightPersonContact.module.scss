@@ -31,6 +31,7 @@
 }
 //person
 .rightPersonConnect {
+    position: relative;
     display: flex;
     align-items: center;
     padding:  8px;
@@ -49,5 +50,26 @@
         font-weight: 600;
         color: var(--color-text);
         margin-left: 10px;
+    }
+}
+
+//online
+.status-online {
+    position: absolute;
+    border-radius: 100%;
+    top: 34px;
+    left: 34px;
+    z-index: 10;
+    padding: 2.2px;
+    background-color: var(--background-chidren);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .status-onlineDiv {
+        height: 8px;
+        width: 8px;
+        border-radius: 100%;
+       
+        background-color: rgb(115, 191, 0);
     }
 }

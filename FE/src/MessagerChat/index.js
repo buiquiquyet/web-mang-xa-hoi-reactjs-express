@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import * as ServiceUserApi from './../apiServices/userAPI'
 import * as ServicePostApi from './../apiServices/postAPI'
 import * as ServiceMessegerChatApi from './../apiServices/messegerChatAPI'
+import * as ServiceCountChatApi from './../apiServices/countChatAPI'
 import { MyContext } from "../App";
 import { Link } from "react-router-dom";
 import { MyContextSocket } from "..";
@@ -62,6 +63,9 @@ function MessagerChat({ id, style, newMesseger }) {
             setDataMesseger(rs.data)
         }
     }
+    const CreateCountChat = async (dataUserId, senderId) => {
+        return await ServiceCountChatApi.Create(dataUserId, senderId) 
+    }
     //input messeger
     const handleInputMesseger = () => {
         setInputMesseger(inputRef.current.textContent)
@@ -76,6 +80,7 @@ function MessagerChat({ id, style, newMesseger }) {
             socket.emit('newMesseger', inputMesseger);
             const rs = await ServiceMessegerChatApi.Create(formData)
             if(rs.success) {
+                await CreateCountChat({userId: receiverId, senderId: senderId})
                 setInputMesseger('')
                 inputRef.current.textContent = ''
             }

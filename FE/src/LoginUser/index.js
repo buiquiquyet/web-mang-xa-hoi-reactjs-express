@@ -28,13 +28,13 @@ function LoginUser() {
     const dayRef = useRef()
     const monthRef = useRef()
     const yearRef = useRef()
-    const firstNameRef = useRef('')
-    const lastNameRef = useRef('')
-    const passWordRef = useRef('')
-    const emailRef = useRef()
+    const firstNameRef = useRef(null)
+    const lastNameRef = useRef(null)
+    const passWordRef = useRef(null)
+    const emailRef = useRef(null)
     const [checkEmailRegister, setCheckEmailRegister] = useState();
-    const [checkFirstNameRegister, setCheckFirstNameRegister] = useState();
-    const [checkLastNameRegister, setCheckLastNameRegister] = useState();
+    const [checkFirstNameRegister, setCheckFirstNameRegister] = useState('');
+    const [checkLastNameRegister, setCheckLastNameRegister] = useState('');
     const [checkPassRegister, setCheckPassRegister] = useState(true);
     
     const handleShowHidePass = () => {
@@ -159,25 +159,27 @@ function LoginUser() {
                                 <input ref={firstNameRef} 
                                     type="text" 
                                     placeholder="Họ"
-                                    style={checkFirstNameRegister === '' ? {borderColor:"red" } : null}/>
-                                {
-                                    firstNameRef.current.value === '' &&
+                                    style={checkFirstNameRegister && checkFirstNameRegister === '' ? {borderColor:"red" } : {}}
+                                    />
+                                {/* {
+                                    firstNameRef && firstNameRef.current.value === '' &&
                                     <div className={cx('check-email')}>
                                         <span>Nhập đầy đủ thông tin</span>
                                     </div>
-                                }
+                                } */}
                             </div>
                             <div className={cx('name-input')}>
                                 <input ref={lastNameRef} 
                                     type="text" 
                                     placeholder="Tên"
-                                    style={checkLastNameRegister === '' ? {borderColor:"red" } : null}/>
-                                {
-                                    lastNameRef.current.value === '' &&
+                                    style={checkLastNameRegister && checkLastNameRegister === '' ? {borderColor:"red" } : {}}
+                                    />
+                                {/* {
+                                    lastNameRef && lastNameRef.current.value === '' &&
                                     <div className={cx('check-email')}>
                                         <span>Nhập đầy đủ thông tin</span>
                                     </div>
-                                }
+                                } */}
                             </div>
                         </div>
                         <div className={cx('register-emailPass')}>
@@ -199,13 +201,14 @@ function LoginUser() {
                                 <input ref={passWordRef} 
                                     type="password" 
                                     placeholder="Mật khẩu mới"
-                                    style={checkPassRegister === '' ? {borderColor:"red" } : null}/>
-                                {
-                                    passWordRef.current.value === '' &&
+                                    style={checkPassRegister && checkPassRegister === '' ? {borderColor:"red" } : {}}
+                                    />
+                                {/* {
+                                    passWordRef && passWordRef.current.value === '' &&
                                     <div className={cx('check-email')}>
                                         <span>Nhập đầy đủ thông tin</span>
                                     </div>
-                                }
+                                } */}
                             </div>
                         </div>
                     </div>

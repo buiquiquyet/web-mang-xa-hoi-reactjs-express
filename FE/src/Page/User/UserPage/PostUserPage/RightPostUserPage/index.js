@@ -129,7 +129,9 @@ function RightPostUserPage({userId, dataUser}) {
                     ImageUrlPath={ImageUrlPath}
                     typePost={'normal'}
                     onClickCheckToFecth={handleCheckToFecth}
-                    onClickShowHideModal={handleShowHideModal}/>
+                    onClickShowHideModal={handleShowHideModal}
+                    placeShow={'user'}
+                    />
             }
         </div>
         

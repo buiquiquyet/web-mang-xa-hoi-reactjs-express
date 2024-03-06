@@ -22,16 +22,32 @@ class PostController {
                 posts,
                 images
             }
-            if(images) {
-                return res.json({ success: 'Tìm bài viết thành công theo cá nhân' ,
-                result
-            });
-            }
-            return  res.json({ error: 'Tìm bài viết bị lỗi' });
+            return res.json({ success: 'Tìm bài viết thành công theo cá nhân' , result});
        } catch (error) {
             return  res.json({ error: 'Đã xảy ra lỗi' });
        }
     }
+    //[POST] /showAll
+    async showAllPost(req, res, next) {
+        try {
+            const users = await User.find().lean();
+    
+            const result = [];
+    
+            for (const user of users) {
+                const posts = await Post.find({ userId: user._id }).sort({ createdAt: -1 }).lean();
+                const images = await Image.find({ postId: { $in: posts.map(post => post._id) } }).lean();
+    
+                result.push({ user, posts, images });
+            }
+    
+            return res.json({ success: 'Tìm bài viết thành công theo cá nhân', result });
+        } catch (error) {
+            console.error(error);
+            return res.json({ error: 'Đã xảy ra lỗi khi tìm bài viết' });
+        }
+    }
+    
     //[POST] /showByUserAvartarCover
     async showByUserAvartarCover (req, res, next) {
         try {

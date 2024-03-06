@@ -4,18 +4,46 @@ import styles from './DefaultLayout.module.scss'
 import Header from "../Components/Header";
 import SideBarLeft from "../Components/SideBarLeft";
 import SideBarRight from "../Components/SideBarRight";
+import { useContext, useEffect, useState } from "react";
+import { MyContext } from "../../../App";
+import { MyContextSocket } from "../../..";
 const cx = classNames.bind(styles)
 function DefaultLayout({children}) {
+    const [checkUserOnline, setCheckUserOnline] = useState(false)
+
+    const [newMesseger, setNewMesseger] = useState(null)
+
+    const {socket } = useContext(MyContextSocket)
+
+    const {dataUser } = useContext(MyContext)
     
+    useEffect(() => {
+        if(dataUser) {
+            socket.on('newMesseger', (messeger) => {
+                if(messeger) {
+                    setNewMesseger(messeger) 
+                }
+            });
+           
+            socket.on('userStatus', (status) => {
+                if(status) {
+                    setCheckUserOnline(!checkUserOnline)
+                }});
+            return () => {
+                socket.off('newMesseger');
+                socket.off('userStatus');
+            };
+        }
+    }, [socket, dataUser, checkUserOnline]);
     return ( 
         <div className={cx('wrapper')}>
-            <Header/>  
+            <Header newMesseger={newMesseger}/>  
             <div className={cx('app-content')}>
                 <SideBarLeft/>
                 <div className={cx('content')}>
                     { children }
                 </div>
-                <SideBarRight/>
+                <SideBarRight newMesseger={newMesseger} checkUserOnline={checkUserOnline}/>
             </div>
         </div>
      );

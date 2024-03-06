@@ -25,6 +25,7 @@ const cx = classNames.bind(styles)
 
 function HeaderUserPage({userId}) {
     
+    
     const {dataUser, ImageUrlPath} = useContext(MyContext)
 
     const imageUploadState = useSelector(state => state.imageUpload)
@@ -93,7 +94,6 @@ function HeaderUserPage({userId}) {
     //handle Acceoted add friend 
     const handleAcceptedAddFriend = async (userId1, userId2) => {
         const rs = await ServiceFriendApi.updateAcceptedFriend({userId1, userId2})
-        console.log(rs);
         if(rs.success) {
             setStatusFriend(rs.data)
         }
@@ -115,20 +115,15 @@ function HeaderUserPage({userId}) {
             if(statusFriend.status === 'pending') {
                 return    dataUser._id === statusFriend.receiver_id 
                             ?
-                            (
-                                <div className={cx('option-editSefl')} onClick={() => handleAcceptedAddFriend(dataUser._id, userId)}>
+                            ( <div className={cx('option-editSefl')} onClick={() => handleAcceptedAddFriend(dataUser._id, userId)}>
                                     <img src={friendImg} alt="img"/>
                                     <span>Xác nhận kết bạn </span>
-                                </div>
-                            )
+                                </div>)
                             :
-                            (
-                                <div className={cx('option-editSefl')} onClick={() => handleCancelAddFriend(dataUser._id, userId)}>
+                            (<div className={cx('option-editSefl')} onClick={() => handleCancelAddFriend(dataUser._id, userId)}>
                                     <img src={unFriend} alt="img"/>
                                     <span>Hủy lời mời </span>
-                                </div> 
-                            )
-                           
+                                </div>   )
             }
             return <HeadelessTippy
                             render={attrs => (
@@ -161,15 +156,22 @@ function HeaderUserPage({userId}) {
             const fecthImageAvartarCover = async (userId) => {
                 const imageAvartar = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'avartar', userId: userId})
                 const imageCover = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'cover', userId: userId})
+                console.log(userId);
+                console.log(imageAvartar);
+                console.log(1,imageCover);
                 if(imageCover.success) {
                     if(imageCover.result.image.length > 0) {
                         setImageCover(imageCover.result.image[0])
                     }
+                }else {
+                    setImageCover({})
                 }
                 if(imageAvartar.success) {
                     if(imageAvartar.result.image.length > 0) {
                         setImageAvartar(imageAvartar.result.image[0])
                     }
+                }else {
+                    setImageAvartar({})
                 }
             }
             const fecthNameUser = async (userId) => {

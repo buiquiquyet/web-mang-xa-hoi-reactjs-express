@@ -44,6 +44,14 @@ export const getNameUser = async (userId) => {
         throw error
     }
 }
+export const getStatusOnline = async (userId) => {
+    try {
+        const res = await request.get(`/statusOnline/${userId}` )
+        return res
+    } catch (error) {
+        throw error
+    }
+}
 export const updateStory = async (option) => {
     try {
         const res = await request.post(`/updateStory`,option )
@@ -52,15 +60,23 @@ export const updateStory = async (option) => {
         throw error
     }
 }
-export const checkOnlineUser = async (token) => {
+export const searchUsers = async (name) => {
     try {
-        const res = await request.get('/checkOnlineUser', {
-            headers: {
-                'Authorization': `Bearer ${token}`, 
-              },
-        })
+        const res = await request.get(`/searchUsers?name=${name}` )
         return res
     } catch (error) {
         throw error
     }
 }
+// export const checkOnlineUser = async (token) => {
+//     try {
+//         const res = await request.get('/checkOnlineUser', {
+//             headers: {
+//                 'Authorization': `Bearer ${token}`, 
+//               },
+//         })
+//         return res
+//     } catch (error) {
+//         throw error
+//     }
+// }

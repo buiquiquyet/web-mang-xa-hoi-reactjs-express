@@ -1,6 +1,5 @@
 const User = require('../model/User')
 const jwt = require('jsonwebtoken')
-const eventEmitterUser = require('./../socket/eventEmitter')
 
 class UserController {
     //[GET] /login
@@ -13,7 +12,7 @@ class UserController {
         .then( user => {
             if(user) {
                 const token = jwt.sign({ _id: user._id}, 'quyet',{ expiresIn: 36000 })
-                eventEmitterUser.emit('login', user._id )
+                
                 return res.json({
                     success: 'success',
                     token
@@ -26,15 +25,7 @@ class UserController {
         })
         .catch(err => res.status(500).json('Đã xảy ra lỗi'))
     }
-     //[GET] /checkOnlineUser
-     checkOnlineUser(req, res, next) {
-       const user = req.user
-       eventEmitterUser.emit('login', user._id )
-       return res.json({
-        success: 'success',
-        
-    })
-    }
+    
     //[POST] /create
     create(req, res, next) {
         const data = {...req.body}
@@ -92,6 +83,32 @@ class UserController {
             res.json({ error: 'lấy user không thành công' });
         }
     }
+    //[GET] /
+    async getStatusOnline(req, res, next) {
+        try {
+            const data = await User.findOne({ _id: req.params.userId }).select('isOnline');
+            res.json({ success: 'lấy user thành công', data });
+        } catch (error) {
+            res.json({ error: 'lấy user không thành công' });
+        }
+    }
+     //[GET] /searchUserName
+    async  searchUsers(req, res, next) {
+        try {
+            const searchQuery = req.query.name;
+            const users = await User.find({ 
+                $or: [
+                    { first_name: { $regex: new RegExp(searchQuery, 'i') } },
+                    { last_name: { $regex: new RegExp(searchQuery, 'i') } }
+                ]
+            });
+            res.json({ success: 'Tìm kiếm người dùng thành công', data: users });
+        } catch (error) {
+            console.error('Lỗi khi tìm kiếm người dùng:', error);
+            res.status(500).json({ error: 'Đã xảy ra lỗi khi tìm kiếm người dùng' });
+        }
+    }
+    
 }
 
-module.exports = {UserController, eventEmitterUser}
+module.exports = {UserController}

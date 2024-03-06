@@ -6,7 +6,7 @@ import HeadelessTippy from '@tippyjs/react/headless';
 import * as ServiceFriendApi from './../../../../apiServices/friendAPI'
 import * as ServicePostApi from './../../../../apiServices/postAPI'
 import * as ServiceUserApi from './../../../../apiServices/userAPI'
-import { useContext, useEffect, useState } from 'react';
+import { memo, useContext, useEffect, useRef, useState } from 'react';
 import { MyContext } from '../../../../App';
 import { Link, useParams } from 'react-router-dom';
 import { message } from 'antd';
@@ -20,7 +20,10 @@ function FriendPage() {
     const [statusFriend, setStatusFriend] = useState(false)
     const [userIdFriends, setUserIdFriends] = useState([])
     const [dataByUserIdFriend, setDataByUserIdFriend] = useState([])
-
+    const [inputSearch, setInputSearch] = useState('')
+    const handleChangeInputSearch = (e) => {
+        setInputSearch(e.target.value)
+    }
     //handle Cance add friend 
     const handleCancelAddFriend = async (userId1, userId2) => {
         const rs = await ServiceFriendApi.cancelAddFriend({userId1, userId2})
@@ -62,6 +65,15 @@ function FriendPage() {
             setDataByUserIdFriend([])
         }
     },[userIdFriends, userId])
+    
+    const filteredData = inputSearch !== '' 
+    ? dataByUserIdFriend.filter(item => {
+        const fullName = item.fullName;
+        const fullNameString = fullName.first_name + ' ' + fullName.last_name;
+        return fullNameString.toLowerCase().includes(inputSearch.toLowerCase());
+    })
+    : dataByUserIdFriend;
+
     return ( 
         <div className={cx('wrapper')}>
             <div className={cx('content')}>
@@ -72,11 +84,14 @@ function FriendPage() {
                     <div className={cx('header-searchSendFriend')}>
                         <div className={cx('header-search')}>
                             <LogoSearch className={cx('search-icon')}/>
-                            <input placeholder='Tìm kiếm...'/>
+                            <input 
+                                value={inputSearch}
+                                onChange={handleChangeInputSearch} 
+                                placeholder='Tìm kiếm...'/>
                         </div>
-                        <div className={cx('header-SendFriend')}>
+                        <Link to={`/friendPage`} className={cx('header-SendFriend')}>
                             <span>Lời mời kết bạn</span>
-                        </div>
+                        </Link>
                     </div>
                 </div>
                 <div className={cx('all-friend')}>
@@ -86,8 +101,8 @@ function FriendPage() {
                 </div>
                 <div className={cx('friend-nav')}>
                     {
-                        dataByUserIdFriend.length > 0 &&
-                        dataByUserIdFriend.map((item, index) => (
+                        filteredData.length > 0 &&
+                        filteredData.map((item, index) => (
                             <div key={index} className={cx('friend-item')}>
                                 <Link to={`/userPost/${item.fullName._id}`} className={cx('friend-infoPerson')}>
                                     <div className={cx('friend-img')}>
@@ -130,4 +145,4 @@ function FriendPage() {
      );
 }
 
-export default FriendPage;
+export default memo(FriendPage);

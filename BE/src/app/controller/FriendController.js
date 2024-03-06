@@ -132,6 +132,35 @@ class FriendController {
             return res.json({ error: 'đã xảy ra lỗi' })
         }
     }
+     //[GET] /getAllIdFriend
+     async getAllIdFriend(userId) {
+        try {
+            const rs = await Friend.find(
+                {
+                    $or: [
+                        { $and: [{ userId1: userId }, { userId2: { $ne: userId } },{ status: 'accepted' }] },
+                        { $and: [{ userId2: userId }, { userId1: { $ne: userId } },{ status:  'accepted' }] }
+                    ]
+                    }
+            ).select('userId1 userId2').lean()
+            if(rs) {
+                const filteredRs = rs.map(item => {
+                    const filteredItem = [];
+                    Object.keys(item).forEach(key => {
+                        if (item[key].toString() !== userId && key !== '_id') {
+                            filteredItem.push(item[key].toString());
+                        }
+                    });
+                    return filteredItem;
+                });
+                return filteredRs.flat();
+            }
+            return false
+            
+        } catch (error) {
+            return false
+        }
+    }
     //[GET] /getTotalFriend
     async getTotalFriend(req, res, next) {
         try {
