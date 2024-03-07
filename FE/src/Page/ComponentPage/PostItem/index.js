@@ -116,7 +116,6 @@ function PostItem({ImageUrlPath, imageAvartar, dataUser, post, images , onClickC
           document.body.style.overflow = 'auto';
         };
       }, [isOpenSlide]);
-     
     return ( 
          <>
             {

@@ -102,6 +102,8 @@ function LeftPostUserPage({userId, dataUser}) {
                 const rs = await ServiceIntroduceApi.GetByUserId(userId)
                 if(rs.success && rs.data) {
                     setDataIntroduce(rs.data)
+                }else {
+                    setDataIntroduce(null)
                 }
             }
             fecthIntroduce(userId)

@@ -114,7 +114,9 @@ function RightPostUserPage({userId, dataUser}) {
                         dataUser = {showDataPost.user} 
                         post={item} 
                         onClickCheckToFecth={handleCheckToFecth}
-                        images={ filterImagesByPost(showDataPost.images, item._id) } />
+                        images={ filterImagesByPost(showDataPost.images, item._id) } 
+                        placeShow={'user'}
+                        />
                 ))
                 :
                 <div className={cx('none-post')}>
@@ -130,7 +132,7 @@ function RightPostUserPage({userId, dataUser}) {
                     typePost={'normal'}
                     onClickCheckToFecth={handleCheckToFecth}
                     onClickShowHideModal={handleShowHideModal}
-                    placeShow={'user'}
+                    
                     />
             }
         </div>

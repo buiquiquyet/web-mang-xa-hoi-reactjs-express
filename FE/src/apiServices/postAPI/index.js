@@ -31,9 +31,9 @@ export const showPostByUser = async (userId) => {
     }
 
 }
-export const showAllPost = async () => {
+export const showAllPost = async (count) => {
     try {
-        const res = await request.get(`/post/showAllPost`)
+        const res = await request.get(`/post/showAllPost/${count}`)
         return res
     } catch (error) {
         throw error

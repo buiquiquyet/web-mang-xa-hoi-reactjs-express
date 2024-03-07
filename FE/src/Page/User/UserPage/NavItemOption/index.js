@@ -82,9 +82,9 @@ function NavItemOption({userId}) {
                         <Link to={`/userImage/${userId}`} className={cx('list-item', {'ative-item': 'userImage' === typePage})}>
                             <span>Ảnh</span>
                         </Link>
-                        <Link to={'/userVideo'} className={cx('list-item', {'ative-item': 'userVideo' === typePage})}>
+                        {/* <Link to={'/userVideo'} className={cx('list-item', {'ative-item': 'userVideo' === typePage})}>
                             <span>Video</span>
-                        </Link>
+                        </Link> */}
                     </div>
                 }
             </div>

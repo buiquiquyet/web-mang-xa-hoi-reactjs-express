@@ -20,6 +20,7 @@ import * as ServiceUserApi from './../../../../apiServices/userAPI'
 import * as ServiceFriendApi from './../../../../apiServices/friendAPI'
 import ImageGalleryImg from "../../../../ImageGalleryImg";
 import { setMessItem, zoomOutHideToMessItem } from '../../../../useReducerMessager/actions'
+import { Link } from "react-router-dom";
 
 const cx = classNames.bind(styles)
 
@@ -266,12 +267,12 @@ function HeaderUserPage({userId}) {
                                             <img src={plusImg} alt="img"/>
                                             <span>Thêm vào tin</span>
                                         </div>
-                                        <div className={cx('option-editSefl')}>
+                                        <Link to={`/userIntroduce/${dataUser._id}`} className={cx('option-editSefl')}>
                                             <img src={editImg} alt="img"/>
                                             <span>
                                                 Chỉnh sửa trang cá nhân
                                             </span>
-                                        </div>
+                                        </Link>
                                     </>
                                     :
                                     <>

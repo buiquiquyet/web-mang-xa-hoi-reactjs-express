@@ -1,0 +1,67 @@
+
+.wrapper {
+    height: 255px;
+    max-height: 255px;
+    display: flex;
+    margin-bottom: 16px;
+    gap: 10px;
+    overflow: hidden;
+    width: 600px;
+}
+.feed-item {
+    border-radius: 20px;
+    overflow: hidden;
+    height: 100%;
+    width: 142px;
+    min-width: 142px;
+    border: 1px solid #ccc;
+}
+.feedSelf {
+    height: 80%;
+    width: 100%;
+    object-fit: cover;
+    background-size: cover;
+    background-position: center;
+    box-shadow: 1px 1px 5px 1px #ccc;
+  
+}
+
+
+.feedDiv {
+    display: flex;
+    position: relative;
+    align-items: flex-end;
+    justify-content: center;
+    height: 20%;
+    background-color: white;
+    width: 100%;
+    span {
+        margin-bottom: 4px;
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+}
+.add-feed {
+    position: absolute;
+    top: -20px;
+    right: calc(250 / 2);
+    background-color: white;
+    border-radius: 100%;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+}
+.logo-feed {
+   
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    background-color: var(--primary);
+}
+.logoFeed-icon {
+    color: white !important;
+}

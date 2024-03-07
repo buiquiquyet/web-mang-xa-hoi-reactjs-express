@@ -30,7 +30,12 @@ class PostController {
     //[POST] /showAll
     async showAllPost(req, res, next) {
         try {
-            const users = await User.find().lean();
+            // const page = req.params.count || 1; 
+            // const limit = 2; 
+            const users = await User.find()
+                        // .skip((page - 1) * limit)
+                        // .limit(limit)
+                        .lean();
     
             const result = [];
     

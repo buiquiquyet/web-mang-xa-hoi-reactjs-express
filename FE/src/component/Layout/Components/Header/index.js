@@ -57,7 +57,7 @@ function Header({newMesseger}) {
     }
     const handleSearch = () => {
         if(inputRef.current.value.length > 0) {
-            navigate(`searchPage/${inputRef.current.value}`);
+            navigate(`/searchPage/${inputRef.current.value}`);
             return
         }
 
