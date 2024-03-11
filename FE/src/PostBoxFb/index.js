@@ -20,6 +20,7 @@ function PostBoxFb({ImageUrlPath, imageAvartar, onClickShowHideModal, onClickChe
         setDataPost(inputRef.current.textContent)
     }  
     const onChange = ({ fileList: newFileList }) => {
+        // console.log(1, newFileList);
         if(typePost === 'avartar' || typePost === 'cover') {
             setFileList(newFileList.slice(0, 1));
             return 
@@ -55,12 +56,13 @@ function PostBoxFb({ImageUrlPath, imageAvartar, onClickShowHideModal, onClickChe
             const formData = new FormData();
             formData.append('content', dataPost)
             formData.append('typePost', typePost)
+
             fileList.forEach((file) => {
                 formData.append('images', file.originFileObj);
             });
             if(fileList.length === 1) {
                 const rs = await ServicePostApi.postSingleImage(localStorage.getItem('tokenFb'), formData)
-                onClickCheckToFecth()
+                onClickCheckToFecth()    
                 onClickShowHideModal()
                 if(rs.success) {
                     message.success(rs.success)
@@ -150,9 +152,7 @@ function PostBoxFb({ImageUrlPath, imageAvartar, onClickShowHideModal, onClickChe
                                     onPreview={onPreview}
                                     multiple 
                                     accept="image/*,video/*"
-
                                 >
-                                   
                                     {
                                         fileList.length < (typePost !=='normal' ? 1 : 8) && 
                                         <div className="custom-upload-button">

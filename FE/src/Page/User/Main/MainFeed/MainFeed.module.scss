@@ -2,19 +2,23 @@
 .wrapper {
     height: 255px;
     max-height: 255px;
-    display: flex;
     margin-bottom: 16px;
-    gap: 10px;
-    overflow: hidden;
-    width: 600px;
+    // display: flex;
+    // gap: 10px;
+    // overflow: hidden;
+    // width: 600px;
+    position: relative;
+    flex: 1;
 }
+
 .feed-item {
     border-radius: 20px;
     overflow: hidden;
     height: 100%;
-    width: 142px;
+    width: 100%;
     min-width: 142px;
     border: 1px solid #ccc;
+   
 }
 .feedSelf {
     height: 80%;
@@ -64,4 +68,57 @@
 }
 .logoFeed-icon {
     color: white !important;
+}
+//slide
+.content-slide {
+    height: 100%;
+    z-index: 0;
+    position: relative;
+        // &:hover  .buttonSlideNext, &:hover .buttonSlidePrev  {
+        //     display: block; 
+        // }
+}
+.swiper-slide {
+    width: 142px !important;
+    cursor: pointer;
+    margin: 0 5px;
+   
+}
+.content-slide img {
+    width: 100%;
+    height: 100%;
+}
+.swiper {
+    height: 100%;
+}
+.buttonSlidePrev, .buttonSlideNext {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 99;
+    background-color: rgba(128, 128, 128, 0.6);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border-radius: 100%;
+    height: 50px;
+    width: 50px;
+    background-color: white;
+    font-size: 3rem;
+    box-shadow: 2px 1px 10px 1px #ccc;
+    border: 1px solid #ccc;
+    .iconSlide{
+        color: var(--color-text);
+        width: 2.6em;
+        height: 2.6rem;
+    }
+    
+}
+
+.buttonSlideNext{
+    right: 10px; 
+}
+.buttonSlidePrev {
+    left: 10px;
 }

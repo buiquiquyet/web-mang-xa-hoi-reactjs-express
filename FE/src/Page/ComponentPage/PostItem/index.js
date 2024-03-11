@@ -182,7 +182,17 @@ function PostItem({ImageUrlPath, imageAvartar, dataUser, post, images , onClickC
                                         className={cx('image-item')} 
                                         style={ index <= 1 ? {width: `49.8%` } : handleStyleImage(images.length, index)}
                                         onClick={() => handleOpenSlide (index)}>
-                                        <img src={ImageUrlPath+item.url} alt='img'/>
+                                        {
+                                            !item.url.includes('jpg') 
+                                            ?
+                                            <iframe 
+                                                src={ImageUrlPath+item.url}  
+                                                title="video/mp4"
+                                                style={{width:'100%', height:'500px'}}
+                                                />
+                                            :
+                                            <img src={ImageUrlPath+item.url} alt='img'/>
+                                        }
                                         {
                                             images.length > 5 && index === 4 &&
                                             <div className={cx('overflay-image')}>

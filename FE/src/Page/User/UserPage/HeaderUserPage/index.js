@@ -157,9 +157,7 @@ function HeaderUserPage({userId}) {
             const fecthImageAvartarCover = async (userId) => {
                 const imageAvartar = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'avartar', userId: userId})
                 const imageCover = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'cover', userId: userId})
-                console.log(userId);
-                console.log(imageAvartar);
-                console.log(1,imageCover);
+               
                 if(imageCover.success) {
                     if(imageCover.result.image.length > 0) {
                         setImageCover(imageCover.result.image[0])

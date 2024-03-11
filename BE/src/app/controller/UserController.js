@@ -11,7 +11,7 @@ class UserController {
         }).lean()
         .then( user => {
             if(user) {
-                const token = jwt.sign({ _id: user._id}, 'quyet',{ expiresIn: 1800 })
+                const token = jwt.sign({ _id: user._id}, 'quyet',{ expiresIn: 36000 })
                 
                 return res.json({
                     success: 'success',

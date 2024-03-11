@@ -15,12 +15,10 @@ import { MyContext } from '../../../../App';
 import UserImg from './../../../../Img/userNone.png'
 import * as ServicePostApi from './../../../../apiServices/postAPI'
 import * as ServiceCountChatApi from './../../../../apiServices/countChatAPI'
-// import { MyContextSocket } from '../../../..';
 
 const cx = classNames.bind(style)
 function Header({newMesseger}) {
    
-    // const {socket} = useContext(MyContextSocket)
     const {dataUser, typePage, ImageUrlPath} = useContext(MyContext)
     const navigate = useNavigate();
 
@@ -30,7 +28,6 @@ function Header({newMesseger}) {
     
     const [imageAvartar, setImageAvartar] = useState('')
     const [countChat, setCountChat] = useState(null)
-    // const [newMesseger, setNewMesseger] = useState(null)
     
     const inputRef = useRef()
     useEffect(() => {
@@ -43,9 +40,7 @@ function Header({newMesseger}) {
         }
         fecthImgUser(localStorage.getItem('tokenFb'))
     },[])
-    // const CreateCountChat = async (dataUserId, senderId) => {
-    //     return await ServiceCountChatApi.Create(dataUserId, senderId) 
-    // }
+    
     const fecthCountChatById = async (userId) => {
         const rs = await ServiceCountChatApi.GetByUserId(userId)
         if(rs.success) {
@@ -60,30 +55,7 @@ function Header({newMesseger}) {
             navigate(`/searchPage/${inputRef.current.value}`);
             return
         }
-
     }
-    // useEffect(() => {
-    //     socket.on('newMesseger',async (messeger) => {
-    //         if(messeger) {
-    //             setNewMesseger(messeger)
-    //             // if(dataUser._id === messeger.receiverId && !jobs.includes(messeger.senderId) ) {
-    //             //     const rs = await CreateCountChat({userId: messeger.receiverId, senderId: messeger.senderId})
-    //             //     if(rs.success) {
-    //             //         setCountChat(prev => {
-    //             //             return [
-    //             //                 ...prev,
-    //             //                 messeger.senderId
-    //             //             ]
-    //             //         })
-    //             //     }
-    //             // }
-    //         }
-    //     });
-    //     return () => {
-    //         socket.off('newMesseger');
-    //     }
-    // }, [socket, dataUser,jobs]);
-   
     useEffect(() => {
        const handleLogic = async (dataUser) => {
             if(dataUser) {

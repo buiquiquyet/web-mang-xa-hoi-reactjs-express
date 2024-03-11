@@ -13,6 +13,8 @@ import * as ServiceCountChatApi from './../apiServices/countChatAPI'
 import { MyContext } from "../App";
 import { Link } from "react-router-dom";
 import { MyContextSocket } from "..";
+import HeadelessTippy from '@tippyjs/react/headless';
+import { message } from "antd";
 
 const cx = classNames.bind(styles)
 
@@ -77,14 +79,22 @@ function MessagerChat({ id, style, newMesseger }) {
             formData.append('senderId', senderId)
             formData.append('receiverId', receiverId)
             formData.append('content', inputMesseger)
+            await CreateCountChat({userId: receiverId, senderId: senderId})
             socket.emit('newMesseger', inputMesseger);
             const rs = await ServiceMessegerChatApi.Create(formData)
             if(rs.success) {
-                await CreateCountChat({userId: receiverId, senderId: senderId})
                 setInputMesseger('')
                 inputRef.current.textContent = ''
             }
         }
+    }
+    //delete
+    const handleDelete = async (userId1, userId2) => {
+        const rs = await ServiceMessegerChatApi.Delete({userId1, userId2})
+        if(rs.success) {
+            message.success(rs.success)
+            fecthAllDataBetwenUsers(userId1, userId2)
+        } 
     }
     useEffect(() => {
         if (contentRef.current) {
@@ -113,35 +123,39 @@ function MessagerChat({ id, style, newMesseger }) {
             }
         }
     },[newMesseger, id, dataUser])
-    // useEffect(() => {
-    //     if(dataUser) {
-    //         socket.on('newMesseger', (messeger) => {
-    //             if(messeger) {
-    //                 if ((messeger.receiverId === id && messeger.senderId === dataUser._id) 
-    //                     || (messeger.receiverId === dataUser._id && messeger.senderId === id)) {
-    //                     setDataMesseger(prev => {
-    //                         return [
-    //                             ...prev,
-    //                             messeger
-    //                         ]
-    //                     })
-    //                 }
-    //             }
-    //         });
-    //         return () => {
-    //             socket.off('newMesseger');
-    //         };
-    //     }
-    // }, [id,socket, dataUser]);
     return ( 
         <div  className={cx('wrapper')} style={style}>
             <div className={cx('header-chat')}>
-                <Link to={fullNameUser && `userPost/${fullNameUser._id}`} className={cx('chat-person')}>
+                <HeadelessTippy
+                    render={attrs => (
+                        <div className={cx('tippyHeadeless')} tabIndex="-1" {...attrs}>    
+                            <Link 
+                                to={fullNameUser && `userPost/${fullNameUser._id}`} 
+                                className={cx('tippy-item')}
+                                > Xem trang cá nhân 
+                            </Link> 
+                            {
+                                dataUser &&
+                                <div 
+                                    className={cx('tippy-item')}
+                                    onClick={() => handleDelete( dataUser._id, fullNameUser._id)} 
+                                >  
+                                    Xóa đoạn chat 
+                                </div>
+                            }
+                        </div>
+                )}
+                    interactive   
+                    placement="left"
+                    trigger='click'
+                >
+                    <div  className={cx('chat-person')}>
                         <img src={avartarImg
                             ? ImageUrlPath + avartarImg.url
                             : userNoneImg} alt='img'/>
-                    <span>{fullNameUser && fullNameUser.first_name + ' ' + fullNameUser.last_name}</span>
-                </Link>
+                        <span>{fullNameUser && fullNameUser.first_name + ' ' + fullNameUser.last_name}</span>
+                    </div>
+                </HeadelessTippy>
                 <div className={cx('icon-header')}>
                     <div className={cx('icon-closeZoomOut')} onClick={() => handleZoomOut(id)}>
                         <LogoZoomOut className={cx('icon')}/>

@@ -15,6 +15,14 @@ export const Show = async ( option) => {
         throw error
     }
 }
+export const Delete = async ( option) => {
+    try {
+        const res = await request.post(`/messeger/delete`, option)
+        return res
+    } catch (error) {
+        throw error
+    }
+}
 export const ShowLastest = async ( option) => {
     try {
         const res = await request.post(`/messeger/showLastest`, option)

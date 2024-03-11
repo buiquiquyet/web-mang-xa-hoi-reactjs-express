@@ -74,7 +74,7 @@ function Main() {
     }, [dataUser])
     return ( 
         <div className={cx('wrapper')}>
-            {/* <MainFeed/> */}
+            <MainFeed/>
             <PostYouThink 
                 ImageUrlPath={ImageUrlPath}
                 onClickShowHideModal={handleShowHideModal}

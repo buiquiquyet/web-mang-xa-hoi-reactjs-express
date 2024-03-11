@@ -36,6 +36,21 @@ class MessegerChatController {
         .then((data) =>  res.json({ success: 'lấy messeger thành công' , data}))
         .catch(() =>  res.json({ error: 'lấy messeger không thành công' }))
    }
+    //[POST] /deleBy2userId
+    async  delete(req, res, next) { 
+        const userId1 = req.body.userId1
+        const userId2 = req.body.userId2
+        await MessegerChat.delete(
+            {
+                $or: [
+                    { $and: [{ senderId: userId1 }, { receiverId: userId2 }] },
+                    { $and: [{ senderId: userId2 }, { receiverId: userId1 }] }
+                ]
+            }
+        )
+        .then(() =>  res.json({ success: 'Xóa messeger thành công'}))
+        .catch(() =>  res.json({ error: 'Xóa messeger không thành công' }))
+   }
     //[POST] /showLastestMesseger
     async  showLastestMesseger(req, res, next) { 
         const userId1 = req.body.userId1

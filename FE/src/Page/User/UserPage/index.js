@@ -4,6 +4,7 @@ import styles from './UserPage.module.scss'
 import NavItemOption from "./NavItemOption";
 import HeaderUserPage from "./HeaderUserPage";
 import { useParams } from "react-router-dom";
+import { memo } from "react";
 const cx = classNames.bind(styles)
 
 function UserPage({children}) {
@@ -18,4 +19,4 @@ function UserPage({children}) {
      );
 }
 
-export default UserPage;
+export default memo(UserPage);

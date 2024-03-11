@@ -1,0 +1,16 @@
+.wrapper {
+    padding: 36px;
+    width: 100%;
+}
+.input-post {
+    
+    width: 100%;
+    max-width: 100%;
+    border-radius: 20px;
+    padding:  6px 16px ;
+    outline: none;
+    border: 1px solid #ccc;
+    white-space: pre-wrap;
+    word-break: break-word;
+    user-select: text;
+}

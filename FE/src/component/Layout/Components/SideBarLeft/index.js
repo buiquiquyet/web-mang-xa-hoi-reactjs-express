@@ -3,7 +3,7 @@ import style from './SideBarLeft.module.scss'
 import classNames from 'classnames/bind';
 import ImgFeed from './../../../../Img/ImgFeed.png'
 import { Link } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { memo, useContext, useEffect, useState } from 'react';
 import { MyContext } from '../../../../App';
 import * as ServicePostApi from './../../../../apiServices/postAPI'
 import UserImg from './../../../../Img/userNone.png'
@@ -96,4 +96,4 @@ function SideBarLeft() {
      );
 }
 
-export default SideBarLeft;
+export default memo(SideBarLeft);
