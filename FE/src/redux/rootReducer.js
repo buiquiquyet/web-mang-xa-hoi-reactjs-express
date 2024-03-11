@@ -1,11 +1,13 @@
 // // rootReducer.js
 import { combineReducers } from '@reduxjs/toolkit';
-import reducer from './../useReducerMessager/reducer';
-import reducerUploadImage from './../useReducerUpdateImageUser/reducer';
+import reducer from '../Reducer/useReducerMessager/reducer';
+import reducerUploadImage from '../Reducer/useReducerUpdateImageUser/reducer';
+import feedTextSlice from '../Reducer/feedText/feedTextSlice';
 
 const rootReducer = combineReducers({
   messager: reducer,
-  imageUpload: reducerUploadImage
+  imageUpload: reducerUploadImage,
+  feed: feedTextSlice
 });
 
 export default rootReducer;

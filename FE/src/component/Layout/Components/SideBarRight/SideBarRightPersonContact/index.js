@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import userNoneImg from './../../../../../Img/userNone.png'
 
-import { setMessItem, zoomOutHideToMessItem } from '../../../../../useReducerMessager/actions'
+import { setMessItem, zoomOutHideToMessItem } from '../../../../../Reducer/useReducerMessager/actions'
 import styles from './SideBarRightPersonContact.module.scss'
 import classNames from 'classnames/bind';
 import MessagerChat from '../../../../../MessagerChat'
@@ -10,6 +10,7 @@ import * as ServiceFriendApi from './../../../../../apiServices/friendAPI'
 import * as ServicePostApi from './../../../../../apiServices/postAPI'
 import * as ServiceUserApi from './../../../../../apiServices/userAPI'
 import { MyContext } from '../../../../../App'
+import { ReducerMessager } from '../../../../../redux/selector';
 // import { MyContextSocket } from '../../../../..';
 const cx = classNames.bind(styles)
 
@@ -18,7 +19,7 @@ function SideBarRightPersonContact({newMesseger, checkUserOnline}) {
     // const {socket} = useContext(MyContextSocket)
     const { dataUser, ImageUrlPath } = useContext(MyContext)
 
-    const messagerState = useSelector(state => state.messager)
+    const messagerState = useSelector(ReducerMessager)
     const { jobsZoomOut, jobs } = messagerState
     
     const dispatch = useDispatch();

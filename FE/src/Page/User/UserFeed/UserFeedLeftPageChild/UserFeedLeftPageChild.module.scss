@@ -1,16 +1,64 @@
 .wrapper {
-    padding: 36px;
     width: 100%;
+    padding: 10px 6px 0 ;
+    
+}
+.inputText {
+    padding: 2px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+}
+.activeInputText {
+    border: 2.5px solid var(--primary);
+
 }
 .input-post {
     
     width: 100%;
     max-width: 100%;
-    border-radius: 20px;
+    border-radius: 10px;
     padding:  6px 16px ;
     outline: none;
     border: 1px solid #ccc;
     white-space: pre-wrap;
     word-break: break-word;
     user-select: text;
+    min-height: 185px;
+    max-height: 185px;
+    overflow-y: auto;
+    &:hover {
+        border: 1px solid black;
+    }
+    span {
+        color: var(--color-text);
+        font-size: 1.4rem;
+    }
+}
+.placeholder-input {
+    position: absolute;
+    top: 171px;
+    left: 37px;
+    font-size: 1.5rem;
+    color: var(--color-text);
+    pointer-events: none;
+ }
+
+.color-feed {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+ }
+.colorFeed-img {
+    img {
+        height: 26px;
+        width: 26px;
+        border-radius: 100%;
+    }
+    .activeImg {
+        height: 30px;
+        width: 30px;
+        border: 3px solid #0866FF;
+    }
 }

@@ -14,12 +14,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { MyContext } from "../../../../App";
 import PostBoxFb from "../../../../PostBoxFb";
 import { useDispatch, useSelector } from "react-redux";
-import { setStatus } from "../../../../useReducerUpdateImageUser/actions";
+import { setStatus } from "../../../../Reducer/useReducerUpdateImageUser/actions";
 import * as ServicePostApi from './../../../../apiServices/postAPI'
 import * as ServiceUserApi from './../../../../apiServices/userAPI'
 import * as ServiceFriendApi from './../../../../apiServices/friendAPI'
 import ImageGalleryImg from "../../../../ImageGalleryImg";
-import { setMessItem, zoomOutHideToMessItem } from '../../../../useReducerMessager/actions'
+import { setMessItem, zoomOutHideToMessItem } from '../../../../Reducer/useReducerMessager/actions'
 import { Link } from "react-router-dom";
 
 const cx = classNames.bind(styles)

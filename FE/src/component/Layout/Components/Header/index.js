@@ -7,7 +7,7 @@ import 'tippy.js/themes/material.css';
 import HeaderUserNavItem from '../HeaderUserNavItem';
 import HeaderUserNotifice from '../HeaderUserNotifice';
 import HeaderUserMessager from '../HeaderUserMessager';
-import { setMessLog } from '../../../../useReducerMessager/actions';
+import { setMessLog } from '../../../../Reducer/useReducerMessager/actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { memo, useContext, useEffect, useRef, useState } from 'react';
@@ -15,6 +15,7 @@ import { MyContext } from '../../../../App';
 import UserImg from './../../../../Img/userNone.png'
 import * as ServicePostApi from './../../../../apiServices/postAPI'
 import * as ServiceCountChatApi from './../../../../apiServices/countChatAPI'
+import { ReducerMessager } from '../../../../redux/selector';
 
 const cx = classNames.bind(style)
 function Header({newMesseger}) {
@@ -22,7 +23,7 @@ function Header({newMesseger}) {
     const {dataUser, typePage, ImageUrlPath} = useContext(MyContext)
     const navigate = useNavigate();
 
-    const messagerState = useSelector(state => state.messager)
+    const messagerState = useSelector(ReducerMessager)
     const { checkMesLog, jobs } = messagerState
     const dispatch = useDispatch()
     

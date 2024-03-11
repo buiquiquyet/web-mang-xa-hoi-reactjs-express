@@ -7,20 +7,22 @@ import { memo, useContext, useEffect, useRef, useState } from 'react';
 import { MyContext } from '../../../App';
 import * as ServicePostApi from './../../../apiServices/postAPI'
 import UserFeedLeftPageChild from './UserFeedLeftPageChild';
+import UserFeedRightPageChild from './UserFeedRightPageChild';
 const cx = classNames.bind(styles);
 
 
 function UserFeed() {
     const {dataUser, ImageUrlPath} = useContext(MyContext)
     const [avatar, setAvatar] = useState('')
+    const [checkShowAddFeed, setCheckShowAddFeed] = useState(false)
     const [typeFriendPage, setTypeFriendPage] = useState('pending')
     const fileInputRef = useRef(null);
     const handleSetTypePageFriend = (type) => {
         setTypeFriendPage(type)
     }
-
-   
-
+    const handleShowAddFeedText = () => {
+        setCheckShowAddFeed(true)
+    }
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         console.log(file);
@@ -58,27 +60,38 @@ function UserFeed() {
                         </span>
                     </div>
                 </div>
-                <UserFeedLeftPageChild/>
+                {
+                    checkShowAddFeed &&
+                    <UserFeedLeftPageChild/>
+                }
            </div>
            <div className={cx('friend-right')}>
-                <div className={cx('right-item', 'item1')}>
-                    <div className={cx('item-img')}>
-                        <img src={imgImg} alt='img'/>
-                    </div>
-                    <span>Tạo tin ảnh</span>
-                    <input
-                        type="file"
-                        ref={fileInputRef}
-                        style={{ opacity: 0, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', cursor: 'pointer' }}
-                        onChange={handleFileChange}
-                    />
-                </div>
-                <div className={cx('right-item', 'item2')}>
-                    <div className={cx('item-img')}>
-                        <span style={{color:'var(--color-text)'}}>Aa</span>
-                    </div>
-                    <span>Tạo tin dạng văn bản</span>
-                </div>
+                {
+                    !checkShowAddFeed
+                    ?
+                    <>
+                        <div className={cx('right-item', 'item1')}>
+                            <div className={cx('item-img')}>
+                                <img src={imgImg} alt='img'/>
+                            </div>
+                            <span>Tạo tin ảnh</span>
+                            <input
+                                type="file"
+                                ref={fileInputRef}
+                                style={{ opacity: 0, position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', cursor: 'pointer' }}
+                                onChange={handleFileChange}
+                            />
+                        </div>
+                        <div className={cx('right-item', 'item2')} onClick={handleShowAddFeedText}>
+                            <div className={cx('item-img')}>
+                                <span style={{color:'var(--color-text)'}}>Aa</span>
+                            </div>
+                            <span>Tạo tin dạng văn bản</span>
+                        </div>
+                    </>
+                    :
+                    <UserFeedRightPageChild/>
+                }
            </div>
         </div>
      );

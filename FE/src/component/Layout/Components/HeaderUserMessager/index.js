@@ -3,18 +3,19 @@ import { Wrapper } from '../../../../Popper';
 import classNames from 'classnames/bind';
 import MenuMessager from '../../../../MenuHeader/MenuMessager';
 import styles from './HeaderUserMessager.module.scss'
-import { setMessLog, zoomOutMessItem } from '../../../../useReducerMessager/actions';
+import { setMessLog, zoomOutMessItem } from '../../../../Reducer/useReducerMessager/actions';
 import MessagerChat from './../../../../MessagerChat'
 import MessagerChatZoomOut from '../../../../MessagerChatZoomOut';
 import { memo, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ReducerMessager } from '../../../../redux/selector';
 
 const cx = classNames.bind(styles);
 
 function HeaderUserMessager({children, newMesseger, countChat}) {
 
     
-    const messagerState = useSelector(state => state.messager)
+    const messagerState = useSelector(ReducerMessager)
     const { jobsZoomOut, checkMesLog, jobs } = messagerState
 
     const dispatch = useDispatch()

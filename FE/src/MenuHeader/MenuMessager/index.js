@@ -3,7 +3,7 @@ import styles from './MenuMessager.module.scss'
 import userNoneImg from './../../Img/userNone.png'
 
 import { LogoSearch } from "../../Icon";
-import { setMessLog, setMessItem, zoomOutHideToMessItem } from "../../useReducerMessager/actions";
+import { setMessLog, setMessItem, zoomOutHideToMessItem } from "../../Reducer/useReducerMessager/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useContext, useEffect, useState } from "react";
 import { MyContext } from "../../App";

@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import styles from './MessagerChat.module.scss'
 import { LogoClose, LogoSend } from "../Icon";
 import userNoneImg from './../Img/userNone.png';
-import { deletetMessItem, zoomOutMessItem } from "../useReducerMessager/actions";
+import { deletetMessItem, zoomOutMessItem } from "../Reducer/useReducerMessager/actions";
 import React, { useRef, useEffect, useState, useContext, memo } from "react";
 import { LogoZoomOut } from "../Icon";
 import { useDispatch } from "react-redux";

@@ -2,7 +2,7 @@
     background-color: var(--background-chidren);
     position: relative;
     width: 100%;
-    min-height: 100vh;
+    min-height: calc(100vh - 56px);
     display: flex;
     margin-top: var(--height-header);
 }
@@ -56,7 +56,6 @@
 }
 
 .friend-right {
-    min-height: 100vh;
     width: 100%;
     margin-left: 360px;
     display: flex;

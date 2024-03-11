@@ -5,7 +5,6 @@ import { SET_MESSAGER_LOG,
     ZOOMOUT_MESSAGER_ITEM,
     ZOOMOUT_HIDE_TO_MESSAGER_ITEM} from "./constants"
 export const initState = {
-    // checkMess: false,
     checkMesLog: false,
     jobs: [],
     jobsZoomOut: []
@@ -20,16 +19,6 @@ const reducer = (state = initState, action) => {
                 checkMesLog: action.payload
             }
             break
-        // case SET_MESSAGER:
-        //     if(state.jobs.length > 1) {
-        //         newState = { ...state }
-        //     }else {
-        //         newState = {
-        //             ...state,
-        //             checkMess: action.payload
-        //         }
-        //     }
-        //     break
         case SET_MESSAGER_ITEM:
             const isCheck = state.jobs.includes(action.payload)
             if(!isCheck) { 

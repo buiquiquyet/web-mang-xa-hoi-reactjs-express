@@ -9,6 +9,7 @@ import PostYouThink from '../../../../../PostYouThink';
 import * as ServicePostApi from './../../../../../apiServices/postAPI'
 import { useSelector } from 'react-redux';
 import { MyContext } from '../../../../../App';
+import { ReducerUpdateImage } from '../../../../../redux/selector';
 const cx = classNames.bind(styles);
 
 
@@ -17,7 +18,7 @@ function RightPostUserPage({userId, dataUser}) {
 
     const { ImageUrlPath } = useContext(MyContext)
 
-    const imageUploadState = useSelector(state => state.imageUpload)
+    const imageUploadState = useSelector(ReducerUpdateImage)
     const { checkStatusUploadImage } = imageUploadState
 
     const [isCheckModal, setIsCheckModal] = useState(false)
