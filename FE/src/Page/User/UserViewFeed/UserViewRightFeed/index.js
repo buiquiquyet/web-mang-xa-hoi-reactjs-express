@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { LogoNext, LogoPauseVideo, LogoPlayVideo, LogoPrev } from '../../../../Icon';
 import classNames from 'classnames/bind';
 import styles from './UserViewRightFeed.module.scss';
@@ -8,10 +8,10 @@ import LoadingBar from "./LoadingBar";
 import { useDispatch, useSelector } from "react-redux";
 import { LoadingStatusSlice } from "../../../../redux/selector";
 import { addLoadingDone } from "../../../../Reducer/loadingSlice";
-
+import { imgFeedArr } from "../../UserFeed/imgFeed";
 const cx = classNames.bind(styles);
 
-function UserViewRightFeed({item, total, lengthFeed}) {
+function UserViewRightFeed({data, item, total, lengthFeed}) {
     const {ImageUrlPath} = useContext(MyContext)
     const [currentProgress, setCurrentProgress] = useState(0);
     const [playPauseVideo, setPlayPauseVideo] = useState(false);
@@ -53,9 +53,15 @@ function UserViewRightFeed({item, total, lengthFeed}) {
     useEffect(() => {
         setCurrentProgress(0);
         setPlayPauseVideo(false)
-    },[item])
-    console.log(loadingStatusSlice);
-    console.log('length',lengthFeed);
+    },[item, data, loadingStatusSlice])
+    const indexToUse = useMemo(() => {
+        return loadingStatusSlice === lengthFeed - 1 && currentProgress === total
+            ? 0
+            : currentProgress === total
+            ? currentProgress - 1
+            : currentProgress;
+
+    }, [loadingStatusSlice, lengthFeed, currentProgress, total])
     return ( <div className={cx('friend-right')}>
                 <div className={cx('right-nav')}>
                     <div className={cx('prev')} 
@@ -68,11 +74,17 @@ function UserViewRightFeed({item, total, lengthFeed}) {
                             </div>
                         }
                     </div>
-                    <div  className={cx('right-content')}>
+                    <div  className={cx('right-content')} 
+                        style={{
+                            backgroundImage: data.length > currentProgress 
+                                ? `url(${imgFeedArr[data[indexToUse ].indexImg]})`
+                                :  `url(${imgFeedArr[data[currentProgress - 1 ].indexImg]})`
+                            }}
+                    >
                         <div className={cx('content-headerBar')}>
                            {renderLoadingBar(total)}
                         </div>
-                        <div className={cx('right-header')}>
+                        <div className={cx('right-header')}  >
                             <div className={cx('right-person')}>
                                 <img src={item.image
                                     ? ImageUrlPath+item.image
@@ -90,6 +102,14 @@ function UserViewRightFeed({item, total, lengthFeed}) {
                                     <LogoPauseVideo className={cx('logoVideo')}/>
                                 </div>
                             }
+                        </div>
+                        <div className={cx('right-text')}>
+                                { data.length > currentProgress 
+                                ?
+                                data[indexToUse].content 
+                                :
+                                data[currentProgress - 1].content 
+                                }
                         </div>
                     </div>
                     <div className={cx('next')}  

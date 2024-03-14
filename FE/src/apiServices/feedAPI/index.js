@@ -17,6 +17,15 @@ export const getByUserId = async ( userId) => {
     }
 
 }
+export const getByEachUserId = async ( userId) => {
+    try {
+        const res = await request.get(`/feed/getByEachUserId/${userId}`,)
+        return res
+    } catch (error) {
+        throw error
+    }
+
+}
 export const countByUserId = async ( userId) => {
     try {
         const res = await request.get(`/feed/countByUserId/${userId}`,)

@@ -18,7 +18,7 @@ function LoadingBar({item, onComplete, currentProgress , index, total, playPause
        if(index === currentProgress && !playPauseVideo) {
             const interval = setInterval(() => {
                 if (progress < 100) {
-                    setProgress(progress + 1);
+                    setProgress(progress + 2);
                 } else {
                     clearInterval(interval);
                     onComplete();
@@ -32,7 +32,7 @@ function LoadingBar({item, onComplete, currentProgress , index, total, playPause
 
             return () => clearInterval(interval);
        }
-    }, [progress, onComplete, index, currentProgress, dispatch, total, loadingStatusSlice,playPauseVideo]);
+    }, [progress, onComplete, index, currentProgress, dispatch, total, loadingStatusSlice,playPauseVideo, lengthFeed]);
   
     return ( 
         <div className={cx('loading-bar')}>

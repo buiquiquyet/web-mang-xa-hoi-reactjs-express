@@ -8,6 +8,7 @@ const upload = multer()
 router.post('/create',  upload.none(), FeedController.create)
 router.get('/getByUserId/:userId',  upload.none(), FeedController.getByUserId)
 router.get('/countByUserId/:userId',  upload.none(), FeedController.countByUserId)
+router.get('/getByEachUserId/:userId',  upload.none(), FeedController.getByEachUserId)
 
 
 

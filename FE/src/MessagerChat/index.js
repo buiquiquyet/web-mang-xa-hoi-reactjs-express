@@ -94,18 +94,18 @@ function MessagerChat({ id, style, newMesseger }) {
         if(rs.success) {
             message.success(rs.success)
             fecthAllDataBetwenUsers(userId1, userId2)
+            await ServiceCountChatApi.delCountChat({userId: userId2,senderId:userId1})
         } 
     }
+   
     useEffect(() => {
         if (contentRef.current) {
-            inputRef.current.focus()
             contentRef.current.scrollTop = contentRef.current.scrollHeight;
         }
-    }, []);
+    }, [newMesseger, dataMesseger]);
     useEffect(() => {
         if(dataUser) {
             fecthAllDataBetwenUsers(dataUser._id, id)
-            
         }
         fecthNameUser(id)
         fecthAvartarUser(id)
@@ -123,6 +123,7 @@ function MessagerChat({ id, style, newMesseger }) {
             }
         }
     },[newMesseger, id, dataUser])
+   
     return ( 
         <div  className={cx('wrapper')} style={style}>
             <div className={cx('header-chat')}>
@@ -167,24 +168,25 @@ function MessagerChat({ id, style, newMesseger }) {
             </div>
             <div className={cx('content-chat')} ref={contentRef} >
                 {
-                   dataMesseger.length > 0 && dataUser ?
-                    dataMesseger.map((item, index) => (
-                        <div key={index} className={cx('contentChat-nav')}>
-                            {(id === item.receiverId || id === item.senderId) &&
-                                <div className={cx('contenChat-item' , {'contentChat-end': dataUser._id === item.senderId})}>
-                                    {index === 0 || dataMesseger[index - 1].senderId !== item.senderId ? (
-                                        dataUser._id !== item.senderId &&
-                                            <div className={cx('chat-img')}>
-                                                <img src={avartarImg
-                                                    ? ImageUrlPath + avartarImg.url
-                                                    : userNoneImg} alt='img'/>
-                                            </div>
-                                    ) : <div style={{marginRight: '34px'}}></div>}
-                                    <div className={cx('chat-text')}>{ item.content }</div>
-                                </div>
-                            }
-                        </div>
-                    ))
+                   dataMesseger.length > 0 && dataUser 
+                   ?
+                   dataMesseger.map((item, index) => (
+                       <div  key={index} className={cx('contentChat-nav')}>
+                           {(id === item.receiverId || id === item.senderId) &&
+                               <div className={cx('contenChat-item' , {'contentChat-end': dataUser._id === item.senderId})}>
+                                   {index === 0 || dataMesseger[index - 1].senderId !== item.senderId ? (
+                                       dataUser._id !== item.senderId &&
+                                           <div className={cx('chat-img')}>
+                                               <img src={avartarImg
+                                                   ? ImageUrlPath + avartarImg.url
+                                                   : userNoneImg} alt='img'/>
+                                           </div>
+                                   ) : <div style={{marginRight: '34px'}}></div>}
+                                   <div className={cx('chat-text')}>{ item.content }</div>
+                               </div>
+                           }
+                       </div>
+                       ))
                     :
                     <div className={cx('none-chat')}>
                         <div  className={cx('noneChat-nav')}>

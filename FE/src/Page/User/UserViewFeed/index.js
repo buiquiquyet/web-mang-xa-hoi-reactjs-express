@@ -24,6 +24,7 @@ function UserViewFeed() {
     const [dataFeedByUserId, setDataFeedByUserId] = useState([])
     const [dataNameUser, setDataNameUser] = useState([])
     const [totalFeed, setTotalFeed] = useState([])
+    const [dataEachUser, setDataEachUser] = useState([])
     const [itemFeed, setItemFeed] = useState({})
 
     const handleShowViewRight = (item, index) => {
@@ -102,14 +103,30 @@ function UserViewFeed() {
         }
         fecthNamUser(dataFeedByUserId)
     }, [dataFeedByUserId, idFeed])
-    const renderRightViewFeed = (itemFeed, totalFeed, length) => {
-        if(itemFeed && Object.keys(itemFeed).length > 0 && totalFeed && totalFeed.length > 0) {
+    
+    const renderRightViewFeed =  (itemFeed, totalFeed, length) => {
+        if(dataEachUser.length > 0 && 
+            itemFeed && Object.keys(itemFeed).length > 0 && 
+            totalFeed && totalFeed.length > 0) 
+            {
             const total = totalFeed.filter((item) => {
                 return item.idUser === itemFeed.idUser && item.total
             })
-            return  <UserViewRightFeed  item={itemFeed} total={total[0].total} lengthFeed={length}  />
+
+            return  <UserViewRightFeed data={dataEachUser}  item={itemFeed} total={total[0].total} lengthFeed={length}  />
         }
     }
+    useEffect(() => {
+        const fecthByEachUserId = async (userId) => {
+            const rs = await ServiceFeedApi.getByEachUserId(userId)
+            if(rs.success) {
+                setDataEachUser(rs.data)
+            }
+        }
+        if(itemFeed && Object.keys(itemFeed).length > 0 ) {
+            fecthByEachUserId(itemFeed.idUser)
+        }
+    }, [itemFeed])
     useEffect(() => {
         if(dataNameUser && dataNameUser.length > 0 
             && loadingStatusSlice < dataNameUser.length) {
@@ -121,7 +138,7 @@ function UserViewFeed() {
         return () => {
             dispatch(addLoadingDone(0))
         }
-    }, []); 
+    }, [dispatch]); 
     return ( 
         <div className={cx('wrapper')}>
             <div className={cx('friend-left')}>

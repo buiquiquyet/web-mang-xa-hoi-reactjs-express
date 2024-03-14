@@ -1,6 +1,5 @@
 const Feed = require('./../model/Feed')
-
-
+const Friend = require('./../model/Friend')
 class FeedController {
     //[POST] /create
     async create(req, res, next) {
@@ -30,6 +29,7 @@ class FeedController {
     //     }
 
     // }
+
     //[GET] /countByUserId
     async countByUserId(req, res, next) {
         try {
@@ -40,32 +40,67 @@ class FeedController {
             return res.json({error:'Lấy tin không thành công'})
         }
     }
+     //[GET] /countByUserId
+     async getByEachUserId(req, res, next) {
+        try {
+            const userId = req.params.userId
+            const data = await Feed.find({ userId:userId }).lean()
+            return res.json({success:'Lấy tin thành công', data})
+        } catch (error) {
+            return res.json({error:'Lấy tin không thành công'})
+        }
+    }
+    //[GET] /getByUserId
     async getByUserId(req, res, next) {
         try {
-            const uniqueUserIds = await Feed.aggregate([
+            const userId = req.params.userId
+            const rs = await Friend.find(
                 {
-                    $group: {
-                        _id: '$userId',
-                        latestTime: { $max: '$createdAt' } 
+                    $or: [
+                        { $and: [{ userId1: userId }, { userId2: { $ne: userId } },{ status: 'accepted' }] },
+                        { $and: [{ userId2: userId }, { userId1: { $ne: userId } },{ status:  'accepted' }] }
+                    ]
                     }
-                },
-                {
-                    $project: {
-                        userId: '$_id',
-                        latestTime: 1,
-                        _id: 0
+            ).select('userId1 userId2').lean()
+            if(rs) {
+                const filteredRs = rs.map(item => {
+                    const filteredItem = [];
+                    Object.keys(item).forEach(key => {
+                        if (  key !== '_id') {
+                            filteredItem.push(item[key].toString());
+                        }
+                    });
+                    return filteredItem;
+                });
+                // return res.json({ success: 'Lấy tin thành công', data: filteredRs.flat() }); 
+                const uniqueUserIds = await Feed.aggregate([
+                    {
+                        $group: {
+                            _id: '$userId',
+                            latestTime: { $max: '$createdAt' } 
+                        }
+                    },
+                    {
+                        $project: {
+                            userId: '$_id',
+                            latestTime: 1,
+                            _id: 0
+                        }
+                    },
+                ]);
+                const dataAllFrend = uniqueUserIds.filter((item) =>  filteredRs.flat().includes(item.userId.toString()));
+                const dataAllPromises = dataAllFrend.map(async(item) => {
+                    if(filteredRs.flat().includes(item.userId.toString())) {
+                        const data = await Feed.findOne({ userId: item.userId, createdAt: item.latestTime }).lean();
+                        return data;
                     }
-                },
-            ]);
-            const dataAllPromises = uniqueUserIds.map(async(item) => {
-                const data = await Feed.findOne({ userId: item.userId, createdAt: item.latestTime }).lean();
-                return data;
-            });
-    
-            let dataAll = await Promise.all(dataAllPromises);
-            dataAll = dataAll.sort((a, b) => b.createdAt - a.createdAt);
-    
-            return res.json({ success: 'Lấy tin thành công', data: dataAll });
+                });
+        
+                let dataAll = await Promise.all(dataAllPromises);
+                dataAll = dataAll.sort((a, b) => b.createdAt - a.createdAt);
+        
+                return res.json({ success: 'Lấy tin thành công', data: dataAll });
+            }
         } catch (error) {
             // Xử lý lỗi
             console.error(error);

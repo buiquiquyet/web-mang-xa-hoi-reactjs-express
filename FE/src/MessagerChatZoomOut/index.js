@@ -35,7 +35,10 @@ function MessagerChatZoomOut({style, id}) {
         const rs = await ServicePostApi.showPostByUserAvartarCover({userId, typePost: 'avartar'})
         if(rs.success) {
             setAvartarImg(rs.result.image[0]);
+            return
         }
+        setAvartarImg(null);
+
     }
     useEffect(() => {
         fecthNameUser(id)

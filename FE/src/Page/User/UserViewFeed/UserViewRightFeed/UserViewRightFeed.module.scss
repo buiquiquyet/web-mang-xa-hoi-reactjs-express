@@ -24,6 +24,19 @@
     background-color:#ccc;
     margin-top: 10px;
     border-radius: 10px;
+    object-fit: cover;
+    background-size: cover;
+    background-position: center;
+}
+.right-text{
+    font-size: 2.4rem;
+    color: white;
+    font-weight: bold;
+    align-self: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-bottom: 80px;
 }
 .prev {
     cursor: pointer;
@@ -100,6 +113,7 @@
         height: 40px;
         width: 40px;
         border-radius: 100%;
+        border: 1px solid #ccc;
     }
     span {
         font-weight: bold;

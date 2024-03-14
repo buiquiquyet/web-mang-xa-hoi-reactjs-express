@@ -13,8 +13,8 @@ function MenuUser() {
 
     const handleGoToLogin = () => {
         localStorage.setItem('tokenFb', '')
-        window.location.reload();
         navigate('/login')
+        window.location.reload();
     }
     
     useEffect(() => {

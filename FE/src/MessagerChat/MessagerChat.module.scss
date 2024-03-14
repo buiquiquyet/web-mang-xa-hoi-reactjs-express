@@ -62,19 +62,22 @@
 .content-chat {
     flex: 1;
     overflow-y: scroll;
-    padding: 0 10px;
+    padding: 10px 10px 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    
 }
 .none-chat{
     font-size: 1.5rem;
     text-align: center;
     margin-bottom: 160px;
 }
-.contentChat-nav {
-    display: flex;
+.nav-chat {
+    overflow-y: inherit;
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
 }
+
 .contentChat-end {
     justify-content: flex-end;
 }
