@@ -212,3 +212,13 @@ export const LogoPrev = ({ width = '2rem', height = '2rem', className }) => (
   width={width}
   className={className}  fill="currentColor" ><path d="M14.791 5.207 8 12l6.793 6.793a1 1 0 1 1-1.415 1.414l-7.5-7.5a1 1 0 0 1 0-1.414l7.5-7.5a1 1 0 1 1 1.415 1.414z"></path></svg>
 )
+export const LogoPlayVideo = ({ width = '2rem', height = '2rem', className }) => (
+  <svg viewBox="0 0 24 24"height={height}
+  width={width}
+  className={className} fill="currentColor" ><path d="m18.477 12.906-9.711 5.919A1.148 1.148 0 0 1 7 17.919V6.081a1.148 1.148 0 0 1 1.766-.906l9.711 5.919a1.046 1.046 0 0 1 0 1.812z"></path></svg>
+)
+export const LogoPauseVideo = ({ width = '2rem', height = '2rem', className }) => (
+<svg viewBox="0 0 24 24" height={height}
+  width={width}
+  className={className} fill="currentColor" ><rect x="7" y="5" width="4" height="14" rx="1.167"></rect><rect x="13" y="5" width="4" height="14" rx="1.167"></rect></svg>
+)

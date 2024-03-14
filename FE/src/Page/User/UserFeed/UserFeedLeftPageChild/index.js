@@ -1,12 +1,17 @@
 import classNames from 'classnames/bind';
 import styles from './UserFeedLeftPageChild.module.scss';
-import { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addText } from '../../../../Reducer/feedText/feedTextSlice';
-import blueImg from './../../../../Img/feed/blue.jpg'
+import {  useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { addIndexImg, addText } from '../../../../Reducer/feedText/feedTextSlice';
+import { imgFeedArr } from '../imgFeed';
+import { FeedSlice } from '../../../../redux/selector';
 const cx = classNames.bind(styles);
+
+
+
 function UserFeedLeftPageChild() {
 
+    const feedSlice = useSelector(FeedSlice)
     const dispatch = useDispatch()
     const [focusInput, setFocusInput] = useState(false)
     const [inputValue, setInputValue] = useState('')
@@ -18,9 +23,17 @@ function UserFeedLeftPageChild() {
         setInputValue(inputRef.current.textContent)
         dispatch(addText(inputRef.current.textContent))
     }
+    const handleSliceImgIndex = ( index) => {
+        dispatch(addIndexImg(index))
+    }
     return ( 
         <div className={cx('wrapper')}>
-            <div className={cx('inputText', {'activeInputText': focusInput})}>
+            <div  
+                className={cx('inputText', 
+                        {'activeInputText': focusInput},
+                        {'activeInputTextError': feedSlice.text.length === 0 && feedSlice.checkInputText > 0 && !focusInput}
+                        )}
+            >
                 <div
                     contentEditable="true"
                     className={cx('input-post', 'input-post--focus')}
@@ -32,7 +45,7 @@ function UserFeedLeftPageChild() {
                 />
                 {
                     inputValue.length === 0 &&
-                    <div className={cx('placeholder-input')}  >
+                    <div className={cx('placeholder-input')}   >
                         Bắt đầu nhập
                     </div>
                 }     
@@ -40,33 +53,18 @@ function UserFeedLeftPageChild() {
             <div className={cx('inputText', 'input-post')}>
                 <span>Phông nền</span>
                 <div className={cx('color-feed')}>
-                    <div className={cx('colorFeed-img')}>
-                        <img className={cx('activeImg')} src={blueImg} alt='img'/>
-                    </div>
-                    <div className={cx('colorFeed-img')}>
-                        <img src={blueImg} alt='img'/>
-                    </div>
-                    <div className={cx('colorFeed-img')}>
-                        <img src={blueImg} alt='img'/>
-                    </div>
-                    <div className={cx('colorFeed-img')}>
-                        <img src={blueImg} alt='img'/>
-                    </div>
-                    <div className={cx('colorFeed-img')}>
-                        <img src={blueImg} alt='img'/>
-                    </div>
-                    <div className={cx('colorFeed-img')}>
-                        <img src={blueImg} alt='img'/>
-                    </div>
-                    <div className={cx('colorFeed-img')}>
-                        <img src={blueImg} alt='img'/>
-                    </div>
-                    <div className={cx('colorFeed-img')}>
-                        <img src={blueImg} alt='img'/>
-                    </div>
-                    <div className={cx('colorFeed-img')}>
-                        <img src={blueImg} alt='img'/>
-                    </div>
+                    {
+                        imgFeedArr.map((item, index) => (
+                            <div 
+                                key={index} 
+                                className={cx('colorFeed-img')} 
+                                onClick={() => handleSliceImgIndex( index)}
+                            >
+                                <img className={cx({'activeImg': feedSlice.indexImg === index})} src={item} alt='img'/>
+                            </div>
+                        ))
+                    }
+                   
                 </div>
             </div>
             

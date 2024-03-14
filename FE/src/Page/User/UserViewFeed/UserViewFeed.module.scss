@@ -1,0 +1,105 @@
+.wrapper {
+    background-color: var(--background-chidren);
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - 56px);
+    display: flex;
+    margin-top: var(--height-header);
+    z-index: 1;
+    
+}
+//left
+.friend-left {
+    position: fixed;
+    top: var(--height-header);
+    left: 0px;
+    width: 360px;
+    background-color: white;
+    height: 100%;
+    box-shadow: 2px 2px 10px 2px #dddd;
+    padding: 14px;
+    overflow-y: auto;
+}
+.friendLeft-lable {
+    font-size: 2.6rem;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 8px;
+}
+.left-addSelf {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    gap: 10px;
+    cursor: pointer;
+}
+.add-feedSelf {
+    background-color: var(--background-chidren);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    padding: 20px;
+}
+.add-text {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.2rem;
+    color: var(--color-text);
+    justify-content: flex-start;
+    .text-main{
+        font-weight: bold;
+        font-size: 1.4rem;
+    }
+}
+.left-navFeed {
+    display: flex;
+    flex-direction: column;
+}
+.left-lableNav {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.left-itemFeed {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover {
+        background-color: var(--background-chidren);
+    }
+}
+.item-img {
+    border: 3px solid var(--primary);
+    border-radius: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px;
+    img {
+        height: 57px;
+        width: 57px;
+        border-radius: 100%;
+    }
+    
+}
+.item-fullname {
+    display: flex;
+    flex-direction: column;
+    span {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    .item-total{
+        font-weight: 100;
+        color: var(--primary);
+    }
+}
+.active-left {
+    background-color: var(--background-chidren);
+}
+
+
+  

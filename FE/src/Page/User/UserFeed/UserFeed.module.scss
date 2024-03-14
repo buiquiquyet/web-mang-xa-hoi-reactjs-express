@@ -5,6 +5,7 @@
     min-height: calc(100vh - 56px);
     display: flex;
     margin-top: var(--height-header);
+    
 }
 .friend-left {
     position: fixed;
@@ -15,6 +16,7 @@
     height: 100%;
     box-shadow: 2px 2px 10px 2px #dddd;
     padding: 10px;
+    overflow-y: auto;
 }
 .friendLeft-lable {
     font-size: 2.6rem;
@@ -54,7 +56,31 @@
         border: 1px solid #ccc;
     }
 }
-
+.left-button {
+    position: fixed;
+    bottom: 0px;
+    left: 0;
+    width: 360px;
+    box-shadow: 0 2px 12px  #ccc;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    background: white;
+    button {
+        padding: 12px 20px;
+        font-weight: bold;
+        border-radius: 10px;
+        height: 36px;
+        min-width: 120px;
+        background-color: var(--color-hoverComponent);
+        cursor: pointer;
+        &:hover {
+            filter: brightness(90%);
+        }
+    }
+}
 .friend-right {
     width: 100%;
     margin-left: 360px;
@@ -111,7 +137,7 @@
     }
     box-shadow: 0 2px 4px  #515050;
     border: 1px solid #ccc;
-   border-radius: 100%;
-   background-color: var(--background-chidren);
+    border-radius: 100%;
+    background-color: var(--background-chidren);
   
 }

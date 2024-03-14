@@ -1,21 +1,28 @@
 import classNames from 'classnames/bind';
 import styles from './MainFeed.module.scss';
 import UserNoneImg from './../../../../Img/userNone.png'
-import testImg from './../../../../Img/test.jpg'
-import testImg2 from './../../../../Img/test1.jpg'
-import testImg1 from './../../../../Img/test2.jpg'
+
 import { LogoFeed, LogoNext, LogoPrev } from '../../../../Icon';
-import { useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css'; 
 import { useNavigate } from 'react-router-dom';
+import * as ServiceFeedApi from './../../../../apiServices/feedAPI'
+import { MyContext } from '../../../../App';
+import { imgFeedArr } from '../../UserFeed/imgFeed';
+import * as ServiceUserApi from './../../../../apiServices/userAPI'
+import * as ServicePostApi from './../../../../apiServices/postAPI'
 const cx = classNames.bind(styles);
 
 function MainFeed() {
 
     const navigate = useNavigate()
+    const {dataUser, ImageUrlPath} = useContext(MyContext)
     const swiperRef = useRef(null);
     const [indexSlideImg, setIndexSlideImg] = useState(1)
+    const [dataNameUser, setDataNameUser] = useState([])
+
+    const [dataFeedByUserId, setDataFeedByUserId] = useState([])
     const goNext = () => {
         if (swiperRef.current && swiperRef.current.swiper) {
         swiperRef.current.swiper.slideNext();
@@ -27,23 +34,58 @@ function MainFeed() {
         swiperRef.current.swiper.slidePrev();
         }
     };
-    const slide_img = [
-        1, testImg, testImg2, testImg1,testImg1
-      ];
-    const handleShowFeed = (index) => {
-        if(index === 0) {
+    
+    const handleShowFeed = (index, userId) => {
+        if(index === 0 && userId === '') {
             navigate('feedPage')
+            return
         }
+        navigate(`/viewFeedPage/${userId}`)
+        
     }
     const handleStateSlide = (swiper) => {
         setIndexSlideImg(swiper.realIndex  + 1)
     }
+    useEffect(() => {
+        if(dataUser){
+            const fetchFeedByUserId = async (userId) => {
+                const rs = await ServiceFeedApi.getByUserId(userId)
+                if(rs.success) {
+                    setDataFeedByUserId(rs.data)
+                }
+            }
+            fetchFeedByUserId(dataUser._id)
+        }
+    }, [dataUser])
+    useEffect(() => {
+        const fecthNamUser = async (dataFeedByUserId) => {
+            if(dataFeedByUserId && dataFeedByUserId.length > 0 ) {
+                const idUser = dataFeedByUserId.map(item => item.userId)
+                const fullnames = idUser.map(async(item) => {
+                    const names = await ServiceUserApi.getNameUser(item)
+                    const imageAvartar = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'avartar', userId: item})
+                    if(imageAvartar.success && names.success) {
+                        if(imageAvartar.result.image.length > 0) {
+                            return { idUser: item,
+                                    name:  names.data.first_name +' ' +  names.data.last_name, 
+                                    image: imageAvartar.result.image[0].url}
+                        }
+                    }
+                    return { idUser: item,
+                            name: names.data.first_name +' ' +  names.data.last_name, image: null
+                        }
+                })
+                const dataNameUser = await Promise.all(fullnames)
+                    setDataNameUser(dataNameUser)
+                }
+            }
+        fecthNamUser(dataFeedByUserId)
+    }, [dataFeedByUserId])
     return ( 
         <div className={cx('wrapper')}>
             <div className={cx('content-slide')}>
                 <Swiper
                     grabCursor={true}
-                    // centeredSlides={true}
                     loop={false}
                     slidesPerView={4}
                     coverflowEffect={{
@@ -60,27 +102,41 @@ function MainFeed() {
                     ref={swiperRef}
                     onSlideChange={handleStateSlide}
                 >
-                    {slide_img.map((img, i) => {
+                    <SwiperSlide className={cx('swiper-slide')}  onClick={() => handleShowFeed(0,'')} >
+                        <div className={cx('feed-item')}>
+                            <div className={cx('feedSelf')} style={{ backgroundImage: `url(${UserNoneImg})`, filter:'brightness(86%)' }}>
+                            </div>
+                            <div className={cx('feedDiv')}>
+                                    <span>Tạo tin</span>
+                                    <div className={cx('add-feed')}>
+                                        <div className={cx('logo-feed')}>
+                                            <LogoFeed className={cx('logoFeed-icon')}/>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </SwiperSlide>
+                    {
+                    dataFeedByUserId.length > 0 && 
+                    dataFeedByUserId.map((item, i) => {
                     return (
-                        <SwiperSlide className={cx('swiper-slide')} key={i} onClick={() => handleShowFeed(i)}>
+                        <SwiperSlide  className={cx('swiper-slide')} key={i}  onClick={() => handleShowFeed(i, item.userId)}>
                             {
-                                i === 0 
-                                ?
                                 <div className={cx('feed-item')}>
-                                    <div className={cx('feedSelf')} style={{ backgroundImage: `url(${UserNoneImg})`, filter:'brightness(86%)' }}>
+                                    <div className={cx('feed-img')}>
+                                        <img src={dataNameUser.length > 0 &&
+                                        dataNameUser[i].image
+                                        ? ImageUrlPath + dataNameUser[i].image
+                                        : UserNoneImg} alt='img'/> 
                                     </div>
-                                    <div className={cx('feedDiv')}>
-                                            <span>Tạo tin</span>
-                                            <div className={cx('add-feed')}>
-                                                <div className={cx('logo-feed')}>
-                                                    <LogoFeed className={cx('logoFeed-icon')}/>
-                                                </div>
-                                            </div>
+                                    <div className={cx('feedSelf')} style={{ backgroundImage: `url(${imgFeedArr[item.indexImg]})`, height:'100%' }}>
+                                        {
+                                            item.type === 'text' &&
+                                            <span>{item.content}</span>
+                                        }
                                     </div>
-                                </div>
-                                :
-                                <div className={cx('feed-item')}>
-                                    <div className={cx('feedSelf')} style={{ backgroundImage: `url(${img})`, height:'100%' }}>
+                                    <div className={cx('feed-name')}>
+                                        {dataNameUser.length > 0 && dataNameUser[i].name}
                                     </div>
                                 </div>
                             }
@@ -89,7 +145,7 @@ function MainFeed() {
                     })}
                 </Swiper>
                 {
-                    slide_img && slide_img.length > 4 &&
+                    dataFeedByUserId && dataFeedByUserId.length > 3 &&
                    <>
                     {
                         indexSlideImg > 1 && 
@@ -98,9 +154,7 @@ function MainFeed() {
                     <button className={cx('buttonSlideNext')} onClick={goNext}> <LogoNext className={cx('iconSlide')}/></button>
                    </>
                 }
-                 
             </div>
-           
         </div>
      );
 }

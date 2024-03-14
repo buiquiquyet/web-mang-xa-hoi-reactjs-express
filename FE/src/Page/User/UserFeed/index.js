@@ -2,17 +2,27 @@
 import classNames from 'classnames/bind';
 import styles from './UserFeed.module.scss';
 import userNoneImg from './../../../Img/userNone.png'
+
 import imgImg from './../../../Img/imageImg.png'
 import { memo, useContext, useEffect, useRef, useState } from 'react';
 import { MyContext } from '../../../App';
 import * as ServicePostApi from './../../../apiServices/postAPI'
 import UserFeedLeftPageChild from './UserFeedLeftPageChild';
 import UserFeedRightPageChild from './UserFeedRightPageChild';
+import { useDispatch, useSelector } from 'react-redux';
+import { addCheckInputText, addIndexImg, addText } from '../../../Reducer/feedText/feedTextSlice';
+import { FeedSlice } from '../../../redux/selector';
+import * as ServiceFeedApi from './../../../apiServices/feedAPI'
+import { message } from 'antd';
+import { useNavigate } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 
 function UserFeed() {
+    const navigate = useNavigate()
     const {dataUser, ImageUrlPath} = useContext(MyContext)
+    const feedSlice = useSelector(FeedSlice)
+    const dispatch = useDispatch()
     const [avatar, setAvatar] = useState('')
     const [checkShowAddFeed, setCheckShowAddFeed] = useState(false)
     const [typeFriendPage, setTypeFriendPage] = useState('pending')
@@ -21,12 +31,35 @@ function UserFeed() {
         setTypeFriendPage(type)
     }
     const handleShowAddFeedText = () => {
-        setCheckShowAddFeed(true)
+        setCheckShowAddFeed(!checkShowAddFeed)
+        if(checkShowAddFeed === false) {
+            dispatch(addText(''))
+        }
     }
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         console.log(file);
     };
+    const handleSubmitFeedText = async  () => {
+        if(feedSlice.text.length === 0) {
+            dispatch(addCheckInputText(1))
+            return
+        }
+        if(feedSlice.img.length === 0) {
+            const formData = new FormData() 
+            formData.append('type', 'text')
+            formData.append('indexImg', feedSlice.indexImg)
+            formData.append('userId', dataUser._id)
+            formData.append('content', feedSlice.text)
+            const rs = await ServiceFeedApi.create(formData)
+            if(rs.success) {
+
+                await message.success(rs.success)
+                dispatch(addIndexImg(0))
+                navigate('/')
+            }
+        }
+    }
     useEffect(() => {
         const fecthImgAvatar = async (userId) => {
             const rs = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'avartar', userId})
@@ -62,7 +95,16 @@ function UserFeed() {
                 </div>
                 {
                     checkShowAddFeed &&
-                    <UserFeedLeftPageChild/>
+                    <>
+                        <UserFeedLeftPageChild/>
+                        <div className={cx('left-button')}>
+                            <button onClick={handleShowAddFeedText}>Bỏ</button>
+                            <button 
+                                style={{backgroundColor:'var(--primary)', color:'white'}}
+                                onClick={handleSubmitFeedText}
+                            >Chia sẻ lên tin</button>
+                        </div>
+                    </>
                 }
            </div>
            <div className={cx('friend-right')}>
