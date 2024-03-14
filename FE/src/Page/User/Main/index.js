@@ -8,10 +8,13 @@ import { MyContext } from '../../../App';
 import PostYouThink from '../../../PostYouThink';
 import PostBoxFb from '../../../PostBoxFb';
 import MainFeed from './MainFeed';
+import { useLocation } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 
 function Main() {
+    const location = useLocation()
+    
     const [showDataPost, setShowDataPost] = useState([])
     const {  dataUser,ImageUrlPath } = useContext(MyContext)
     const [ImageAvartarUsers, setImageAvartarUsers] = useState([])
@@ -59,6 +62,7 @@ function Main() {
             fecthProfileUsers(showDataPost)
         }
     },[showDataPost])
+    
     useEffect(() => {
         if(dataUser) {
             const fecthImageAvartar = async (userId) => {
@@ -73,7 +77,7 @@ function Main() {
         }
     }, [dataUser])
     return ( 
-        <div className={cx('wrapper')}>
+        <div className={cx('wrapper')} >
             <MainFeed/>
             <PostYouThink 
                 ImageUrlPath={ImageUrlPath}

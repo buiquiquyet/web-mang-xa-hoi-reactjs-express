@@ -123,7 +123,6 @@ function MessagerChat({ id, style, newMesseger }) {
             }
         }
     },[newMesseger, id, dataUser])
-   
     return ( 
         <div  className={cx('wrapper')} style={style}>
             <div className={cx('header-chat')}>

@@ -4,11 +4,14 @@ import styles from './DefaultLayout.module.scss'
 import Header from "../Components/Header";
 import SideBarLeft from "../Components/SideBarLeft";
 import SideBarRight from "../Components/SideBarRight";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { MyContext } from "../../../App";
 import { MyContextSocket } from "../../..";
+import { useLocation } from "react-router-dom";
 const cx = classNames.bind(styles)
 function DefaultLayout({children}) {
+    const location = useLocation()
+    const scrollRef = useRef(null);
     const [checkUserOnline, setCheckUserOnline] = useState(false)
 
     const [newMesseger, setNewMesseger] = useState(null)
@@ -16,7 +19,14 @@ function DefaultLayout({children}) {
     const {socket } = useContext(MyContextSocket)
 
     const {dataUser } = useContext(MyContext)
-    
+     useEffect(() => {
+        if (scrollRef.current ) {
+            scrollRef.current.scrollIntoView({
+                top: 0,
+                behavior: 'smooth'
+              });
+        }
+      }, [location]);
     useEffect(() => {
         if(dataUser) {
             socket.on('newMesseger', (messeger) => {
@@ -36,7 +46,7 @@ function DefaultLayout({children}) {
         }
     }, [socket, dataUser, checkUserOnline]);
     return ( 
-        <div className={cx('wrapper')}>
+        <div className={cx('wrapper')} ref={scrollRef}>
             <Header newMesseger={newMesseger}/>  
             <div className={cx('app-content')}>
                 <SideBarLeft/>
