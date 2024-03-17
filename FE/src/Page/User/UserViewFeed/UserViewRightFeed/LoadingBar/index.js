@@ -21,22 +21,23 @@ function LoadingBar({data, item, onComplete, currentProgress , index, total, pla
         
     }
     useEffect(() => {
-        console.log(loadingTotalNewFeedCountFeedSlice);
         if(loadingTotalNewFeedCountFeedSlice === item.totalNewFeed) {
             dispatch(addIsCheckFeed(item.idUser))
+            dispatch(addTotalNewFeedCount(0))
         }
     },[loadingTotalNewFeedCountFeedSlice, item, dispatch] )
     useEffect(() => {
        if(index === currentProgress && !playPauseVideo) {
             const interval = setInterval(() => {
                 if (progress < 100) {
-                    setProgress(progress + 2);
+                    setProgress(progress + 10);
                 } else {
                     clearInterval(interval);
                     onComplete();
                     updateStatusFeed(data._id)
                     if(index === total - 1) {
                         if(loadingStatusSlice < lengthFeed - 1) {
+                            dispatch(addIsCheckFeed(''))
                             dispatch(addLoadingDone(loadingStatusSlice + 1))
                         }
                     }

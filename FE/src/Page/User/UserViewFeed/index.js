@@ -112,8 +112,6 @@ function UserViewFeed() {
         fecthNamUser(dataFeedByUserId)
     }, [dataFeedByUserId, idFeed])
     useEffect(() => {
-        console.log('data', dataNameUser);
-        console.log('loadingIsCheckFeedSlice', loadingIsCheckFeedSlice);
         if(dataNameUser && dataNameUser.length > 0 && loadingIsCheckFeedSlice) {
             const newDataNameUser = dataNameUser.map(item => {
                 if(item.idUser === loadingIsCheckFeedSlice  ) {
@@ -126,7 +124,6 @@ function UserViewFeed() {
             }
         }
     }, [dataNameUser, loadingIsCheckFeedSlice])
-    console.log(dataNameUser);
     const renderRightViewFeed =  useCallback((itemFeed, totalFeed, length) => {
         if(dataEachUser.length > 0 && 
             itemFeed && Object.keys(itemFeed).length > 0 && 
