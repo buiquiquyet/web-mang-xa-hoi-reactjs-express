@@ -8,9 +8,34 @@ export const create = async ( option) => {
     }
 
 }
+export const createImage = async ( option) => {
+    try {
+        const res = await request.post('/feed/createImage',option)
+        return res
+    } catch (error) {
+        throw error
+    }
+}
+export const updateStatus = async ( userId) => {
+    try {
+        const res = await request.get(`/feed/updateStatus/${userId}`,)
+        return res
+    } catch (error) {
+        throw error
+    }
+}
 export const getByUserId = async ( userId) => {
     try {
         const res = await request.get(`/feed/getByUserId/${userId}`,)
+        return res
+    } catch (error) {
+        throw error
+    }
+
+}
+export const getByStatusFeed = async ( userId) => {
+    try {
+        const res = await request.get(`/feed/getByStatusFeed/${userId}`,)
         return res
     } catch (error) {
         throw error

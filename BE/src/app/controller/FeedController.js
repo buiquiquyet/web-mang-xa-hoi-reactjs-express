@@ -1,11 +1,27 @@
 const Feed = require('./../model/Feed')
 const Friend = require('./../model/Friend')
+
 class FeedController {
     //[POST] /create
     async create(req, res, next) {
         try {
             const data = {...req.body}
             await Feed.create(data)
+            return res.json({success:'Tạo tin thành công'})
+        } catch (error) {
+            return res.json({error:'Tạo tin không thành công'})
+            
+        }
+    }
+    //[POST] /createImage
+    async create(req, res, next) {
+        try {
+            await Feed.create({
+                userId: req.body.userId,
+                content: req.body.content,
+                type: req.body.type,
+                image: req.file.filename
+            })
             return res.json({success:'Tạo tin thành công'})
         } catch (error) {
             return res.json({error:'Tạo tin không thành công'})
@@ -40,14 +56,37 @@ class FeedController {
             return res.json({error:'Lấy tin không thành công'})
         }
     }
+    //[GET] /updateStatus
+    async updateStatus(req, res, next) {
+        try {
+            const feedId = req.params.feedId
+            await Feed.updateOne({ _id: feedId }, { $set: { isCheck: true } })
+            return res.json({success:'Cập nhật tin thành công'})
+        } catch (error) {
+            return res.json({error:'Cập nhật tin không thành công'})
+        }
+    }
      //[GET] /countByUserId
      async getByEachUserId(req, res, next) {
         try {
             const userId = req.params.userId
-            const data = await Feed.find({ userId:userId }).lean()
+            const data = await Feed.find({ userId:userId }).sort({createdAt: -1}).lean()
             return res.json({success:'Lấy tin thành công', data})
         } catch (error) {
             return res.json({error:'Lấy tin không thành công'})
+        }
+    }
+     //[GET] /getByStatusFeed
+     async getByStatusFeed(req, res, next) {
+        try {
+            const userId = req.params.userId
+            const data = await Feed.find({ userId:userId, isCheck: false }).lean()
+            if(data.length > 0) {
+                return res.json({success:'Lấy status tin thành công', total: data.length})
+            }
+            return res.json({error:'Không có status tin '})
+        } catch (error) {
+            return res.json({error:'Lấy status tin không thành công'})
         }
     }
     //[GET] /getByUserId
@@ -107,6 +146,16 @@ class FeedController {
             return res.status(500).json({ error: 'Đã xảy ra lỗi khi lấy tin' });
         }
     }
+    //[DELETE] /
+    async deleteFeedAfter24hours () {
+        try {
+          const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+          await Feed.deleteMany({ createdAt: { $lt: twentyFourHoursAgo } });
+          console.log({ success: 'Xóa feed thành công' });
+        } catch (err) {
+          console.error({ success: 'Xóa feed không thành công' });
+        }Error
+      };
     
     
 }

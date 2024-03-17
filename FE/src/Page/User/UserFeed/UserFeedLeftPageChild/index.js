@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './UserFeedLeftPageChild.module.scss';
-import {  useRef, useState } from 'react';
+import {  memo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addIndexImg, addText } from '../../../../Reducer/feedText/feedTextSlice';
 import { imgFeedArr } from '../imgFeed';
@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 
 
 
-function UserFeedLeftPageChild() {
+function UserFeedLeftPageChild({type}) {
 
     const feedSlice = useSelector(FeedSlice)
     const dispatch = useDispatch()
@@ -31,7 +31,7 @@ function UserFeedLeftPageChild() {
             <div  
                 className={cx('inputText', 
                         {'activeInputText': focusInput},
-                        {'activeInputTextError': feedSlice.text.length === 0 && feedSlice.checkInputText > 0 && !focusInput}
+                        {'activeInputTextError': feedSlice.text.length === 0 && type === 'text' && feedSlice.checkInputText > 0 && !focusInput}
                         )}
             >
                 <div
@@ -50,26 +50,29 @@ function UserFeedLeftPageChild() {
                     </div>
                 }     
             </div> 
-            <div className={cx('inputText', 'input-post')}>
-                <span>Phông nền</span>
-                <div className={cx('color-feed')}>
-                    {
-                        imgFeedArr.map((item, index) => (
-                            <div 
-                                key={index} 
-                                className={cx('colorFeed-img')} 
-                                onClick={() => handleSliceImgIndex( index)}
-                            >
-                                <img className={cx({'activeImg': feedSlice.indexImg === index})} src={item} alt='img'/>
-                            </div>
-                        ))
-                    }
-                   
+            {
+                type === 'text' &&
+                <div className={cx('inputText', 'input-post')}>
+                    <span>Phông nền</span>
+                    <div className={cx('color-feed')}>
+                        {
+                            imgFeedArr.map((item, index) => (
+                                <div 
+                                    key={index} 
+                                    className={cx('colorFeed-img')} 
+                                    onClick={() => handleSliceImgIndex( index)}
+                                >
+                                    <img className={cx({'activeImg': feedSlice.indexImg === index})} src={item} alt='img'/>
+                                </div>
+                            ))
+                        }
+                    
+                    </div>
                 </div>
-            </div>
+            }
             
         </div>
      );
 }
 
-export default UserFeedLeftPageChild;
+export default memo(UserFeedLeftPageChild);

@@ -64,17 +64,22 @@ function MainFeed() {
                 const fullnames = idUser.map(async(item) => {
                     const names = await ServiceUserApi.getNameUser(item)
                     const imageAvartar = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'avartar', userId: item})
+                    const status = await ServiceFeedApi.getByStatusFeed(item)
                     if(imageAvartar.success && names.success) {
                         if(imageAvartar.result.image.length > 0) {
                             return { idUser: item,
                                     name:  names.data.first_name +' ' +  names.data.last_name, 
-                                    image: imageAvartar.result.image[0].url}
+                                    image: imageAvartar.result.image[0].url,
+                                    isCheck: status.success ? false : true
+                                }
                         }
                     }
                     return { idUser: item,
-                            name: names.data.first_name +' ' +  names.data.last_name, image: null
+                            name: names.data.first_name +' ' +  names.data.last_name, image: null,
+                            isCheck: status.success ? false : true
                         }
                 })
+                
                 const dataNameUser = await Promise.all(fullnames)
                     setDataNameUser(dataNameUser)
                 }
@@ -123,15 +128,21 @@ function MainFeed() {
                         <SwiperSlide  className={cx('swiper-slide')} key={i}  onClick={() => handleShowFeed(i, item.userId)}>
                             {
                                 <div className={cx('feed-item')}>
-                                    <div className={cx('feed-img')}>
+                                    <div className={cx('feed-img')}
+                                        style={{border: `4px solid ${item.isCheck ? 'white' : 'var(--primary)'}`}}
+                                    >
                                         <img src={dataNameUser.length > 0 &&
                                         dataNameUser[i].image
                                         ? ImageUrlPath + dataNameUser[i].image
                                         : UserNoneImg} alt='img'/> 
                                     </div>
-                                    <div className={cx('feedSelf')} style={{ backgroundImage: `url(${imgFeedArr[item.indexImg]})`, height:'100%' }}>
+                                    <div className={cx('feedSelf')} 
+                                        style={{ backgroundImage: item.type === 'text' 
+                                                ? `url(${imgFeedArr[item.indexImg]})`
+                                                : `url(${ImageUrlPath + item.image})`, 
+                                                height:'100%' }}>
                                         {
-                                            item.type === 'text' &&
+                                            item.content &&
                                             <span>{item.content}</span>
                                         }
                                     </div>

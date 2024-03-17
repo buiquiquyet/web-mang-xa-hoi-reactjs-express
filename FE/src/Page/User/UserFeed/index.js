@@ -25,38 +25,62 @@ function UserFeed() {
     const dispatch = useDispatch()
     const [avatar, setAvatar] = useState('')
     const [checkShowAddFeed, setCheckShowAddFeed] = useState(false)
+    const [checkShowAddFeedImg, setCheckShowAddFeedImg] = useState(false)
+    const [selectedFile, setSelectedFile] = useState(null);
     const [typeFriendPage, setTypeFriendPage] = useState('pending')
     const fileInputRef = useRef(null);
     const handleSetTypePageFriend = (type) => {
         setTypeFriendPage(type)
     }
     const handleShowAddFeedText = () => {
-        setCheckShowAddFeed(!checkShowAddFeed)
+        setCheckShowAddFeed(true)
         if(checkShowAddFeed === false) {
+            dispatch(addText(''))
+        }
+    }
+    const handleShowAddFeedTextHide = () => {
+        setCheckShowAddFeed(false)
+        setCheckShowAddFeedImg(false)
+        setSelectedFile(null)
+        if(feedSlice.text.length > 0) {
             dispatch(addText(''))
         }
     }
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        console.log(file);
+        setSelectedFile(file);
+        setCheckShowAddFeedImg(true)
     };
     const handleSubmitFeedText = async  () => {
-        if(feedSlice.text.length === 0) {
+        if(feedSlice.text.length === 0 && !selectedFile) {
             dispatch(addCheckInputText(1))
             return
         }
         if(feedSlice.img.length === 0) {
             const formData = new FormData() 
-            formData.append('type', 'text')
-            formData.append('indexImg', feedSlice.indexImg)
+            if(selectedFile) {
+                formData.append('type', 'image')
+                formData.append('image', selectedFile)
+            }
+            else {
+                formData.append('type', 'text')
+                formData.append('indexImg', feedSlice.indexImg)
+            }
             formData.append('userId', dataUser._id)
             formData.append('content', feedSlice.text)
-            const rs = await ServiceFeedApi.create(formData)
-            if(rs.success) {
-
-                await message.success(rs.success)
-                dispatch(addIndexImg(0))
-                navigate('/')
+            if(!selectedFile) {
+                const rs = await ServiceFeedApi.create(formData)
+                if(rs.success) {
+                    await message.success(rs.success)
+                    dispatch(addIndexImg(0))
+                    navigate('/')
+                }
+            }else {
+                const rs = await ServiceFeedApi.createImage(formData)
+                if(rs.success) {
+                    await message.success(rs.success)
+                    navigate('/')
+                }
             }
         }
     }
@@ -94,11 +118,14 @@ function UserFeed() {
                     </div>
                 </div>
                 {
-                    checkShowAddFeed &&
+                    (checkShowAddFeed || checkShowAddFeedImg) &&
                     <>
-                        <UserFeedLeftPageChild/>
+                        {
+                            (checkShowAddFeed || checkShowAddFeedImg) &&
+                            <UserFeedLeftPageChild type={selectedFile ? selectedFile : 'text'}/>
+                        }
                         <div className={cx('left-button')}>
-                            <button onClick={handleShowAddFeedText}>Bỏ</button>
+                            <button onClick={handleShowAddFeedTextHide}>Bỏ</button>
                             <button 
                                 style={{backgroundColor:'var(--primary)', color:'white'}}
                                 onClick={handleSubmitFeedText}
@@ -109,7 +136,7 @@ function UserFeed() {
            </div>
            <div className={cx('friend-right')}>
                 {
-                    !checkShowAddFeed
+                    !checkShowAddFeedImg && !checkShowAddFeed  
                     ?
                     <>
                         <div className={cx('right-item', 'item1')}>
@@ -132,7 +159,7 @@ function UserFeed() {
                         </div>
                     </>
                     :
-                    <UserFeedRightPageChild/>
+                    <UserFeedRightPageChild type={selectedFile ? selectedFile : 'text'}/>
                 }
            </div>
         </div>

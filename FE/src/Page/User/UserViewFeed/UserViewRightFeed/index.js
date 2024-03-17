@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { memo, useContext, useEffect, useMemo, useState } from "react";
 import { LogoNext, LogoPauseVideo, LogoPlayVideo, LogoPrev } from '../../../../Icon';
 import classNames from 'classnames/bind';
 import styles from './UserViewRightFeed.module.scss';
@@ -33,6 +33,7 @@ function UserViewRightFeed({data, item, total, lengthFeed}) {
             <LoadingBar 
                 key={i} 
                 index= {i}
+                data={data[i]}
                 lengthFeed={lengthFeed}
                 total={total}
                 playPauseVideo={playPauseVideo}
@@ -62,6 +63,15 @@ function UserViewRightFeed({data, item, total, lengthFeed}) {
             : currentProgress;
 
     }, [loadingStatusSlice, lengthFeed, currentProgress, total])
+    const checkTextOrImage = useMemo(() => {
+        return  data.length > currentProgress 
+            ? data[data.length > currentProgress ? currentProgress : currentProgress - 1].type === 'text' 
+                ? `url(${imgFeedArr[data[indexToUse ].indexImg]})`
+                : `url(${ImageUrlPath+data[indexToUse].image})`
+            : data[data.length > currentProgress ? currentProgress : currentProgress - 1].type === 'text' 
+                ?  `url(${imgFeedArr[data[currentProgress - 1 ].indexImg]})`
+                : `url(${ImageUrlPath+data[currentProgress - 1].image})`
+    },[data, currentProgress,indexToUse,ImageUrlPath])
     return ( <div className={cx('friend-right')}>
                 <div className={cx('right-nav')}>
                     <div className={cx('prev')} 
@@ -76,9 +86,7 @@ function UserViewRightFeed({data, item, total, lengthFeed}) {
                     </div>
                     <div  className={cx('right-content')} 
                         style={{
-                            backgroundImage: data.length > currentProgress 
-                                ? `url(${imgFeedArr[data[indexToUse ].indexImg]})`
-                                :  `url(${imgFeedArr[data[currentProgress - 1 ].indexImg]})`
+                            backgroundImage:checkTextOrImage
                             }}
                     >
                         <div className={cx('content-headerBar')}>
@@ -128,4 +136,4 @@ function UserViewRightFeed({data, item, total, lengthFeed}) {
         );
 }
 
-export default UserViewRightFeed;
+export default memo(UserViewRightFeed);

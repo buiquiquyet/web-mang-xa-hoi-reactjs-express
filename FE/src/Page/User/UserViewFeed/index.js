@@ -3,14 +3,14 @@ import styles from './UserViewFeed.module.scss';
 import { LogoPlus } from '../../../Icon';
 import userNoneImg from './../../../Img/userNone.png'
 import { Link, useParams } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import * as ServiceFeedApi from './../../../apiServices/feedAPI'
 import * as ServiceUserApi from './../../../apiServices/userAPI'
 import * as ServicePostApi from './../../../apiServices/postAPI'
 import { MyContext } from '../../../App';
 import UserViewRightFeed from './UserViewRightFeed';
 import { useDispatch, useSelector } from 'react-redux';
-import { LoadingStatusSlice } from '../../../redux/selector';
+import { LoadingIsCheckFeedSlice, LoadingStatusSlice } from '../../../redux/selector';
 import { addLoadingDone } from '../../../Reducer/loadingSlice';
 
 const cx = classNames.bind(styles);
@@ -19,6 +19,7 @@ const cx = classNames.bind(styles);
 function UserViewFeed() {
     const {idFeed} = useParams()
     const loadingStatusSlice = useSelector(LoadingStatusSlice)
+    const loadingIsCheckFeedSlice = useSelector(LoadingIsCheckFeedSlice)
     const dispatch = useDispatch()
     const {dataUser,ImageUrlPath} = useContext(MyContext)
     const [dataFeedByUserId, setDataFeedByUserId] = useState([])
@@ -34,15 +35,22 @@ function UserViewFeed() {
     const fecthNameImageUser = async (userId) => {
         const names = await ServiceUserApi.getNameUser(userId)
         const imageAvartar = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'avartar', userId: userId})
+        const status = await ServiceFeedApi.getByStatusFeed(userId)
+        
         if(imageAvartar.success && names.success) {
             if(imageAvartar.result.image.length > 0) {
                 return { idUser: userId,
                         name:  names.data.first_name +' ' +  names.data.last_name, 
-                        image: imageAvartar.result.image[0].url}
+                        image: imageAvartar.result.image[0].url,
+                        isCheck: status.success ? false : true,
+                        totalNewFeed: status.success ? status.total : 0
+                    }
             }
         }
         return { idUser: userId,
-                name: names.data.first_name +' ' +  names.data.last_name, image: null
+                name: names.data.first_name +' ' +  names.data.last_name, image: null,
+                isCheck: status.success ? false : true,
+                totalNewFeed: status.success ? status.total : 0
             }
     }
     useEffect(() => {
@@ -104,7 +112,7 @@ function UserViewFeed() {
         fecthNamUser(dataFeedByUserId)
     }, [dataFeedByUserId, idFeed])
     
-    const renderRightViewFeed =  (itemFeed, totalFeed, length) => {
+    const renderRightViewFeed =  useCallback((itemFeed, totalFeed, length) => {
         if(dataEachUser.length > 0 && 
             itemFeed && Object.keys(itemFeed).length > 0 && 
             totalFeed && totalFeed.length > 0) 
@@ -115,7 +123,7 @@ function UserViewFeed() {
 
             return  <UserViewRightFeed data={dataEachUser}  item={itemFeed} total={total[0].total} lengthFeed={length}  />
         }
-    }
+    }, [ dataEachUser])
     useEffect(() => {
         const fecthByEachUserId = async (userId) => {
             const rs = await ServiceFeedApi.getByEachUserId(userId)
@@ -163,7 +171,9 @@ function UserViewFeed() {
                                 className={cx('left-itemFeed',{'active-left': item.idUser === itemFeed.idUser})} 
                                 onClick={() => handleShowViewRight(item, index)}
                             >
-                                <div className={cx('item-img')}>
+                                <div className={cx('item-img')}
+                                    style={{border: `3px solid ${item.isCheck ? '#CED0D4' : 'var(--primary)'}`}}
+                                >
                                     <img src={item.image
                                     ? ImageUrlPath+item.image
                                     : userNoneImg} alt='img'/> 
@@ -172,9 +182,10 @@ function UserViewFeed() {
                                     <span>{item.name}</span>
                                     <span  className={cx('item-total')}>
                                         {
-                                            totalFeed[index].total + ' '
+                                            item.totalNewFeed > 0 &&
+                                                item.totalNewFeed + ' ' +
+                                            'tin mới'
                                         }
-                                        tin mới
                                     </span>
                                 </div>
                             </div>

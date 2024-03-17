@@ -56,7 +56,6 @@ function PostBoxFb({ImageUrlPath, imageAvartar, onClickShowHideModal, onClickChe
             const formData = new FormData();
             formData.append('content', dataPost)
             formData.append('typePost', typePost)
-
             fileList.forEach((file) => {
                 formData.append('images', file.originFileObj);
             });

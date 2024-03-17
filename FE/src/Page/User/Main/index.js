@@ -8,12 +8,12 @@ import { MyContext } from '../../../App';
 import PostYouThink from '../../../PostYouThink';
 import PostBoxFb from '../../../PostBoxFb';
 import MainFeed from './MainFeed';
-import { useLocation } from 'react-router-dom';
+// import { useLocation } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 
 function Main() {
-    const location = useLocation()
+    // const location = useLocation()
     
     const [showDataPost, setShowDataPost] = useState([])
     const {  dataUser,ImageUrlPath } = useContext(MyContext)

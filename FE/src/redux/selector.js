@@ -4,3 +4,4 @@ export const ReducerUpdateImage = (state) => state.imageUpload;
 export const FeedSlice = (state) => state.feed;
 
 export const LoadingStatusSlice = (state) => state.loading.status;
+export const LoadingIsCheckFeedSlice = (state) => state.loading.isCheckFeed;

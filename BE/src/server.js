@@ -5,10 +5,11 @@ const db = require('./config/db')
 const morgan = require('morgan')
 const cors = require('cors');
 const router = require('./router')
-
+const cron = require('node-cron');//lập lịch xóa feed
 const http = require('http');
 const { Server } = require('socket.io');
 const server = http.createServer(app);
+const FeedController = require('./app/controller/FeedController')
 const io = new Server(server, {
   cors: {
     origin: "*",
@@ -30,6 +31,9 @@ app.use(express.json())
 router(app)
 //socket
 handleSocket(io);
+
+//lập lịch
+cron.schedule('0 0 * * *', FeedController.deleteFeedAfter24hours);
 
 server.listen(3001, () => {
   console.log("SERVER IS RUN");
