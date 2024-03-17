@@ -72,6 +72,7 @@ function UserViewRightFeed({data, item, total, lengthFeed}) {
                 ?  `url(${imgFeedArr[data[currentProgress - 1 ].indexImg]})`
                 : `url(${ImageUrlPath+data[currentProgress - 1].image})`
     },[data, currentProgress,indexToUse,ImageUrlPath])
+   
     return ( <div className={cx('friend-right')}>
                 <div className={cx('right-nav')}>
                     <div className={cx('prev')} 

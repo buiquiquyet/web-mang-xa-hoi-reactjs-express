@@ -5,7 +5,8 @@ const loadingSlice = createSlice({
     name: 'loadingSlice',
     initialState: {
         status: 0,
-        isCheckFeed: false
+        isCheckFeed: '',
+        totalNewFeedCount: 0
     },
     reducers: {
         addLoadingDone: (state, action) => {
@@ -13,9 +14,12 @@ const loadingSlice = createSlice({
         },
         addIsCheckFeed: (state, action) => {
             state.isCheckFeed = action.payload
+        },
+        addTotalNewFeedCount: (state, action) => {
+            state.totalNewFeedCount = action.payload
         }
     }
 })
 
-export const { addLoadingDone, addIsCheckFeed } = loadingSlice.actions
+export const { addLoadingDone, addIsCheckFeed, addTotalNewFeedCount } = loadingSlice.actions
 export default loadingSlice.reducer

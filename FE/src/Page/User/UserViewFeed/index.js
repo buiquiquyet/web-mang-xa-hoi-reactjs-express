@@ -10,8 +10,8 @@ import * as ServicePostApi from './../../../apiServices/postAPI'
 import { MyContext } from '../../../App';
 import UserViewRightFeed from './UserViewRightFeed';
 import { useDispatch, useSelector } from 'react-redux';
-import { LoadingIsCheckFeedSlice, LoadingStatusSlice } from '../../../redux/selector';
-import { addLoadingDone } from '../../../Reducer/loadingSlice';
+import {  LoadingIsCheckFeedSlice, LoadingStatusSlice } from '../../../redux/selector';
+import { addIsCheckFeed, addLoadingDone, addTotalNewFeedCount } from '../../../Reducer/loadingSlice';
 
 const cx = classNames.bind(styles);
 
@@ -34,7 +34,7 @@ function UserViewFeed() {
     }
     const fecthNameImageUser = async (userId) => {
         const names = await ServiceUserApi.getNameUser(userId)
-        const imageAvartar = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'avartar', userId: userId})
+        const imageAvartar = await ServicePostApi.showPostByUserAvartarCover({typePost: 'avartar', userId: userId})
         const status = await ServiceFeedApi.getByStatusFeed(userId)
         
         if(imageAvartar.success && names.success) {
@@ -53,15 +53,15 @@ function UserViewFeed() {
                 totalNewFeed: status.success ? status.total : 0
             }
     }
-    useEffect(() => {
-        const fecthNameImageFirst = async (idFeed) => {
-            const rs = await fecthNameImageUser(idFeed)
-            if(rs) {
-                setItemFeed(rs)
-            }
-        }
-        fecthNameImageFirst(idFeed)
-    }, [idFeed])
+    // useEffect(() => {
+    //     const fecthNameImageFirst = async (idFeed) => {
+    //         const rs = await fecthNameImageUser(idFeed)
+    //         if(rs) {
+    //             setItemFeed(rs)
+    //         }
+    //     }
+    //     fecthNameImageFirst(idFeed)
+    // }, [idFeed])
     useEffect(() => {
         if(dataUser){
             const fetchFeedByUserId = async (userId) => {
@@ -111,7 +111,22 @@ function UserViewFeed() {
         }
         fecthNamUser(dataFeedByUserId)
     }, [dataFeedByUserId, idFeed])
-    
+    useEffect(() => {
+        console.log('data', dataNameUser);
+        console.log('loadingIsCheckFeedSlice', loadingIsCheckFeedSlice);
+        if(dataNameUser && dataNameUser.length > 0 && loadingIsCheckFeedSlice) {
+            const newDataNameUser = dataNameUser.map(item => {
+                if(item.idUser === loadingIsCheckFeedSlice  ) {
+                    return { ...item, isCheck: true };
+                }
+                return item
+            })
+            if (JSON.stringify(newDataNameUser) !== JSON.stringify(dataNameUser)) {
+                setDataNameUser(newDataNameUser);
+            }
+        }
+    }, [dataNameUser, loadingIsCheckFeedSlice])
+    console.log(dataNameUser);
     const renderRightViewFeed =  useCallback((itemFeed, totalFeed, length) => {
         if(dataEachUser.length > 0 && 
             itemFeed && Object.keys(itemFeed).length > 0 && 
@@ -137,14 +152,17 @@ function UserViewFeed() {
     }, [itemFeed])
     useEffect(() => {
         if(dataNameUser && dataNameUser.length > 0 
-            && loadingStatusSlice < dataNameUser.length) {
+            && loadingStatusSlice < dataNameUser.length 
+            && !loadingIsCheckFeedSlice) {
             setItemFeed(dataNameUser[loadingStatusSlice])
         }
        
-    },[loadingStatusSlice, dataNameUser, dispatch])
+    },[loadingStatusSlice, dataNameUser, dispatch, loadingIsCheckFeedSlice])
     useEffect(() => {
         return () => {
             dispatch(addLoadingDone(0))
+            dispatch(addIsCheckFeed(''))
+            dispatch(addTotalNewFeedCount(0))
         }
     }, [dispatch]); 
     return ( 
@@ -172,7 +190,7 @@ function UserViewFeed() {
                                 onClick={() => handleShowViewRight(item, index)}
                             >
                                 <div className={cx('item-img')}
-                                    style={{border: `3px solid ${item.isCheck ? '#CED0D4' : 'var(--primary)'}`}}
+                                    style={{border: `3px solid ${item.isCheck  ? '#CED0D4' : 'var(--primary)'}`}}
                                 >
                                     <img src={item.image
                                     ? ImageUrlPath+item.image
@@ -182,8 +200,8 @@ function UserViewFeed() {
                                     <span>{item.name}</span>
                                     <span  className={cx('item-total')}>
                                         {
-                                            item.totalNewFeed > 0 &&
-                                                item.totalNewFeed + ' ' +
+                                            !item.isCheck  &&
+                                            item.totalNewFeed + ' ' +
                                             'tin mới'
                                         }
                                     </span>

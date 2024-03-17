@@ -2,8 +2,8 @@ import classNames from 'classnames/bind';
 import styles from './LoadingBar.module.scss';
 import { useEffect,  useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addIsCheckFeed, addLoadingDone } from '../../../../../Reducer/loadingSlice';
-import { LoadingIsCheckFeedSlice, LoadingStatusSlice } from '../../../../../redux/selector';
+import { addIsCheckFeed, addLoadingDone, addTotalNewFeedCount } from '../../../../../Reducer/loadingSlice';
+import { LoadingIsCheckFeedSlice, LoadingStatusSlice, LoadingTotalNewFeedCountFeedSlice } from '../../../../../redux/selector';
 import * as ServiceFeedApi from './../../../../../apiServices/feedAPI'
 const cx = classNames.bind(styles);
 
@@ -11,6 +11,7 @@ function LoadingBar({data, item, onComplete, currentProgress , index, total, pla
     const [progress, setProgress] = useState(0);
     const loadingStatusSlice = useSelector(LoadingStatusSlice)
     const loadingIsCheckFeedSlice = useSelector(LoadingIsCheckFeedSlice)
+    const loadingTotalNewFeedCountFeedSlice = useSelector(LoadingTotalNewFeedCountFeedSlice)
     const dispatch = useDispatch()
     useEffect(() => {
         setProgress(0)
@@ -20,6 +21,12 @@ function LoadingBar({data, item, onComplete, currentProgress , index, total, pla
         
     }
     useEffect(() => {
+        console.log(loadingTotalNewFeedCountFeedSlice);
+        if(loadingTotalNewFeedCountFeedSlice === item.totalNewFeed) {
+            dispatch(addIsCheckFeed(item.idUser))
+        }
+    },[loadingTotalNewFeedCountFeedSlice, item, dispatch] )
+    useEffect(() => {
        if(index === currentProgress && !playPauseVideo) {
             const interval = setInterval(() => {
                 if (progress < 100) {
@@ -28,21 +35,31 @@ function LoadingBar({data, item, onComplete, currentProgress , index, total, pla
                     clearInterval(interval);
                     onComplete();
                     updateStatusFeed(data._id)
-                    if(!data.isCheck) {
-                        dispatch(addIsCheckFeed(!loadingIsCheckFeedSlice))
-                    }
                     if(index === total - 1) {
                         if(loadingStatusSlice < lengthFeed - 1) {
                             dispatch(addLoadingDone(loadingStatusSlice + 1))
                         }
                     }
+                    if(item.totalNewFeed > 0) {
+                        dispatch(addTotalNewFeedCount(loadingTotalNewFeedCountFeedSlice + 1))
+                    }
                 }
             }, 100);
-
             return () => clearInterval(interval);
        }
-    }, [progress, onComplete, index, currentProgress, dispatch, total, loadingStatusSlice,playPauseVideo, lengthFeed, data, loadingIsCheckFeedSlice]);
-  
+    }, [progress, 
+        loadingTotalNewFeedCountFeedSlice,
+        onComplete, 
+        index, 
+        currentProgress,
+        dispatch, 
+        total, 
+        loadingStatusSlice,
+        playPauseVideo, 
+        lengthFeed, 
+        item, 
+        loadingIsCheckFeedSlice,
+        data]);
     return ( 
         <div className={cx('loading-bar')}>
             <div  className={cx('progress', {'active-animation': progress > 0})} style={{ width: `${progress}%`}}></div>
