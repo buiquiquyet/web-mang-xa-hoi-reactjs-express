@@ -1,5 +1,5 @@
 import { memo, useContext, useEffect, useMemo, useState } from "react";
-import { LogoNext, LogoPauseVideo, LogoPlayVideo, LogoPrev } from '../../../../Icon';
+import { LogoNavMore, LogoNext, LogoPauseVideo, LogoPlayVideo, LogoPrev } from '../../../../Icon';
 import classNames from 'classnames/bind';
 import styles from './UserViewRightFeed.module.scss';
 import { MyContext } from "../../../../App";
@@ -9,10 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { LoadingStatusSlice } from "../../../../redux/selector";
 import { addLoadingDone } from "../../../../Reducer/loadingSlice";
 import { imgFeedArr } from "../../UserFeed/imgFeed";
+import HeadelessTippy from '@tippyjs/react/headless';
+import * as ServiceFeedApi from './../../../../apiServices/feedAPI'
 const cx = classNames.bind(styles);
 
-function UserViewRightFeed({data, item, total, lengthFeed}) {
-    const {ImageUrlPath} = useContext(MyContext)
+function UserViewRightFeed({data, item,onClickCheck, total, lengthFeed}) {
+    const [totalFeedByUser, setTotalFeedByUser] = useState(total)
+    const {dataUser, ImageUrlPath} = useContext(MyContext)
     const [currentProgress, setCurrentProgress] = useState(0);
     const [playPauseVideo, setPlayPauseVideo] = useState(false);
     const dispatch = useDispatch()
@@ -72,7 +75,16 @@ function UserViewRightFeed({data, item, total, lengthFeed}) {
                 ?  `url(${imgFeedArr[data[currentProgress - 1 ].indexImg]})`
                 : `url(${ImageUrlPath+data[currentProgress - 1].image})`
     },[data, currentProgress,indexToUse,ImageUrlPath])
-   
+    const handleDeleteFeed = async () => {
+        const formData = new FormData()
+        formData.append('feedId', data[currentProgress]._id)
+        formData.append('url', data[currentProgress].image)
+        const rs = await ServiceFeedApi.deleteFeedByUserId(formData)
+        if(rs.success) {
+            onClickCheck()
+            setTotalFeedByUser(prev => prev - 1)
+        }
+    }
     return ( <div className={cx('friend-right')}>
                 <div className={cx('right-nav')}>
                     <div className={cx('prev')} 
@@ -91,7 +103,7 @@ function UserViewRightFeed({data, item, total, lengthFeed}) {
                             }}
                     >
                         <div className={cx('content-headerBar')}>
-                           {renderLoadingBar(total)}
+                           {renderLoadingBar(totalFeedByUser)}
                         </div>
                         <div className={cx('right-header')}  >
                             <div className={cx('right-person')}>
@@ -110,6 +122,24 @@ function UserViewRightFeed({data, item, total, lengthFeed}) {
                                 <div className={cx('right-logoVideo')} onClick={handlePlayPauseVideo}>
                                     <LogoPauseVideo className={cx('logoVideo')}/>
                                 </div>
+                            }
+                            {
+                                dataUser && dataUser._id === item.idUser &&
+                                <HeadelessTippy
+                                    render={attrs => (
+                                        <div className={cx('info-result')} tabIndex="-1" {...attrs} onClick={handleDeleteFeed}>     
+                                            <span>Xóa bài đăng</span>
+                                        </div>
+                                )}
+                                    interactive   
+                                    placement="bottom"
+                                    trigger='click'
+                                
+                                >
+                                    <div className={cx('logo-navMore')}>
+                                        <LogoNavMore className={cx('navMore-icon')}/>
+                                    </div>
+                                </HeadelessTippy>
                             }
                         </div>
                         <div className={cx('right-text')}>

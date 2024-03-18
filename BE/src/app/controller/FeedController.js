@@ -1,6 +1,7 @@
 const Feed = require('./../model/Feed')
 const Friend = require('./../model/Friend')
-
+const path = require('path')
+const fs = require('fs');
 class FeedController {
     //[POST] /create
     async create(req, res, next) {
@@ -16,12 +17,20 @@ class FeedController {
     //[POST] /createImage
     async create(req, res, next) {
         try {
-            await Feed.create({
+            const feedData = {
                 userId: req.body.userId,
                 content: req.body.content,
-                type: req.body.type,
-                image: req.file.filename
-            })
+                type: req.body.type
+            };
+    
+            // Kiểm tra xem req.file có tồn tại không
+            if (req.file) {
+                feedData.image = req.file.filename;
+            }
+            if (req.body.indexImg) {
+                feedData.indexImg = req.body.indexImg;
+            }
+            await Feed.create(feedData)
             return res.json({success:'Tạo tin thành công'})
         } catch (error) {
             return res.json({error:'Tạo tin không thành công'})
@@ -149,13 +158,45 @@ class FeedController {
     //[DELETE] /
     async deleteFeedAfter24hours () {
         try {
-          const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
-          await Feed.deleteMany({ createdAt: { $lt: twentyFourHoursAgo } });
-          console.log({ success: 'Xóa feed thành công' });
+            const uploadDirectory = path.join(__dirname, '../..', 'uploads');
+            const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
+            const deletedFeeds = await Feed.find({ createdAt: { $lt: twentyFourHoursAgo } }, 'image');
+            
+            await Feed.deleteMany({ createdAt: { $lt: twentyFourHoursAgo } });
+            
+            if (deletedFeeds.length > 0) {
+                for (const deletedFeed of deletedFeeds) {
+                    const imagePath = path.join(uploadDirectory, deletedFeed);
+                    if (fs.existsSync(imagePath)) {
+                        fs.unlinkSync(imagePath)
+                    }
+                }
+            }
         } catch (err) {
-          console.error({ success: 'Xóa feed không thành công' });
-        }Error
-      };
+            console.error({ error: 'Xóa feed không thành công', err });
+            throw err; // Ném lỗi để bên gọi xử lý
+        }
+    };
+     //[DELETE] /deleteFeedByUserId
+     async deleteFeedByUserId (req, res, next) {
+        try {
+           
+            const uploadDirectory = path.join(__dirname, '../..', 'uploads');
+            const feedId = req.body.feedId
+            const urlImage = req.body.url
+            await Feed.deleteOne({ _id: feedId });
+            if(urlImage !== 'undefined') {
+                const imagePath = path.join(uploadDirectory, urlImage);
+                if (fs.existsSync(imagePath)) {
+                    fs.unlinkSync(imagePath)
+                }
+            }
+            return res.json({success: 'Xóa feed thành công'})
+        } catch (err) {
+            return res.json({error: 'Xóa feed không thành công'})
+
+        }
+    };
     
     
 }

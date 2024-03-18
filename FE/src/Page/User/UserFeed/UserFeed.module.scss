@@ -80,6 +80,14 @@
             filter: brightness(90%);
         }
     }
+    .btnDisabled {
+        background-color: #f5f6f9 !important;
+        color: #ccc !important;
+        pointer-events: none;
+        &:hover {
+           background-color: #f5f6f9 !important;
+        }
+    }
 }
 .friend-right {
     width: 100%;

@@ -193,7 +193,6 @@ class PostController {
                     
                     if (fs.existsSync(imagePath)) {
                         fs.unlinkSync(imagePath)
-                        
                         await Image.deleteOne({ url: imageUrl });
                        
                     }

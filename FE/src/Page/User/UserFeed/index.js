@@ -25,6 +25,7 @@ function UserFeed() {
     const dispatch = useDispatch()
     const [avatar, setAvatar] = useState('')
     const [checkShowAddFeed, setCheckShowAddFeed] = useState(false)
+    const [btnNoneAfAdd, setBtnNoneAfAdd] = useState(false)
     const [checkShowAddFeedImg, setCheckShowAddFeedImg] = useState(false)
     const [selectedFile, setSelectedFile] = useState(null);
     const [typeFriendPage, setTypeFriendPage] = useState('pending')
@@ -71,6 +72,7 @@ function UserFeed() {
             if(!selectedFile) {
                 const rs = await ServiceFeedApi.create(formData)
                 if(rs.success) {
+                    setBtnNoneAfAdd(true)
                     await message.success(rs.success)
                     dispatch(addIndexImg(0))
                     navigate('/')
@@ -78,6 +80,7 @@ function UserFeed() {
             }else {
                 const rs = await ServiceFeedApi.createImage(formData)
                 if(rs.success) {
+                    setBtnNoneAfAdd(true)
                     await message.success(rs.success)
                     navigate('/')
                 }
@@ -125,10 +128,12 @@ function UserFeed() {
                             <UserFeedLeftPageChild type={selectedFile ? selectedFile : 'text'}/>
                         }
                         <div className={cx('left-button')}>
-                            <button onClick={handleShowAddFeedTextHide}>Bỏ</button>
+                            <button  className={cx({'btnDisabled': btnNoneAfAdd})} onClick={!btnNoneAfAdd ? handleShowAddFeedTextHide : null}>Bỏ</button>
                             <button 
+                                className={cx({'btnDisabled': btnNoneAfAdd})}
                                 style={{backgroundColor:'var(--primary)', color:'white'}}
-                                onClick={handleSubmitFeedText}
+                                onClick={!btnNoneAfAdd ? handleSubmitFeedText : null}
+
                             >Chia sẻ lên tin</button>
                         </div>
                     </>

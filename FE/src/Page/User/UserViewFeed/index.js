@@ -23,11 +23,15 @@ function UserViewFeed() {
     const dispatch = useDispatch()
     const {dataUser,ImageUrlPath} = useContext(MyContext)
     const [dataFeedByUserId, setDataFeedByUserId] = useState([])
+    const [checkRenderAfterDel, setCheckRenderAfterDel] = useState(false)
     const [dataNameUser, setDataNameUser] = useState([])
     const [totalFeed, setTotalFeed] = useState([])
     const [dataEachUser, setDataEachUser] = useState([])
     const [itemFeed, setItemFeed] = useState({})
 
+    const handleCheckRenderAfterDel = useCallback(() => {
+        setCheckRenderAfterDel(!checkRenderAfterDel)
+    },[checkRenderAfterDel])
     const handleShowViewRight = (item, index) => {
         setItemFeed(item)
         dispatch(addLoadingDone(index))
@@ -128,14 +132,14 @@ function UserViewFeed() {
         if(dataEachUser.length > 0 && 
             itemFeed && Object.keys(itemFeed).length > 0 && 
             totalFeed && totalFeed.length > 0) 
-            {
+        {
             const total = totalFeed.filter((item) => {
                 return item.idUser === itemFeed.idUser && item.total
             })
 
-            return  <UserViewRightFeed data={dataEachUser}  item={itemFeed} total={total[0].total} lengthFeed={length}  />
+            return  <UserViewRightFeed data={dataEachUser} onClickCheck={handleCheckRenderAfterDel}  item={itemFeed} total={total[0].total} lengthFeed={length}  />
         }
-    }, [ dataEachUser])
+    }, [ dataEachUser, handleCheckRenderAfterDel])
     useEffect(() => {
         const fecthByEachUserId = async (userId) => {
             const rs = await ServiceFeedApi.getByEachUserId(userId)
@@ -146,7 +150,7 @@ function UserViewFeed() {
         if(itemFeed && Object.keys(itemFeed).length > 0 ) {
             fecthByEachUserId(itemFeed.idUser)
         }
-    }, [itemFeed])
+    }, [itemFeed, checkRenderAfterDel])
     useEffect(() => {
         if(dataNameUser && dataNameUser.length > 0 
             && loadingStatusSlice < dataNameUser.length 

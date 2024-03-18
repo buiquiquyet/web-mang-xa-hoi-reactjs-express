@@ -15,7 +15,7 @@ function LoadingBar({data, item, onComplete, currentProgress , index, total, pla
     const dispatch = useDispatch()
     useEffect(() => {
         setProgress(0)
-    }, [item]);
+    }, [item, total]);
     const updateStatusFeed = async(feedId) => {
         await ServiceFeedApi.updateStatus(feedId)
         
@@ -30,7 +30,7 @@ function LoadingBar({data, item, onComplete, currentProgress , index, total, pla
        if(index === currentProgress && !playPauseVideo) {
             const interval = setInterval(() => {
                 if (progress < 100) {
-                    setProgress(progress + 10);
+                    setProgress(progress + 2);
                 } else {
                     clearInterval(interval);
                     onComplete();

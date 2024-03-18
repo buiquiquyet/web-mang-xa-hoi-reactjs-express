@@ -60,4 +60,13 @@ export const countByUserId = async ( userId) => {
     }
 
 }
+export const deleteFeedByUserId = async ( option) => {
+    try {
+        const res = await request.post(`/feed/deleteFeedByUserId/`,option)
+        return res
+    } catch (error) {
+        throw error
+    }
+
+}
 

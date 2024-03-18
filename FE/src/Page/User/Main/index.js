@@ -21,6 +21,7 @@ function Main() {
 
     const fecthPostByUser = async (  ) => {
         const rs = await ServicePostApi.showAllPost()
+        console.log(rs);
         if(rs.success) {
             setShowDataPost(rs.result)
         }
