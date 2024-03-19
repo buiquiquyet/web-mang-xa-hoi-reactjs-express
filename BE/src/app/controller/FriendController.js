@@ -115,18 +115,31 @@ class FriendController {
         try {
             const userId = req.query.userId
             const typeFriend = req.query.typeFriend
-            const rs = await Friend.find(
-                {
-                    $or: [
-                        { $and: [{ userId1: userId }, { userId2: { $ne: userId } },{ status: typeFriend }] },
-                        { $and: [{ userId2: userId }, { userId1: { $ne: userId } },{ status: typeFriend }] }
-                    ]
+            if(typeFriend === 'pending') {
+                const rs = await Friend.find(
+                    {
+                        receiver_id: userId ,
+                        status: typeFriend 
                     }
-            ).sort({created_at: -1}).lean()
-            if(rs) {
-                return res.status(200).json({ success: 'Lấy allFriend kết bạn thành công', data: rs});
+                ).sort({created_at: -1}).lean()
+                if(rs) {
+                    return res.status(200).json({ success: 'Lấy allFriend kết bạn thành công', data: rs});
+                }
+                return res.json({ error: 'Lấy allFriend kết bạn không thành công' })
+            }else {
+                const rs = await Friend.find(
+                    {
+                        $or: [
+                            { $and: [{ userId1: userId }, { userId2: { $ne: userId } }, {status: typeFriend}] },
+                            { $and: [{ userId2: userId }, { userId1: { $ne: userId } }, {status: typeFriend}] }
+                        ]
+                        }
+                ).sort({created_at: -1}).lean()
+                if(rs) {
+                    return res.status(200).json({ success: 'Lấy allFriend kết bạn thành công', data: rs});
+                }
+                return res.json({ error: 'Lấy allFriend kết bạn không thành công' })
             }
-            return res.json({ error: 'Lấy allFriend kết bạn không thành công' })
             
         } catch (error) {
             return res.json({ error: 'đã xảy ra lỗi' })

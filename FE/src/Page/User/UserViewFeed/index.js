@@ -154,7 +154,8 @@ function UserViewFeed() {
     useEffect(() => {
         if(dataNameUser && dataNameUser.length > 0 
             && loadingStatusSlice < dataNameUser.length 
-            && !loadingIsCheckFeedSlice) {
+            ) 
+        {
             setItemFeed(dataNameUser[loadingStatusSlice])
         }
        

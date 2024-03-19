@@ -28,7 +28,9 @@ function UserFriendPageChild({typeFriendPage}) {
         const rs = await ServiceFriendApi.getAllFriend(userId, typeFriendPage)
         if(rs.success) {
             setUserIdFriends(rs.data)
+            return
         }
+        setUserIdFriends([])
     } 
     //handle Accepted add friend 
     const handleAcceptedAddFriend = async (userId1, userId2) => {
@@ -87,7 +89,7 @@ function UserFriendPageChild({typeFriendPage}) {
                                 <span className={cx('fullname-person')}>
                                     {item.fullName.first_name + ' ' + item.fullName.last_name}
                                 </span>
-                                <span>1 bạn chung</span>
+                                {/* <span>1 bạn chung</span> */}
                             </div>
                             {
                                 dataUser &&

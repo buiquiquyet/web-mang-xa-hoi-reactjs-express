@@ -2,7 +2,7 @@ import classNames from "classnames/bind";
 import styles from './LoginUser.module.scss'
 import logoLoginImg from './../Img/loginLogo.svg'
 import { Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import {  useRef, useState } from "react";
 import { LogoClose } from "../Icon";
 import * as ServiceUserApi from './../apiServices/userAPI/index'
 import { message } from 'antd';
@@ -60,7 +60,7 @@ function LoginUser() {
             formData.append('password',passWordRef.current.value);
             formData.append('birthdate',birthDate);
             formData.append('gender',genderSelect);
-    
+            console.log(birthDate);
             for (const pair of formData.entries()) {
                 const [key, value] = pair;
                 if (value.length === 0) {
@@ -69,8 +69,9 @@ function LoginUser() {
                 } 
               }
             const rs = await ServiceUserApi.registerUser(formData)
-            message.success(rs);
+            await message.success(rs);
             setShowHideModal(!showHideModal)
+            setCheckEmailRegister(false)
         }else {
             setCheckEmailRegister(true)
         }

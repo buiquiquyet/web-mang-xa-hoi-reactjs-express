@@ -120,7 +120,8 @@ class FeedController {
                     });
                     return filteredItem;
                 });
-                // return res.json({ success: 'Lấy tin thành công', data: filteredRs.flat() }); 
+                const newFilteredRs = [...new Set([...filteredRs.flat(), userId])];
+                // return res.json({ success: 'Lấy tin thành công', data: [... new Set(filteredRs.flat())] }); 
                 const uniqueUserIds = await Feed.aggregate([
                     {
                         $group: {
@@ -134,11 +135,13 @@ class FeedController {
                             latestTime: 1,
                             _id: 0
                         }
+                        
                     },
                 ]);
-                const dataAllFrend = uniqueUserIds.filter((item) =>  filteredRs.flat().includes(item.userId.toString()));
+                const dataAllFrend = uniqueUserIds.filter((item) =>  newFilteredRs.includes(item.userId.toString()) );
+                // return res.json({success:'thông tin', data: dataAllFrend})
                 const dataAllPromises = dataAllFrend.map(async(item) => {
-                    if(filteredRs.flat().includes(item.userId.toString())) {
+                    if(newFilteredRs.includes(item.userId.toString())) {
                         const data = await Feed.findOne({ userId: item.userId, createdAt: item.latestTime }).lean();
                         return data;
                     }

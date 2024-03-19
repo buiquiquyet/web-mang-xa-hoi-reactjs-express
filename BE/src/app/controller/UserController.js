@@ -29,7 +29,15 @@ class UserController {
     //[POST] /create
     create(req, res, next) {
         const data = {...req.body}
-        const birthdate = new Date(req.body.birthdate)
+        const birthdateString = req.body.birthdate
+        const parts = birthdateString.split('-'); // Tách chuỗi thành ngày, tháng và năm
+        const day = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1; // Giảm đi 1 vì tháng trong JavaScript bắt đầu từ 0
+        const year = parseInt(parts[2]);
+        const birthdate = new Date(year, month, day);
+        if (isNaN(birthdate.getTime())) {
+            return res.status(400).json('Ngày sinh không hợp lệ');
+        }
         const dataNew = {...data, birthdate}
         const user = new User(dataNew)
         user.save()

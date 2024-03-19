@@ -22,12 +22,12 @@ function UserViewRightFeed({data, item,onClickCheck, total, lengthFeed}) {
     const loadingStatusSlice = useSelector(LoadingStatusSlice)
 
     const handlePreNextFeed = (type) => {
+        
         if(type === 'prev') {
             dispatch(addLoadingDone(loadingStatusSlice - 1))
             return
         }
         dispatch(addLoadingDone(loadingStatusSlice + 1))
-
     }
     const renderLoadingBar = (total) => {
         const bars = [];
@@ -88,7 +88,7 @@ function UserViewRightFeed({data, item,onClickCheck, total, lengthFeed}) {
     return ( <div className={cx('friend-right')}>
                 <div className={cx('right-nav')}>
                     <div className={cx('prev')} 
-                        onClick={() => loadingStatusSlice > 0 ? handlePreNextFeed('prev') : undefined}
+                        onClick={() => loadingStatusSlice > 0 ? handlePreNextFeed('prev') : null}
                     >
                         {
                             loadingStatusSlice > 0 &&
@@ -152,7 +152,7 @@ function UserViewRightFeed({data, item,onClickCheck, total, lengthFeed}) {
                         </div>
                     </div>
                     <div className={cx('next')}  
-                        onClick={() => loadingStatusSlice < lengthFeed - 1 ? handlePreNextFeed('next') : undefined}
+                        onClick={() => loadingStatusSlice < lengthFeed - 1 ? handlePreNextFeed('next') : null}
                     >
                     {
                         loadingStatusSlice < lengthFeed - 1
