@@ -115,19 +115,31 @@ function UserViewFeed() {
         }
         fecthNamUser(dataFeedByUserId)
     }, [dataFeedByUserId, idFeed])
-    useEffect(() => {
-        if(dataNameUser && dataNameUser.length > 0 && loadingIsCheckFeedSlice) {
-            const newDataNameUser = dataNameUser.map(item => {
-                if(item.idUser === loadingIsCheckFeedSlice  ) {
-                    return { ...item, isCheck: true };
-                }
-                return item
-            })
-            if (JSON.stringify(newDataNameUser) !== JSON.stringify(dataNameUser)) {
-                setDataNameUser(newDataNameUser);
-            }
-        }
-    }, [dataNameUser, loadingIsCheckFeedSlice])
+    // useEffect(() => {
+    //     const fecthCheckFeed = async (dataNameUser, dataUser, loadingIsCheckFeedSlice) => {
+    //         if(dataNameUser && dataNameUser.length > 0  && dataUser && loadingIsCheckFeedSlice ) {
+    //             const CheckFeed = dataNameUser.map(async(item) => {
+    //             const rs = await ServiceCheckFeedApi.getByFeedIdUserId({userId: dataUser._id, feedByUserId: item.idUser })
+    //             const statusFeed = await ServiceFeedApi.getByStatusFeed(item.idUser)
+    //             return rs.success && !statusFeed.success ? true : false
+    //             })
+    //             const newCheckFeed = await Promise.all(CheckFeed)
+    //             if (JSON.stringify(newCheckFeed.join('')) !== JSON.stringify(checkFeed.join(''))) {
+    //                 setCheckFeed(newCheckFeed)
+    //             }
+    //             // const newDataNameUser = dataNameUser.map(item => {
+    //             //     if(item.idUser === loadingIsCheckFeedSlice || loadingIsCheckFeedSlice === '1' ) {
+    //             //         return { ...item, isCheck: true };
+    //             //     }
+    //             //     return item
+    //             // })
+    //             // if (JSON.stringify(newDataNameUser) !== JSON.stringify(dataNameUser)) {
+    //             //     setDataNameUser(newDataNameUser);
+    //             // }
+    //         }
+    //    }
+    //    fecthCheckFeed(dataNameUser, dataUser, loadingIsCheckFeedSlice)
+    // }, [dataNameUser, loadingIsCheckFeedSlice, dataUser, checkFeed])
     const renderRightViewFeed =  useCallback((itemFeed, totalFeed, length) => {
         if(dataEachUser.length > 0 && 
             itemFeed && Object.keys(itemFeed).length > 0 && 
@@ -136,7 +148,6 @@ function UserViewFeed() {
             const total = totalFeed.filter((item) => {
                 return item.idUser === itemFeed.idUser && item.total
             })
-
             return  <UserViewRightFeed data={dataEachUser} onClickCheck={handleCheckRenderAfterDel}  item={itemFeed} total={total[0].total} lengthFeed={length}  />
         }
     }, [ dataEachUser, handleCheckRenderAfterDel])
@@ -166,7 +177,7 @@ function UserViewFeed() {
             dispatch(addIsCheckFeed(''))
             dispatch(addTotalNewFeedCount(0))
         }
-    }, [dispatch]); 
+    }, [dispatch]);
     return ( 
         <div className={cx('wrapper')}>
             <div className={cx('friend-left')}>
@@ -192,7 +203,6 @@ function UserViewFeed() {
                                 onClick={() => handleShowViewRight(item, index)}
                             >
                                 <div className={cx('item-img')}
-                                    style={{border: `3px solid ${item.isCheck  ? '#CED0D4' : 'var(--primary)'}`}}
                                 >
                                     <img src={item.image
                                     ? ImageUrlPath+item.image
@@ -200,13 +210,13 @@ function UserViewFeed() {
                                 </div>
                                 <div className={cx('item-fullname')}>
                                     <span>{item.name}</span>
-                                    <span  className={cx('item-total')}>
+                                    {/* <span  className={cx('item-total')}>
                                         {
-                                            !item.isCheck  &&
+                                            !checkFeed[index]  &&
                                             item.totalNewFeed + ' ' +
                                             'tin mới'
                                         }
-                                    </span>
+                                    </span> */}
                                 </div>
                             </div>
                         ))

@@ -14,7 +14,7 @@ import * as ServiceFeedApi from './../../../../apiServices/feedAPI'
 const cx = classNames.bind(styles);
 
 function UserViewRightFeed({data, item,onClickCheck, total, lengthFeed}) {
-    const [totalFeedByUser, setTotalFeedByUser] = useState(total)
+    const [totalFeedByUser, setTotalFeedByUser] = useState(null)
     const {dataUser, ImageUrlPath} = useContext(MyContext)
     const [currentProgress, setCurrentProgress] = useState(0);
     const [playPauseVideo, setPlayPauseVideo] = useState(false);
@@ -77,14 +77,17 @@ function UserViewRightFeed({data, item,onClickCheck, total, lengthFeed}) {
     },[data, currentProgress,indexToUse,ImageUrlPath])
     const handleDeleteFeed = async () => {
         const formData = new FormData()
-        formData.append('feedId', data[currentProgress]._id)
-        formData.append('url', data[currentProgress].image)
+        formData.append('feedId', currentProgress < data.length ? data[currentProgress]._id : data[currentProgress - 1]._id)
+        formData.append('url', currentProgress < data.length ? data[currentProgress].image : data[currentProgress - 1].image)
         const rs = await ServiceFeedApi.deleteFeedByUserId(formData)
         if(rs.success) {
             onClickCheck()
             setTotalFeedByUser(prev => prev - 1)
         }
     }
+    useEffect(() => {
+        setTotalFeedByUser(total)
+    },[total])
     return ( <div className={cx('friend-right')}>
                 <div className={cx('right-nav')}>
                     <div className={cx('prev')} 
@@ -103,7 +106,7 @@ function UserViewRightFeed({data, item,onClickCheck, total, lengthFeed}) {
                             }}
                     >
                         <div className={cx('content-headerBar')}>
-                           {renderLoadingBar(totalFeedByUser)}
+                           {totalFeedByUser && renderLoadingBar(totalFeedByUser)}
                         </div>
                         <div className={cx('right-header')}  >
                             <div className={cx('right-person')}>

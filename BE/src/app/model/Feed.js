@@ -9,7 +9,6 @@ const Feed = new Schema(
         image: {type: String},
         indexImg: {type: Number},
         type: {type: String},
-        isCheck: { type: Boolean, default: false },
         content: {type: String},
     }, 
     {

@@ -65,17 +65,6 @@ class FeedController {
             return res.json({error:'Lấy tin không thành công'})
         }
     }
-    //[GET] /updateStatus
-    async updateStatus(req, res, next) {
-        try {
-            const feedId = req.params.feedId
-            await Feed.updateOne({ _id: feedId }, { $set: { isCheck: true } })
-            return res.json({success:'Cập nhật tin thành công'})
-        } catch (error) {
-            return res.json({error:'Cập nhật tin không thành công'})
-        }
-    }
-     //[GET] /countByUserId
      async getByEachUserId(req, res, next) {
         try {
             const userId = req.params.userId

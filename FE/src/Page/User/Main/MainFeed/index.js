@@ -64,28 +64,24 @@ function MainFeed() {
                 const fullnames = idUser.map(async(item) => {
                     const names = await ServiceUserApi.getNameUser(item)
                     const imageAvartar = await ServicePostApi.showPostByUserAvartarCover( {typePost: 'avartar', userId: item})
-                    const status = await ServiceFeedApi.getByStatusFeed(item)
                     if(imageAvartar.success && names.success) {
                         if(imageAvartar.result.image.length > 0) {
                             return { idUser: item,
                                     name:  names.data.first_name +' ' +  names.data.last_name, 
                                     image: imageAvartar.result.image[0].url,
-                                    isCheck: status.success ? false : true
                                 }
                         }
                     }
                     return { idUser: item,
                             name: names.data.first_name +' ' +  names.data.last_name, image: null,
-                            isCheck: status.success ? false : true
                         }
                 })
-                
                 const dataNameUser = await Promise.all(fullnames)
                     setDataNameUser(dataNameUser)
                 }
             }
         fecthNamUser(dataFeedByUserId)
-    }, [dataFeedByUserId])
+    }, [dataFeedByUserId, dataUser])
     return ( 
         <div className={cx('wrapper')}>
             <div className={cx('content-slide')}>
@@ -129,7 +125,6 @@ function MainFeed() {
                             {
                                 <div className={cx('feed-item')}>
                                     <div className={cx('feed-img')}
-                                        style={{border: `4px solid ${item.isCheck ? 'white' : 'var(--primary)'}`}}
                                     >
                                         <img src={dataNameUser.length > 0 &&
                                         dataNameUser[i].image
