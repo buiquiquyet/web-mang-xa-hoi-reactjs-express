@@ -146,7 +146,6 @@ class FeedController {
                         return data;
                     }
                 });
-        
                 let dataAll = await Promise.all(dataAllPromises);
                 dataAll = dataAll.sort((a, b) => b.createdAt - a.createdAt);
         
@@ -177,7 +176,7 @@ class FeedController {
             }
         } catch (err) {
             console.error({ error: 'Xóa feed không thành công', err });
-            throw err; // Ném lỗi để bên gọi xử lý
+            throw err; 
         }
     };
      //[DELETE] /deleteFeedByUserId

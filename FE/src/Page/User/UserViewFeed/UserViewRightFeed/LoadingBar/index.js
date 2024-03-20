@@ -16,10 +16,10 @@ function LoadingBar({data, item, onComplete, currentProgress , index, total, pla
     useEffect(() => {
         setProgress(0)
     }, [item, total]);
-    const updateStatusFeed = async(feedId) => {
-        await ServiceFeedApi.updateStatus(feedId)
+    // const updateStatusFeed = async(feedId) => {
+    //     await ServiceFeedApi.updateStatus(feedId)
         
-    }
+    // }
     useEffect(() => {
         if(loadingTotalNewFeedCountFeedSlice === item.totalNewFeed) {
             dispatch(addIsCheckFeed(item.idUser))
@@ -34,7 +34,7 @@ function LoadingBar({data, item, onComplete, currentProgress , index, total, pla
                 } else {
                     clearInterval(interval);
                     onComplete();
-                    updateStatusFeed(data._id)
+                    // updateStatusFeed(data._id)
                     if(index === total - 1) {
                         if(loadingStatusSlice < lengthFeed - 1) {
                             dispatch(addIsCheckFeed(''))
