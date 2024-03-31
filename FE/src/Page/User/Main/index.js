@@ -79,11 +79,13 @@ function Main() {
     return ( 
         <div className={cx('wrapper')} >
             <MainFeed/>
-            <PostYouThink 
-                ImageUrlPath={ImageUrlPath}
-                onClickShowHideModal={handleShowHideModal}
-                imageAvartar={imageAvartar} 
+            <div className={cx('postAdd')}>
+                <PostYouThink 
+                    ImageUrlPath={ImageUrlPath}
+                    onClickShowHideModal={handleShowHideModal}
+                    imageAvartar={imageAvartar} 
                 />
+            </div>
             {
                 showDataPost && showDataPost.length > 0 && 
                 showDataPost.map((item, index1) => (
@@ -101,7 +103,6 @@ function Main() {
                             />
                         ))
                     )    
-
                 ))
             }
             {

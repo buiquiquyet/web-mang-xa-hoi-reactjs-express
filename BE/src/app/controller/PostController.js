@@ -42,10 +42,8 @@ class PostController {
             for (const user of users) {
                 const posts = await Post.find({ userId: user._id }).sort({ createdAt: -1 }).lean();
                 const images = await Image.find({ postId: { $in: posts.map(post => post._id) } }).lean();
-    
                 result.push({ user, posts, images });
             }
-    
             return res.json({ success: 'Tìm bài viết thành công theo cá nhân', result });
         } catch (error) {
             console.error(error);

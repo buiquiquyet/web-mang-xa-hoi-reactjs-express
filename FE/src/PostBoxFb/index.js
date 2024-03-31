@@ -59,6 +59,7 @@ function PostBoxFb({ImageUrlPath, imageAvartar, onClickShowHideModal, onClickChe
             fileList.forEach((file) => {
                 formData.append('images', file.originFileObj);
             });
+            
             if(fileList.length === 1) {
                 const rs = await ServicePostApi.postSingleImage(localStorage.getItem('tokenFb'), formData)
                 onClickCheckToFecth()    

@@ -21,6 +21,7 @@ function MainFeed() {
     const swiperRef = useRef(null);
     const [indexSlideImg, setIndexSlideImg] = useState(1)
     const [dataNameUser, setDataNameUser] = useState([])
+    const [avartarImg, setAvartarImg] = useState(null)
 
     const [dataFeedByUserId, setDataFeedByUserId] = useState([])
     const goNext = () => {
@@ -28,20 +29,17 @@ function MainFeed() {
         swiperRef.current.swiper.slideNext();
         }
     };
-
     const goPrev = () => {
         if (swiperRef.current && swiperRef.current.swiper) {
         swiperRef.current.swiper.slidePrev();
         }
     };
-    
     const handleShowFeed = (index, userId) => {
         if(index === 0 && userId === '') {
             navigate('feedPage')
             return
         }
         navigate(`/viewFeedPage/${userId}`)
-        
     }
     const handleStateSlide = (swiper) => {
         setIndexSlideImg(swiper.realIndex  + 1)
@@ -50,6 +48,12 @@ function MainFeed() {
         if(dataUser){
             const fetchFeedByUserId = async (userId) => {
                 const rs = await ServiceFeedApi.getByUserId(userId)
+                const rsAvatar = await ServicePostApi.showPostByUserAvartarCover({userId, typePost: 'avartar'})
+                if(rsAvatar.success) {
+                    setAvartarImg(rsAvatar.result.image[0]);
+                }else {
+                    setAvartarImg(null)
+                }
                 if(rs.success) {
                     setDataFeedByUserId(rs.data)
                 }
@@ -105,7 +109,7 @@ function MainFeed() {
                 >
                     <SwiperSlide className={cx('swiper-slide')}  onClick={() => handleShowFeed(0,'')} >
                         <div className={cx('feed-item')}>
-                            <div className={cx('feedSelf')} style={{ backgroundImage: `url(${UserNoneImg})`, filter:'brightness(86%)' }}>
+                            <div className={cx('feedSelf')} style={{ backgroundImage: `url(${avartarImg ? ImageUrlPath + avartarImg.url : UserNoneImg})`, filter:'brightness(86%)' }}>
                             </div>
                             <div className={cx('feedDiv')}>
                                     <span>Tạo tin</span>
@@ -152,13 +156,13 @@ function MainFeed() {
                 </Swiper>
                 {
                     dataFeedByUserId && dataFeedByUserId.length > 3 &&
-                   <>
-                    {
-                        indexSlideImg > 1 && 
-                        <button className={cx('buttonSlidePrev')} onClick={goPrev}><LogoPrev className={cx('iconSlide')}/></button>
-                    }
-                    <button className={cx('buttonSlideNext')} onClick={goNext}> <LogoNext className={cx('iconSlide')}/></button>
-                   </>
+                    <>
+                        {
+                            indexSlideImg > 1 && 
+                            <button className={cx('buttonSlidePrev')} onClick={goPrev}><LogoPrev className={cx('iconSlide')}/></button>
+                        }
+                        <button className={cx('buttonSlideNext')} onClick={goNext}> <LogoNext className={cx('iconSlide')}/></button>
+                    </>
                 }
             </div>
         </div>

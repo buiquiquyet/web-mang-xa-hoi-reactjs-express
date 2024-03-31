@@ -11,18 +11,16 @@ class FeedController {
             return res.json({success:'Tạo tin thành công'})
         } catch (error) {
             return res.json({error:'Tạo tin không thành công'})
-            
         }
     }
     //[POST] /createImage
-    async create(req, res, next) {
+    async createImage(req, res, next) {
         try {
             const feedData = {
                 userId: req.body.userId,
                 content: req.body.content,
                 type: req.body.type
             };
-    
             // Kiểm tra xem req.file có tồn tại không
             if (req.file) {
                 feedData.image = req.file.filename;
@@ -34,7 +32,6 @@ class FeedController {
             return res.json({success:'Tạo tin thành công'})
         } catch (error) {
             return res.json({error:'Tạo tin không thành công'})
-            
         }
     }
     // //[GET] /byUserId

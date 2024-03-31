@@ -38,7 +38,6 @@ function UserFriendPageChild({typeFriendPage}) {
         if(rs.success) {
             message.success(rs.success)
             fecthGetAllFriend(dataUser._id, typeFriendPage)
-            
         }
     }
     useEffect(() => {

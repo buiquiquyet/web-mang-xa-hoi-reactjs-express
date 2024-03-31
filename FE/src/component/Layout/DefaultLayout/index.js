@@ -47,13 +47,19 @@ function DefaultLayout({children}) {
     }, [socket, dataUser, checkUserOnline]);
     return ( 
         <div className={cx('wrapper')} ref={scrollRef}>
-            <Header newMesseger={newMesseger}/>  
+            <div className={cx('header')}>
+                <Header newMesseger={newMesseger}/>  
+            </div>
             <div className={cx('app-content')}>
-                <SideBarLeft/>
+                <div className={cx('left')}>
+                    <SideBarLeft/>
+                </div>
                 <div className={cx('content')}>
                     { children }
                 </div>
-                <SideBarRight newMesseger={newMesseger} checkUserOnline={checkUserOnline}/>
+                <div className={cx('right')}>
+                    <SideBarRight newMesseger={newMesseger} checkUserOnline={checkUserOnline}/>
+                </div>
             </div>
         </div>
      );

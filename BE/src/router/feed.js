@@ -6,7 +6,7 @@ const multer = require('multer')
 const upload = multer()
 
 router.post('/create',  upload.none(), FeedController.create)
-router.post('/createImage',uploadImage.single('image') , FeedController.create)
+router.post('/createImage',uploadImage.single('image') , FeedController.createImage)
 router.get('/getByStatusFeed/:userId', FeedController.getByStatusFeed)
 router.post('/deleteFeedByUserId/',upload.none(), FeedController.deleteFeedByUserId)
 router.get('/getByUserId/:userId',  upload.none(), FeedController.getByUserId)
