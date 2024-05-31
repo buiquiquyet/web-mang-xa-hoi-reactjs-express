@@ -58,7 +58,9 @@ function RightPostUserPage({userId, dataUser}) {
     }
     useEffect(() => {
         if(userId) {
-            fecthPostByUser(userId)
+            setTimeout(() => {
+                fecthPostByUser(userId)
+            }, 1000)
         }
     },[isCheckToFecth,checkStatusUploadImage, userId])
     useEffect(() => {
@@ -70,7 +72,9 @@ function RightPostUserPage({userId, dataUser}) {
                 }
             }
         }
-        fecthImageAvartar(userId)
+        setTimeout(() => {
+            fecthImageAvartar(userId)
+        }, 1000)
       }, [userId])
     return ( 
         <div className={cx('wrapper')}>

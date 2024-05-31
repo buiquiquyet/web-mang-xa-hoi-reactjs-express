@@ -12,6 +12,7 @@ const cx = classNames.bind(styles);
 function UserFeedLeftPageChild({type}) {
 
     const feedSlice = useSelector(FeedSlice)
+    console.log(feedSlice);
     const dispatch = useDispatch()
     const [focusInput, setFocusInput] = useState(false)
     const [inputValue, setInputValue] = useState('')

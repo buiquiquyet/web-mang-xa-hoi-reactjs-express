@@ -1,9 +1,15 @@
 .wrapper {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     padding: 0 226px;
     align-items: flex-start;
     background-color: var(--background-chidren);
+}
+.app {
+    display: flex;
+    align-items: flex-start;
+    max-width: 90%;
+    justify-content: center;
 }
 .leftPostUser {
     width: 100%;

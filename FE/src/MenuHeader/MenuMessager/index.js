@@ -20,7 +20,6 @@ function MenuMessager({countChat}) {
     const messagerState = useSelector(state => state.messager)
     const { jobsZoomOut } = messagerState
     const dispatch = useDispatch()
-
     const [userIdFriends, setUserIdFriends] = useState([])
     const [dataByUserIdFriend, setDataByUserIdFriend] = useState([])
     //lastest messeger
