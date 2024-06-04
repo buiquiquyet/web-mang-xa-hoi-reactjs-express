@@ -68,7 +68,7 @@ function HeaderUserMessager({children, newMesseger, countChat}) {
                     <MessagerChatZoomOut
                         key={index}
                         id={item}
-                        style={index > 0 ? {top: `${650 - (index * 60)}px`} : null}
+                        style={index > 0 ? {top: `${90 - (index * 7)}vh`} : null}
                     />
                 ))
             }
