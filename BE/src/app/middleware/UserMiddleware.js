@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../model/User');
 
-
+const SECRET = process.env.JWT_SECRET;
 module.exports =  async function  middlewareVerify(req, res, next) {
         try {
             const authorizationHeader = req.headers.authorization;
@@ -11,7 +11,7 @@ module.exports =  async function  middlewareVerify(req, res, next) {
             }
     
             const token = authorizationHeader.split(' ')[1];
-            const idUser = jwt.verify(token, 'quyet');
+            const idUser = jwt.verify(token, SECRET);
             if (!idUser) {
                 return res.json({ error: 'Token không hợp lệ' });
             }

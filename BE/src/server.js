@@ -1,4 +1,5 @@
 const express = require('express')
+require('dotenv').config();
 const path = require('path')
 const app = express()
 const db = require('./config/db')
@@ -15,6 +16,7 @@ const io = new Server(server, {
     origin: "*",
   }
 });
+const port = process.env.PORT || 8080;
 const handleSocket = require('./app/socket/index');
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -35,7 +37,7 @@ handleSocket(io);
 //lập lịch
 cron.schedule('0 0 * * *', FeedController.deleteFeedAfter24hours);
 
-server.listen(3001, () => {
+server.listen(port, () => {
   console.log("SERVER IS RUN");
 })
 // app.listen(3001)

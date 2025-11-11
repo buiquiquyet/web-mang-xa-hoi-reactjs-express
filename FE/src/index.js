@@ -7,7 +7,7 @@ import store from './redux/store';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import io from 'socket.io-client';
-const socket = io('http://localhost:3001');
+const socket = io(process.env.REACT_APP_API_URL);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 export const MyContextSocket = createContext();
 

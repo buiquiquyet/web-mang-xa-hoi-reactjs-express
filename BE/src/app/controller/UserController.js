@@ -1,6 +1,6 @@
 const User = require('../model/User')
 const jwt = require('jsonwebtoken')
-
+const SECRET = process.env.JWT_SECRET;
 class UserController {
     //[GET] /login
     index(req, res, next) {
@@ -11,7 +11,7 @@ class UserController {
         }).lean()
         .then( user => {
             if(user) {
-                const token = jwt.sign({ _id: user._id}, 'quyet',{ expiresIn: 36000 })
+                const token = jwt.sign({ _id: user._id}, SECRET,{ expiresIn: 36000 })
                 
                 return res.json({
                     success: 'success',

@@ -11,7 +11,7 @@ function App() {
   const [dataUser, setDataUser] = useState(null)
   const {socket} = useContext(MyContextSocket)
   const ImageUrlPath = useMemo(() => {
-    return 'http://localhost:3001/uploads/'
+    return `${process.env.REACT_APP_API_URL}/uploads/`
   },[])
   useEffect(() => {
       const fecthApi = async (token) => {

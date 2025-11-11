@@ -63,8 +63,8 @@ function HeaderUserPage({ userId }) {
   const handleShowImageSlide = (image) => {
     setImageSlide([
       {
-        original: `http://localhost:3001/uploads/${image.url}`,
-        thumbnail: `http://localhost:3001/uploads/${image.url}`,
+        original: `${process.env.REACT_APP_API_URL}/uploads/${image.url}`,
+        thumbnail: `${process.env.REACT_APP_API_URL}/uploads/${image.url}`,
       },
     ]);
     setIsOpenSlide(true);
